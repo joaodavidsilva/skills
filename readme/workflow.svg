@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="480" viewBox="0 0 1200 480" role="img" aria-labelledby="wf-title wf-desc">
+  <title id="wf-title">The main flow, idea to ship</title>
+  <desc id="wf-desc">Main flow: /grill-with-docs, /to-spec, /to-tickets, /implement (which drives /tdd and /code-review), /retro. Side entrances: /prototype detours from grilling, /wayfinder feeds /to-spec, /triage feeds /implement, /diagnosing-bugs leads to /retro.</desc>
+
+  <rect width="1200" height="480" rx="26" fill="#0E1116"/>
+  <text x="30" y="52" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" letter-spacing="1.5" fill="#7CE0B0">MAIN FLOW</text>
+
+  <g stroke="#7CE0B0" stroke-width="3" stroke-linecap="round">
+    <line x1="246" y1="130" x2="261" y2="130"/>
+    <line x1="477" y1="130" x2="492" y2="130"/>
+    <line x1="708" y1="130" x2="723" y2="130"/>
+    <line x1="939" y1="130" x2="954" y2="130"/>
+  </g>
+  <g>
+    <rect x="30" y="76" width="216" height="124" rx="16" fill="#161B22" stroke="#7CE0B0" stroke-width="2"/>
+    <text x="46" y="124" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" fill="#7CE0B0">/grill-with-docs</text>
+    <text x="46" y="158" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#F4F1EA">Align on the idea</text>
+  </g>
+  <g>
+    <rect x="261" y="76" width="216" height="124" rx="16" fill="#161B22" stroke="#7CE0B0" stroke-width="2"/>
+    <text x="277" y="124" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" fill="#7CE0B0">/to-spec</text>
+    <text x="277" y="158" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#F4F1EA">Write the spec</text>
+  </g>
+  <g>
+    <rect x="492" y="76" width="216" height="124" rx="16" fill="#161B22" stroke="#7CE0B0" stroke-width="2"/>
+    <text x="508" y="124" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" fill="#7CE0B0">/to-tickets</text>
+    <text x="508" y="158" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#F4F1EA">Split into tickets</text>
+  </g>
+  <g>
+    <rect x="723" y="76" width="216" height="124" rx="16" fill="#161B22" stroke="#7CE0B0" stroke-width="2"/>
+    <text x="739" y="124" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" fill="#7CE0B0">/implement</text>
+    <text x="739" y="158" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#F4F1EA">Build, then review</text>
+    <text x="739" y="186" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" fill="#8B93A1">tdd + code-review</text>
+  </g>
+  <g>
+    <rect x="954" y="76" width="216" height="124" rx="16" fill="#161B22" stroke="#7CE0B0" stroke-width="2"/>
+    <text x="970" y="124" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" fill="#7CE0B0">/retro</text>
+    <text x="970" y="158" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#F4F1EA">Improve the setup</text>
+  </g>
+  <g stroke="#8B93A1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M138 304V210m-8 8l8-8 8 8"/>
+    <path d="M369 304V210m-8 8l8-8 8 8"/>
+    <path d="M831 304V210m-8 8l8-8 8 8"/>
+    <path d="M1062 304V210m-8 8l8-8 8 8"/>
+  </g>
+  <g>
+    <rect x="30" y="304" width="216" height="124" rx="16" fill="#161B22" stroke="#262D38" stroke-width="2"/>
+    <text x="46" y="352" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" fill="#F4F1EA">/prototype</text>
+    <text x="46" y="386" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#8B93A1">Needs a runnable</text>
+    <text x="46" y="410" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#8B93A1">answer</text>
+  </g>
+  <g>
+    <rect x="261" y="304" width="216" height="124" rx="16" fill="#161B22" stroke="#262D38" stroke-width="2"/>
+    <text x="277" y="352" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" fill="#F4F1EA">/wayfinder</text>
+    <text x="277" y="386" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#8B93A1">Too big for one</text>
+    <text x="277" y="410" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#8B93A1">session</text>
+  </g>
+  <g>
+    <rect x="723" y="304" width="216" height="124" rx="16" fill="#161B22" stroke="#262D38" stroke-width="2"/>
+    <text x="739" y="352" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" fill="#F4F1EA">/triage</text>
+    <text x="739" y="386" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#8B93A1">Raw bugs and</text>
+    <text x="739" y="410" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#8B93A1">requests</text>
+  </g>
+  <g>
+    <rect x="954" y="304" width="216" height="124" rx="16" fill="#161B22" stroke="#262D38" stroke-width="2"/>
+    <text x="970" y="352" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" fill="#F4F1EA">/diagnosing-bugs</text>
+    <text x="970" y="386" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#8B93A1">Something's broken,</text>
+    <text x="970" y="410" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" font-size="20" fill="#8B93A1">fix, then retro</text>
+  </g>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" letter-spacing="1.5" fill="#8B93A1" text-anchor="middle">
+    <text x="600" y="360">ON-RAMPS</text>
+    <text x="600" y="386">AND DETOURS</text>
+  </g>
+</svg>
