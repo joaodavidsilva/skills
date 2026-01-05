@@ -1,0 +1,4 @@
+---
+interface:
+  display_name: "Commit"
+  short_description: "Write a Conventional Commit message scoped in your domain language"
