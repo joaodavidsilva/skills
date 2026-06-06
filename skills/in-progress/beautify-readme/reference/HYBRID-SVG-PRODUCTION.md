@@ -26,12 +26,12 @@ Do not publish an SVG that depends on absolute paths, unresolved relative raster
 1. Freeze the repository story and visual system before generation.
 2. Define the raster subject's communication job. Write why it belongs to this project.
 3. Build the SVG layout first with a clearly reserved subject area.
-4. Invoke the `imagegen` Skill. Keep title text, body copy, labels, logos, and UI chrome out of the generated layer.
+4. Call the Skill tool with "imagegen-gemini". Keep title text, body copy, labels, logos, and UI chrome out of the generated layer.
 5. Generate the subject with its pose, gaze, crop, palette, lighting direction, and negative space matched to the SVG composition.
 6. Choose the background strategy:
    - Use chroma-key removal for simple opaque or hard-edged subjects.
    - Prefer matched-background generation when hair, fur, smoke, glass, translucency, reflections, or soft shadows do not require later repositioning.
-   - Follow the `imagegen` Skill's confirmation gate if true native transparency is required.
+   - Gemini returns opaque pixels, so native transparency is unavailable; the two options above are the only ones.
 7. Save the final transparent subject inside the project, compose it with the SVG layout, and export one PNG/WebP.
 8. Inspect the transparent layer and final composition. Iterate with one targeted change at a time.
 
@@ -49,7 +49,7 @@ Constraints: one isolated subject; generous padding; no text; no letters; no log
 Background: perfectly flat solid key color with no gradient, texture, floor, reflection, or shadow
 ```
 
-Use the installed helper and parameters defined by the `imagegen` Skill. Do not copy or fork its background-removal script into this Skill.
+Use the helper and parameters defined by the `imagegen-gemini` skill (`scripts/remove_chroma_key.py`, see its `reference/TRANSPARENCY.md`). Do not copy or fork its background-removal script into this skill.
 
 ## Composition rules
 
@@ -82,4 +82,4 @@ For the final asset, verify:
 - meaningful alt text;
 - the design still feels native to the repository.
 
-Report the ImageGen mode used, final prompt, transparent asset path, composition source path, published asset path, and any intermediates intentionally retained.
+Report the Gemini model used, final prompt, transparent asset path, composition source path, published asset path, and any intermediates intentionally retained.
