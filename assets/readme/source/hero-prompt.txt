@@ -1,0 +1,12 @@
+Model: gemini-3-pro-image (nano-banana-pro), 3:4, 2K, generated with n=2, variant 1 kept.
+References (--image, in order): 1 = earlier flat-vector engineer mascot (style, pose, outfit, props); 2 to 4 = crops of the owner's own 3D sticker sheet (face only).
+Key color: #ff00ff. Keyed with scripts/remove_chroma_key.py --auto-key border --soft-matte --despill, then the baked ground shadow was removed using the magenta mask of the original image.
+
+Use case: illustration-story
+Asset type: transparent cutout mascot for a GitHub README hero, placed on a dark #0E1116 page
+Primary request: Redraw the engineer-scientist mascot of reference image 1 so that his face is the man from reference images 2 to 4. Keep reference image 1 exactly as the style, pose, outfit and props guide: flat vector cartoon illustration, thick dark navy outlines, soft cel shading, faint mint rim light on the left edge, mint-green hard hat, long off-white laboratory coat with buttons and pockets, grey gloves, dark trousers and black boots, large wrench in the raised hand, rolled blueprint under the other arm, standing relaxed, full body, friendly chibi proportions. Replace only the head: the face of the man in references 2 to 4 translated into the same flat vector style, with his black sunglasses, short fade haircut under the hard hat, trimmed beard and moustache, and a big friendly smile. Do not copy the 3D rendering or the white sticker border of references 2 to 4.
+Style/medium: flat vector illustration, thick dark navy outlines, soft cel shading, identical to reference image 1
+Composition/framing: single isolated subject, centered, full body, generous padding on every side, portrait framing, same pose as reference image 1
+Color palette: mint green #7CE0B0, warm off-white #F4F1EA, slate #8B93A1, deep charcoal #161B22, small warm orange accents; skin tones natural; no magenta or pink in the subject
+Constraints: face faithful to references 2 to 4; no white border, no sticker edge, no halo; no text, no letters, no logo, no watermark, no ground shadow, no floor
+Scene/backdrop: perfectly flat solid #ff00ff magenta background, no gradient, no texture, no vignette, no reflection, no shadow
