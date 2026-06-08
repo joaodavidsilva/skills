@@ -1,28 +1,16 @@
 <p align="center">
-  <img src="./assets/readme/hero.svg" width="100%" alt="Skills For Real Engineers: my daily agent skills for real engineering, not vibe coding. The main flow runs /grill-with-docs, /to-spec, /to-tickets, /implement, /retro.">
+  <img src="./assets/readme/hero.webp" width="100%" alt="Skills For Real Engineers: my daily agent skills for real engineering, not vibe coding. A mascot engineer in a hard hat and lab coat stands beside the main flow: /grill-with-docs, /to-spec, /to-tickets, /implement, /retro.">
 </p>
 
-Developing real applications is hard. Approaches like GSD, BMAD, and Spec-Kit try to help by owning the process. But while doing so, they take away your control and make bugs in the process hard to resolve.
+Developing real applications is hard. Approaches like GSD, BMAD, and Spec-Kit try to help by owning the process, and in doing so they take away your control and make bugs in the process hard to resolve.
 
-These skills are small, easy to adapt, and composable. They work with any model. They're based on decades of engineering experience.
-
-Each one fixes a failure mode I keep seeing with Claude Code, Codex, and other coding agents:
+These skills are small, easy to adapt, and composable. They work with any model, and they're based on decades of engineering experience. Each one fixes a failure mode I keep seeing with Claude Code, Codex, and other coding agents:
 
 <p align="center">
   <img src="./assets/readme/failure-modes.svg" width="100%" alt="Four agent failures and the skill for each: it didn't do what I want and it's too verbose are fixed by /grill-with-docs; the code doesn't work is fixed by /tdd and /diagnosing-bugs; a ball of mud is fixed by /improve-codebase-architecture and /to-spec.">
 </p>
 
-## How the skills fit together
-
-Most work travels one **main flow**, from idea to ship. Bugs, big efforts, and prototypes join it from the side.
-
-<p align="center">
-  <img src="./assets/readme/workflow.svg" width="100%" alt="The main flow runs /grill-with-docs, /to-spec, /to-tickets, /implement, /retro. /prototype detours from grilling, /wayfinder feeds /to-spec, /triage feeds /implement, and /diagnosing-bugs leads to /retro.">
-</p>
-
-Not sure which skill fits? Run [`/ask-joao`](./skills/engineering/ask-joao/SKILL.md) and describe your situation.
-
-## Installation (30-second setup)
+## Get started (30 seconds)
 
 ### 1. Get the skills
 
@@ -36,77 +24,74 @@ The skills install as editable files. Updates are manual.
 
 In your agent, run it once per repo. It will:
 
-- Ask you which issue tracker you want to use (GitHub, GitLab, local files, or anything else you describe)
-- Ask you what labels you apply to tickets when you triage them (`/triage` uses labels)
-- Ask you where you want to save any docs we create
+- Ask which issue tracker you use (GitHub, GitLab, local files, or anything else you describe)
+- Ask which labels you apply to tickets when you triage them (`/triage` uses labels)
+- Ask where you want to save any docs the skills create
 
-### 3. Bam, you're ready to go
+### 3. Start with `/grill-with-docs`
 
-Start with [`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md) on your next change.
+Run [`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md) on your next change.
 
-## Why These Skills Exist
+## How the skills fit together
+
+Most work travels one **main flow**, from idea to ship. Bugs, big efforts, and prototypes join it from the side.
+
+<p align="center">
+  <img src="./assets/readme/workflow.svg" width="100%" alt="The main flow runs /grill-with-docs, /to-spec, /to-tickets, /implement, /retro. /prototype detours from grilling, /wayfinder feeds /to-spec, /triage feeds /implement, and /diagnosing-bugs leads to /retro.">
+</p>
+
+Not sure which skill fits? Run [`/ask-joao`](./skills/engineering/ask-joao/SKILL.md) and describe your situation.
+
+## Why these skills exist
 
 Each failure mode above gets a fix grounded in a classic of software engineering.
 
-### #1: The Agent Didn't Do What I Want
+### #1: The agent didn't do what I want
 
 > "No-one knows exactly what they want"
 >
 > David Thomas & Andrew Hunt, [The Pragmatic Programmer](https://www.amazon.co.uk/Pragmatic-Programmer-Anniversary-Journey-Mastery)
 
-**The Problem**. The most common failure mode in software development is misalignment. You think the dev knows what you want. Then you see what they've built - and you realize it didn't understand you at all.
+**The problem.** The most common failure in software development is misalignment. You think the dev knows what you want, then you see what they built and realize they didn't understand you at all. The same communication gap exists between you and the agent.
 
-This is just the same in the AI age. There is a communication gap between you and the agent. The fix for this is a **grilling session** - getting the agent to ask you detailed questions about what you're building.
+**The fix** is a **grilling session**: the agent asks you detailed questions about what you're building before it builds anything.
 
-**The Fix** is to use:
+- [`/grill-me`](./skills/productivity/grill-me/SKILL.md): for non-code uses
+- [`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md): the same as [`/grill-me`](./skills/productivity/grill-me/SKILL.md), plus a shared language for your project (see #2)
 
-- [`/grill-me`](./skills/productivity/grill-me/SKILL.md) - for non-code uses
-- [`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md) - same as [`/grill-me`](./skills/productivity/grill-me/SKILL.md), but adds more goodies (see below)
+These are my most popular skills. Use them _every_ time you want to make a change.
 
-These are my most popular skills. They help you align with the agent before you get started, and think deeply about the change you're making. Use them _every_ time you want to make a change.
-
-### #2: The Agent Is Way Too Verbose
+### #2: The agent is way too verbose
 
 > With a ubiquitous language, conversations among developers and expressions of the code are all derived from the same domain model.
 >
 > Eric Evans, [Domain-Driven-Design](https://www.amazon.co.uk/Domain-Driven-Design-Tackling-Complexity-Software)
 
-**The Problem**: At the start of a project, devs and the people they're building the software for (the domain experts) are usually speaking different languages.
+**The problem.** At the start of a project, devs and the people they're building for (the domain experts) speak different languages. Agents are dropped into a project and left to figure out the jargon as they go, so they use 20 words where 1 will do.
 
-I felt the same tension with my agents. Agents are usually dropped into a project and asked to figure out the jargon as they go. So they use 20 words where 1 will do.
-
-**The Fix** for this is a shared language. It's a document that helps agents decode the jargon used in the project.
-
-This is built into [`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md). It's a grilling session, but that helps you build a shared language with the AI, and document hard-to-explain decisions in ADR's.
-
-It's hard to explain how powerful this is. It might be the single coolest technique in this repo. Try it, and see.
+**The fix** is a shared language: a document that helps agents decode the project's jargon. It is built into [`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md), a grilling session that also builds that language with the agent and records hard-to-explain decisions in ADRs. It might be the single coolest technique in this repo.
 
 > [!TIP]
-> A shared language has many other benefits than reducing verbosity:
+> A shared language has other benefits besides less verbosity:
 >
 > - **Variables, functions and files are named consistently**, using the shared language
 > - As a result, the **codebase is easier to navigate** for the agent
 > - The agent also **spends fewer tokens on thinking**, because it has access to a more concise language
 
-### #3: The Code Doesn't Work
+### #3: The code doesn't work
 
 > "Always take small, deliberate steps. The rate of feedback is your speed limit. Never take on a task that’s too big."
 >
 > David Thomas & Andrew Hunt, [The Pragmatic Programmer](https://www.amazon.co.uk/Pragmatic-Programmer-Anniversary-Journey-Mastery/)
 
-**The Problem**: Let's say that you and the agent are aligned on what to build. What happens when the agent _still_ produces crap?
+**The problem.** You and the agent are aligned on what to build, and it _still_ produces crap. Without feedback on how its code actually runs, the agent is flying blind.
 
-It's time to look at your feedback loops. Without feedback on how the code it produces actually runs, the agent will be flying blind.
+**The fix** is the usual tranche of feedback loops: static types, browser access, and automated tests. For tests, a red-green-refactor loop is critical: the agent writes a failing test first, then makes it pass. That gives it a consistent level of feedback and far better code.
 
-**The Fix**: You need the usual tranche of feedback loops: static types, browser access, and automated tests.
+- [`/tdd`](./skills/engineering/tdd/SKILL.md): slots into any project. It encourages red-green-refactor and gives the agent plenty of guidance on what makes good and bad tests.
+- [`/diagnosing-bugs`](./skills/engineering/diagnosing-bugs/SKILL.md): wraps best debugging practices into a disciplined loop, gated phase by phase.
 
-For automated tests, a red-green-refactor loop is critical. This is where the agent writes a failing test first, then fixes the test. This helps give the agent a consistent level of feedback that results in far better code.
-
-I've built a **[`/tdd`](./skills/engineering/tdd/SKILL.md) skill** you can slot into any project. It encourages red-green-refactor and gives the agent plenty of guidance on what makes good and bad tests.
-
-For debugging, I've also built a **[`/diagnosing-bugs`](./skills/engineering/diagnosing-bugs/SKILL.md)** skill that wraps best debugging practices into a disciplined loop, gated phase by phase.
-
-### #4: We Built A Ball Of Mud
+### #4: We built a ball of mud
 
 > "Invest in the design of the system _every day_."
 >
@@ -116,15 +101,12 @@ For debugging, I've also built a **[`/diagnosing-bugs`](./skills/engineering/dia
 >
 > John Ousterhout, [A Philosophy Of Software Design](https://www.amazon.co.uk/Philosophy-Software-Design-2nd/)
 
-**The Problem**: Most apps built with agents are complex and hard to change. Because agents can radically speed up coding, they also accelerate software entropy. Codebases get more complex at an unprecedented rate.
+**The problem.** Most apps built with agents are complex and hard to change. Agents radically speed up coding, so they also accelerate software entropy, and codebases get more complex at an unprecedented rate.
 
-**The Fix** for this is a radical new approach to AI-powered development: caring about the design of the code.
-
-This is built in to every layer of these skills:
+**The fix** is to care about the design of the code, and that is built into every layer of these skills:
 
 - [`/to-spec`](./skills/engineering/to-spec/SKILL.md) quizzes you about which modules you're touching before creating a spec
-
-And crucially, [`/improve-codebase-architecture`](./skills/engineering/improve-codebase-architecture/SKILL.md) surveys a codebase for deepening opportunities and hands you the candidates. I recommend running it on your codebase once every few days. It is a survey, not a rescue: on a genuinely old codebase it will find real candidates, but it won't untangle the mud for you.
+- [`/improve-codebase-architecture`](./skills/engineering/improve-codebase-architecture/SKILL.md) surveys a codebase for deepening opportunities and hands you the candidates. I recommend running it every few days. It is a survey, not a rescue: on a genuinely old codebase it will find real candidates, but it won't untangle the mud for you.
 
 ## Reference
 
