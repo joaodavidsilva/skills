@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="./assets/readme/hero.webp" width="100%" alt="Skills For Real Engineers: my daily agent skills for real engineering, not vibe coding. A mascot engineer in a hard hat and lab coat stands beside the main flow: /grill-with-docs, /to-spec, /to-tickets, /implement, /retro.">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/hero-dark.webp">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/readme/hero-light.webp">
+    <img src="./assets/readme/hero-dark.webp" width="100%" alt="Skills For Real Engineers: my daily agent skills for real engineering, not vibe coding. A mascot engineer in a hard hat and lab coat stands beside the main flow: /grill-with-docs, /to-spec, /to-tickets, /implement, /retro.">
+  </picture>
 </p>
 
 Developing real applications is hard. Approaches like GSD, BMAD, and Spec-Kit try to help by owning the process, and in doing so they take away your control and make bugs in the process hard to resolve.
@@ -7,7 +11,11 @@ Developing real applications is hard. Approaches like GSD, BMAD, and Spec-Kit tr
 These skills are small, easy to adapt, and composable. They work with any model, and they're based on decades of engineering experience. Each one fixes a failure mode I keep seeing with Claude Code, Codex, and other coding agents:
 
 <p align="center">
-  <img src="./assets/readme/failure-modes.svg" width="100%" alt="Four agent failures and the skill for each: it didn't do what I want and it's too verbose are fixed by /grill-with-docs; the code doesn't work is fixed by /tdd and /diagnosing-bugs; a ball of mud is fixed by /improve-codebase-architecture and /to-spec.">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/failure-modes-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/readme/failure-modes-light.svg">
+    <img src="./assets/readme/failure-modes-dark.svg" width="100%" alt="Four agent failures and the skill for each: it didn't do what I want and it's too verbose are fixed by /grill-with-docs; the code doesn't work is fixed by /tdd and /diagnosing-bugs; a ball of mud is fixed by /improve-codebase-architecture and /to-spec.">
+  </picture>
 </p>
 
 ## Get started (30 seconds)
@@ -37,7 +45,11 @@ Run [`/grill-with-docs`](./skills/engineering/grill-with-docs/SKILL.md) on your 
 Most work travels one **main flow**, from idea to ship. Bugs, big efforts, and prototypes join it from the side.
 
 <p align="center">
-  <img src="./assets/readme/workflow.svg" width="100%" alt="The main flow runs /grill-with-docs, /to-spec, /to-tickets, /implement, /retro. /prototype detours from grilling, /wayfinder feeds /to-spec, /triage feeds /implement, and /diagnosing-bugs leads to /retro.">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/readme/workflow-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/readme/workflow-light.svg">
+    <img src="./assets/readme/workflow-dark.svg" width="100%" alt="The main flow runs /grill-with-docs, /to-spec, /to-tickets, /implement, /retro. /prototype detours from grilling, /wayfinder feeds /to-spec, /triage feeds /implement, and /diagnosing-bugs leads to /retro.">
+  </picture>
 </p>
 
 Not sure which skill fits? Run [`/ask-joao`](./skills/engineering/ask-joao/SKILL.md) and describe your situation.
