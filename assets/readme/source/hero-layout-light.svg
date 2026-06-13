@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">Skills for Real Engineers</title>
+  <desc id="hero-desc">My daily agent skills for real engineering, not vibe coding. A terminal panel lists the main flow from idea to ship, and an engineer mascot in a hard hat stands beside it holding a wrench and a blueprint.</desc>
+
+  <rect width="1200" height="440" rx="26" fill="#F4F1EA"/>
+
+  <g id="title-block" transform="translate(64 0)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif">
+    <text x="0" y="104" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" letter-spacing="1.5" fill="#5A6270"><tspan fill="#12805A" font-weight="700">/</tspan> agent skills</text>
+    <text x="0" y="192" font-size="68" font-weight="800" fill="#0E1116" letter-spacing="-1.5">Skills for</text>
+    <text x="0" y="262" font-size="68" font-weight="800" fill="#0E1116" letter-spacing="-1.5">Real Engineers<tspan fill="#12805A">.</tspan></text>
+    <text x="0" y="330" font-size="26" fill="#3A414D">My daily agent skills for real engineering,</text>
+    <text x="0" y="364" font-size="26" fill="#3A414D">not vibe coding.</text>
+  </g>
+
+  <g id="main-flow" transform="translate(600 56)">
+    <rect width="300" height="352" rx="18" fill="#161B22" stroke="#262D38" stroke-width="2"/>
+    <text x="24" y="46" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" fill="#8B93A1" letter-spacing="1">idea → ship</text>
+    <line x1="24" y1="68" x2="276" y2="68" stroke="#262D38" stroke-width="2"/>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" fill="#8B93A1">
+      <text x="24" y="116">01</text>
+      <text x="24" y="168">02</text>
+      <text x="24" y="220">03</text>
+      <text x="24" y="272">04</text>
+      <text x="24" y="324">05</text>
+    </g>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="22" font-weight="700" fill="#7CE0B0">
+      <text x="64" y="116">/grill-with-docs</text>
+      <text x="64" y="168">/to-spec</text>
+      <text x="64" y="220">/to-tickets</text>
+      <text x="64" y="272">/implement</text>
+      <text x="64" y="324">/retro</text>
+    </g>
+    <rect x="64" y="342" width="14" height="6" fill="#7CE0B0"/>
+  </g>
+
+  <!-- Reserved slot for the generated subject (source/hero-subject.png), composed at build time: x=852 y=24 w=300 h=398 -->
+  <g id="subject-slot">
+    <ellipse cx="1002" cy="414" rx="132" ry="11" fill="#0E1116" opacity="0.16"/>
+  </g>
+</svg>
