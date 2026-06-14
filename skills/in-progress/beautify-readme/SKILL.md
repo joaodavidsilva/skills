@@ -75,9 +75,12 @@ Typography: system font stack / scale / weight contrast
 Shape: radius / stroke / grid / spacing
 Motif: one recurring project-specific visual cue
 Composition: calm / editorial / technical / playful / cinematic
+Theme: single (default) / light + dark variants
 ```
 
 Derive the motif from the project. A terminal tool may use prompts and cursor marks; an icon system may use keylines and cutouts; a research project may use coordinates and evidence labels. Never apply the same yellow-grid template to every repository.
+
+Ask once, in one line, whether the assets should follow GitHub's light and dark themes. On yes, read [reference/THEME-VARIANTS.md](reference/THEME-VARIANTS.md) before producing any asset.
 
 Before designing the hero, read [reference/PROJECT-NATIVE-HERO.md](reference/PROJECT-NATIVE-HERO.md). Build the title from project content rather than treating it as a banner placed above the proof. Choose the typography, composition, and right-side material from the repository itself.
 
