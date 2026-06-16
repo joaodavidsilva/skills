@@ -35,7 +35,7 @@ Look for the originating spec, in this order:
 
 Search the repo for every file that documents how code should be written. When `CODING_STANDARDS.md` or `CONTRIBUTING.md` exists, it must be on the list.
 
-On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
+On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below: a fixed set of code smells (twelve from Fowler's _Refactoring_, ch.3, plus Long Function and Large Class from the same book and two common-practice additions) that applies even when a repo documents nothing. Two rules bind it:
 
 - **The repo overrides.** A documented repo standard always wins; where it endorses something the baseline would flag, suppress the smell.
 - **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"), never a hard violation. Like any standard here, skip anything tooling already enforces.
@@ -54,6 +54,17 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Message Chains**: long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
 - **Middle Man**: a class or function that mostly just delegates onward. → cut it, call the real target direct.
 - **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
+- **Long Function**: a function that has grown past what a reader holds in their head at once. → extract the cohesive pieces behind names that say what each does.
+- **Large Class**: a class or module carrying too many fields or responsibilities. → extract the cohesive group into its own class or module.
+- **Deep Nesting** (common-practice addition, not Fowler ch.3): conditionals or loops stacked several levels deep. → guard clauses and early returns, or extract the inner block.
+- **Magic Numbers** (common-practice addition, not Fowler ch.3): a bare literal whose meaning only the author knows. → give it a named constant.
+
+Judge the delta, not the inventory:
+
+- **Delta triggers.** Flag a size or complexity smell (Long Function, Large Class, Deep Nesting) when the diff pushes a file or function across the repo's own limit (its lint thresholds or documented standard; with none stated, the surrounding code sets the bar). A file that was already large before the diff is out of scope.
+- **Mechanical files are out of scope**: generated code, lockfiles, snapshots, vendored code. Review moved code as a move: compare it against its origin and judge only what changed.
+
+**Bypass scan.** Run the diff through the detector, `<diff command> | python3 scripts/scan_bypasses.py` (path relative to this skill's directory). It prints `path:line`, a category, and the line for each added suppression, disabled test, skipped hook, disabled TLS check, or swallowed error. Hits are candidates, not findings: pass them to the Standards sub-agent in step 4, which judges them. A suppression is acceptable only with a reason and an issue link beside it. Done when the hits (or "no hits") are in hand for the step 4 prompt.
 
 ### 4. Spawn both sub-agents in parallel
 
@@ -62,8 +73,8 @@ Issue both sub-agent calls together, in the foreground, and aggregate the report
 **Standards sub-agent prompt** should include:
 
 - The full diff command and commit list.
-- The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full (the sub-agent has no other access to it).
-- The brief: "Report, per file/hunk where relevant, (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls: documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
+- The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full (the sub-agent has no other access to it), **plus the bypass-scan hits from step 3**.
+- The brief: "Report, per file/hunk where relevant, (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Cite `file:line` for every finding. Judge each bypass hit from the scan: a suppression is acceptable only with a reason and an issue link beside it, so report the rest. Distinguish hard violations from judgement calls: documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
 
 **Spec sub-agent prompt** should include:
 
@@ -75,9 +86,13 @@ If the spec is missing, skip the Spec sub-agent and note this in the final repor
 
 ### 5. Aggregate
 
+Verify before presenting: re-read the cited location of every finding (`file:line` for Standards, the quoted spec line for Spec) and drop each one the location cannot evidence (wrong line, code not there, impact overstated past what the code shows). Severity and validity are separate axes: a real but minor issue stays as a labelled nit, and only an unevidenced finding is dropped. Verification removes findings; it never merges or reranks them. Done when every surviving finding has been re-read at its cited location.
+
 Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings, because the two axes are deliberately separate (see _Why two axes_).
 
-End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes: that's the reranking the separation exists to prevent.
+Then a one-line summary: total findings per axis (and how many the verification pass dropped), and the worst issue _within each axis_ (if any). Don't pick a single winner across axes: that's the reranking the separation exists to prevent.
+
+End with a short **Promote to check** list: each finding that was deterministic by nature (a banned pattern, an import shape, a file-location rule), with a one-line sketch of the lint rule that would catch it next time (for example, a bare `@ts-ignore` → `@typescript-eslint/ban-ts-comment` with `allow-with-description`). Mechanical becomes a check. Omit the list when no finding was deterministic.
 
 ## Why two axes
 
