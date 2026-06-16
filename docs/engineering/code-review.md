@@ -39,11 +39,15 @@ Step 1 depends on the tracker doc, which **setup-joao-david-silva-skills** write
 | Question | Is it built right? | Is it the right thing? |
 | Reads | The repo's documented standards, plus the smell baseline | The originating issue or spec |
 | Reports | Documented breaches (can be hard), and smells (always judgement calls) | Missing or partial requirements, scope creep, requirements implemented wrongly |
-| Every finding cites | The standards file and the rule, or the named smell plus the hunk | The line of the spec |
+| Every finding cites | The standards file and the rule, or the named smell plus the hunk, always with `file:line` | The line of the spec |
 
 This design exists to avoid a generic review skill that does not know your standards. Such a skill flags what is deliberate in your codebase and misses the invariants your codebase depends on. So the repo's own documentation is the [primary source](../references/primary-source.md) on the Standards axis, and **the repo always overrides**.
 
-The **smell baseline** sits under the repo's standards. It is twelve code smells from chapter 3 of Fowler's _Refactoring_: Mysterious Name, Duplicated Code, Feature Envy, Data Clumps, Primitive Obsession, Repeated Switches, Shotgun Surgery, Divergent Change, Speculative Generality, Message Chains, Middle Man, Refused Bequest. Each is a labelled heuristic ("possible Feature Envy"), never a hard violation. Each states what the smell is and how to fix it, so a finding comes with a fix attached rather than only a complaint. Both axes skip anything your linter already enforces.
+The **smell baseline** sits under the repo's standards. It is sixteen code smells: twelve from chapter 3 of Fowler's _Refactoring_ (Mysterious Name, Duplicated Code, Feature Envy, Data Clumps, Primitive Obsession, Repeated Switches, Shotgun Surgery, Divergent Change, Speculative Generality, Message Chains, Middle Man, Refused Bequest), Long Function and Large Class from the same book, and two common-practice additions that are not Fowler's: Deep Nesting and Magic Numbers. Each is a labelled heuristic ("possible Feature Envy"), never a hard violation. Each states what the smell is and how to fix it, so a finding comes with a fix attached rather than only a complaint. Both axes skip anything your linter already enforces.
+
+The baseline judges the **delta**. A size smell fires when the diff pushes a file or function across the repo's own limit, never for a file that was already large. Generated files, lockfiles, snapshots, and vendored code are skipped, and moved code is judged as a move rather than as new code.
+
+A **bypass scan** runs over the diff first: a small script that lists added suppressions (`eslint-disable`, `@ts-ignore`, `as any`, `# noqa`), disabled tests, `--no-verify`, disabled TLS verification, and swallowed errors. Its hits are candidates, not findings. The Standards sub-agent judges each one, and a suppression passes only with a reason and an issue link beside it.
 
 ## Common questions
 
@@ -70,7 +74,7 @@ Both work, and the skill does not decide for you. Per-ticket keeps each diff sma
 
 **Can I trust the findings?**
 
-Not without checking. Sub-agent output is a hypothesis, not evidence. One team reported a dozen breaking changes that prose-based reviews had missed. The skill combines the two reports as they are, or lightly cleaned. It does not re-verify each claim against the files, so a finding can cite the wrong location or overstate an impact. Read the citation on each finding before you act on it. The skill requires every finding to carry a citation (a standards rule, a smell plus its hunk, or a spec line), and that is what makes the findings checkable.
+Mostly, because the skill checks them before you see them. After the sub-agents report, it re-reads the cited location of every finding and drops what the code does not evidence. Severity and validity stay separate: a real but minor issue survives as a nit, and only an unevidenced claim is dropped. The summary says how many were dropped. The verification removes findings and never merges or re-ranks them. It is still one agent checking another, so read the citation on a finding before you act on it.
 
 **Why does it find new problems every single time I run it?**
 
@@ -84,7 +88,9 @@ No. It diffs `<fixed-point>...HEAD`. The three-dot form measures from the merge-
 
 - It refuses to start on a bad ref or an empty diff, before any sub-agent is spawned.
 - The report arrives as two separate blocks under `## Standards` and `## Spec`, not one merged list.
-- Every Standards finding names either a rule in one of your repo's files or one of the twelve smells, with the hunk quoted; every Spec finding quotes a line of the spec.
+- Every Standards finding names either a rule in one of your repo's files or one of the sixteen smells, cites `file:line`, and quotes the hunk; every Spec finding quotes a line of the spec.
+- A `@ts-ignore`, `eslint-disable`, skipped test, or similar added in the diff is either judged (accepted only with a reason and an issue link beside it) or reported, never silently passed.
+- The closing list of lint-rule sketches, when present, names only deterministic findings (a banned pattern, an import shape), each with a rule you could write.
 - The closing summary gives a worst issue per axis and declines to pick an overall winner.
 - With no spec available, the Spec block says so instead of listing requirements it inferred from the code.
 
