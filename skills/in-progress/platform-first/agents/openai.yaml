@@ -1,0 +1,3 @@
+interface:
+  display_name: "Platform First"
+  short_description: "Use CSS, HTML and built-in JS before scripts or libraries"
