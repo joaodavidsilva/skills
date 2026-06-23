@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup Coding Standards"
+  short_description: "Set up layout, checks and coding standards"
+policy:
+  allow_implicit_invocation: false
