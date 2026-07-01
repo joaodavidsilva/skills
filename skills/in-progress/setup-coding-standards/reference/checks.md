@@ -140,7 +140,7 @@ Register each extra plugin under its package name per its README. Before install
 
 ### Stack A: Oxlint + tsgolint
 
-`oxlint` with `oxlint-tsgolint` for typed rules (type-aware linting sits outside Oxlint's semver promise; most typescript-eslint typed rules are ported). Root config sets `options.typeAware` and `options.typeCheck`. tsgolint needs TypeScript 7: it rejects `baseUrl`, so list globals in `types` (`node`, `vitest/globals`) and set `rootDir`. Run the gap rules (`suppression-reason`, `no-export-star`, `no-unsanitized`, `boundaries`, `no-restricted-syntax`) in ESLint 10 through `eslint-plugin-oxlint`, which turns off whatever Oxlint already covers. Oxlint ships no `eslint-comments`, no `no-restricted-syntax`, no baseline or compat rule. Config in `.oxlintrc.json`; `oxlint.config.ts` is experimental.
+`oxlint` with `oxlint-tsgolint` for typed rules (type-aware linting sits outside Oxlint's semver promise; most typescript-eslint typed rules are ported). Root config sets `options.typeAware` and `options.typeCheck`. tsgolint needs TypeScript 7: it rejects `baseUrl`, so list globals in `types` (`node`, `vitest/globals`) and set `rootDir`. Run the gap rules (`suppression-reason`, `no-export-star`, `no-unsanitized`, `boundaries`, `no-restricted-syntax`) in ESLint 10 through `eslint-plugin-oxlint`, which turns off whatever Oxlint already covers. Oxlint ships no `eslint-comments`, no `no-restricted-syntax`, no baseline or compat rule. Keep the repo's existing Oxlint JSON config; a TS config (`oxlint.config.ts` with `defineConfig` from `oxlint`) is experimental.
 
 ### Stack C: Biome
 
