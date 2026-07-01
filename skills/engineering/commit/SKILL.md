@@ -3,6 +3,8 @@ name: commit
 description: "Use when writing a commit message."
 ---
 
+Before drafting, read the repo's own history with `git log --no-merges --format=%s -30`. Match its subject length, prefix, and scope habits instead of assuming one.
+
 Write the message as a Conventional Commit, with the standard types.
 
 The scope is the `GLOSSARY.md` term for the part of the domain the change touches. With no single fitting term, the commit goes without a scope.
