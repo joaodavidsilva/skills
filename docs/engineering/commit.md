@@ -2,7 +2,7 @@
 
 `commit` defines how the [agent](../references/agent.md) writes a commit message. It is a format reference, not a workflow: it does not stage files or run the commit. It tells the agent what the message should look like when it writes one.
 
-The message is a Conventional Commit with the standard types. The agent already knows that format, so the skill spends its words on the three things the default gets wrong:
+The message is a Conventional Commit with the standard types. Before drafting, the agent reads the repo's last 30 non-merge subjects and matches their length, prefix, and scope habits instead of assuming one. The agent already knows the format, so the skill spends its words on the three things the default gets wrong:
 
 - **Scope in your domain language.** The scope is the term from `GLOSSARY.md` for the part of the domain the change touches, not a folder or file name. When no single term fits (no glossary, CI or dependency work, a change across several terms), the commit has no scope, which Conventional Commits allows and changelog tools read as "applies everywhere".
 - **One type per commit.** A diff that needs two types is two commits, which gives the agent a checkable reason to split a commit that grew too large.
@@ -35,6 +35,7 @@ The agent already knows Conventional Commits, so spelling out the types, the `!`
 - Scopes are words you recognise from your glossary, not directory names, and commits with no fitting term carry no scope.
 - No commit mixes a `feat` with a `fix`.
 - Bodies explain why, and short commits have none.
+- Subjects look like the ones already in your history, in length and prefix.
 
 ## Where it fits
 
