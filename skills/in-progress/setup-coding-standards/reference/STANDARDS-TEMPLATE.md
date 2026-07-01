@@ -35,10 +35,10 @@ Where this repo overrides a rule, record it here: the rule, what the repo does i
 ```
 
 A Deviations entry for it: `Extract a helper at the third call site: the payments package extracts at the second call site. Why: both sites compute money rounding, one documented rule.`
-Adopt only those that match this repo; write each in the skeleton form. Layout-related seeds draw on `reference/layouts.md`.
+
 ## Seed candidates
 
-Adopt only those that match this repo; write each in the skeleton form. Sources are in `reference/layouts.md` and the research behind this skill.
+Adopt only those that match this repo; write each in the skeleton form. Layout-related seeds draw on `reference/layouts.md`.
 
 - Name features from the business language; one reason to change per module.
 - Extract by intention: when a section of a body needs a comment to explain it, extract and name it; merge back a function whose reading requires reading its caller (shallow, entangled).
