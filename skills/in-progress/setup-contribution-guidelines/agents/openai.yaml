@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup Contribution Guidelines"
+  short_description: "Write CONTRIBUTING.md from how the repo works"
+policy:
+  allow_implicit_invocation: false
