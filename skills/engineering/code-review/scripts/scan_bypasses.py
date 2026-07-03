@@ -16,6 +16,8 @@ MARKERS = [
     ("lint-suppression", r"\bnolint\b"),
     ("lint-suppression", r"#!?\[allow\("),
     ("lint-suppression", r"@Suppress"),
+    ("lint-suppression", r"swiftlint:disable"),
+    ("lint-suppression", r"\bNOLINT(NEXTLINE|BEGIN)?\b"),
     ("type-suppression", r"@ts-(ignore|expect-error|nocheck)\b"),
     ("type-suppression", r"#\s*type:\s*ignore"),
     ("type-suppression", r"\bas\s+any\b"),
