@@ -12,7 +12,17 @@ This is a prompt-driven skill: explore, classify, present, confirm, then write.
 
 ## Languages
 
-References exist for TypeScript and JavaScript: [reference/ts.md](reference/ts.md), [reference/checks.md](reference/checks.md), [reference/layouts.md](reference/layouts.md). Python, Go, Rust, Gradle and Swift arrive later as `reference/<lang>.md` (`python.md`, `go.md`, `rust.md`, `gradle.md`, `swift.md`). For a detected language without a reference file, tell the user so, research that language's current official linter, formatter and type-checker docs, and run steps 1, 2, 5 and 7 for its mechanical checks only. Skip the layout map and the judgement seeds for it.
+Load only the reference files that match the manifests found in step 1:
+
+- **TypeScript / JavaScript** (`package.json`, `tsconfig*.json`): [reference/ts.md](reference/ts.md), [reference/checks.md](reference/checks.md), [reference/layouts.md](reference/layouts.md)
+- **Python** (`pyproject.toml`, `uv.lock`, `requirements*.txt`): [reference/python.md](reference/python.md)
+- **Go** (`go.mod`): [reference/go.md](reference/go.md)
+- **Rust** (`Cargo.toml`): [reference/rust.md](reference/rust.md)
+- **Kotlin / Java on Gradle** (`build.gradle*`, `settings.gradle*`, `gradle/libs.versions.toml`): [reference/gradle.md](reference/gradle.md)
+- **Swift** (`Package.swift`, `*.xcodeproj`): [reference/swift.md](reference/swift.md)
+- **C / C++** (`CMakeLists.txt`, `meson.build`, `compile_commands.json`): [reference/cpp.md](reference/cpp.md)
+
+For any other language, tell the user no reference file exists yet, research that language's current official linter, formatter and type-checker docs, and run steps 1, 2, 5 and 7 for its mechanical checks only.
 
 ## Process
 
@@ -20,7 +30,7 @@ References exist for TypeScript and JavaScript: [reference/ts.md](reference/ts.m
 
 Read what exists; assume nothing:
 
-- Manifests: `package.json`, `tsconfig*.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `build.gradle*`, `Package.swift`. Record the framework from dependencies (React, Next, Expo, Hono, Fastify, Express, NestJS) and the TypeScript, Node and ESLint/Oxlint/Biome versions the manifest declares.
+- Manifests: `package.json`, `tsconfig*.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `build.gradle*`, `Package.swift`, `CMakeLists.txt`. Record the framework and the language, runtime and linter versions the manifest declares.
 - Existing guardrails: lint and format configs, `.github/workflows`, hook configs, the repo's `lint` / `check` scripts.
 - Prose: `CLAUDE.md`, `AGENTS.md`, `CODING_STANDARDS.md`, `CONTRIBUTING.md`, `docs/`.
 - Size distribution, per the "Measure first" section of [reference/checks.md](reference/checks.md): file lines and function lines, mean and standard deviation, outliers above 2 sigma listed by path.
@@ -57,7 +67,7 @@ Done when the layout map exists and the pointer line sits in exactly one steerin
 
 ### 5. Install the mechanical checks
 
-Read [reference/checks.md](reference/checks.md) (TypeScript and JavaScript) and [reference/ts.md](reference/ts.md). Install the tool-neutral rule set for the confirmed stack: compiler flags, size and complexity limits from step 1, import boundaries, `export *` ban, suppression hygiene, `any` and non-null bans, baseline lint, a11y and React rules when React is present. Record the existing outliers as `files` overrides in the linter config so the checks flag only new crossings (the delta).
+Open the matching language reference from `## Languages` (plus [reference/checks.md](reference/checks.md) for TypeScript and JavaScript). Install the mechanical rule set for the confirmed stack: compiler and type-checker flags, size and complexity limits from step 1, import boundaries, suppression hygiene, unsafe-escape bans, and stack-specific lint rules. Record the existing outliers as per-file overrides or a baseline file so the checks flag only new crossings (the delta).
 
 Then take the checks **red** before trusting them: plant one violation per rule family (the "Plant a violation" table in `reference/checks.md`), run the check command, observe a nonzero exit naming each rule. Remove the plants, run again, observe exit 0.
 
