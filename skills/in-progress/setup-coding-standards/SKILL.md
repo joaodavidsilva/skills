@@ -15,6 +15,8 @@ This is a prompt-driven skill: explore, classify, present, confirm, then write.
 Load only the reference files that match the manifests found in step 1:
 
 - **TypeScript / JavaScript** (`package.json`, `tsconfig*.json`): [reference/ts.md](reference/ts.md), [reference/checks.md](reference/checks.md), [reference/layouts.md](reference/layouts.md)
+- **React, Next.js, or React Native** (`react`, `next`, `react-native`, or `expo` in `package.json`): [reference/react.md](reference/react.md)
+- **HTTP / REST APIs** (any backend router or API routes): [reference/api.md](reference/api.md)
 - **Python** (`pyproject.toml`, `uv.lock`, `requirements*.txt`): [reference/python.md](reference/python.md)
 - **Go** (`go.mod`): [reference/go.md](reference/go.md)
 - **Rust** (`Cargo.toml`): [reference/rust.md](reference/rust.md)
