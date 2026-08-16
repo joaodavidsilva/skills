@@ -163,3 +163,5 @@ General workflow tools, not code-specific.
 
 - **[grilling](./skills/productivity/grilling/SKILL.md)**: Interview the user relentlessly about a plan, decision, or idea until every branch of the design tree is resolved. The reusable interview primitive behind `grill-me`, `grill-with-docs`, `triage`, `wayfinder` and `improve-codebase-architecture`.
 - **[writing-for-agents](./skills/productivity/writing-for-agents/SKILL.md)**: Writing documents for agents: skills, AGENTS.md/CLAUDE.md, and any doc an agent reaches by a pointer.
+- **[beautify-readme](./skills/productivity/beautify-readme/SKILL.md)**: Redesign a repository's README or create standalone README visual assets (pure SVG heroes, diagrams, section headers, hybrid cutouts, opt-in GIF motion).
+- **[imagegen-gemini](./skills/productivity/imagegen-gemini/SKILL.md)**: Generate or edit raster images with Gemini (photos, illustrations, textures, mockups, and chroma-keyed transparent cutouts).
