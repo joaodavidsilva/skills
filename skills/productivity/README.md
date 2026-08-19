@@ -18,3 +18,5 @@ Model- or user-reachable (rich trigger phrasing so the model can reach for them)
 
 - **[grilling](./grilling/SKILL.md)**: Interview the user relentlessly about a plan, decision, or idea until every branch of the design tree is resolved.
 - **[writing-for-agents](./writing-for-agents/SKILL.md)**: Writing documents for agents: skills, AGENTS.md/CLAUDE.md, and any doc an agent reaches by a pointer.
+- **[beautify-readme](./beautify-readme/SKILL.md)**: Redesign READMEs or create standalone README visual assets (pure SVG heroes, diagrams, section headers, hybrid cutouts, opt-in GIF motion).
+- **[imagegen-gemini](./imagegen-gemini/SKILL.md)**: Generate or edit raster images with Gemini (photos, illustrations, textures, mockups, and chroma-keyed transparent cutouts).
