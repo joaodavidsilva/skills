@@ -1,6 +1,6 @@
 ---
 name: interface-polish
-description: "Use when building or reviewing UI components, or when an interface \"feels off\": the details of animation, typography, icons, hover states, shadows, border radius, alignment, and hit areas."
+description: "UI and animation polish: apply or review the details of animation (easing, duration, springs, origin-aware popovers, gestures), typography, surfaces (radius, shadows, translucency), icons, hover and press states, hit areas, performance, and mobile web viewport/touch ergonomics."
 ---
 
 # Details that make interfaces feel better
@@ -13,11 +13,12 @@ When reviewing, slow the interface down: replay motion at 10% speed in the brows
 
 | Category | When to Use |
 | --- | --- |
-| [Typography](reference/TYPOGRAPHY.md) | Text wrapping, font smoothing, tabular numbers |
-| [Surfaces](reference/SURFACES.md) | Border radius, shadows, image outlines, hit areas, hover and focus states |
-| [Animations](reference/ANIMATIONS.md) | Interruptible animations, enter/exit transitions, icon animations, scale on press, motion restraint |
+| [Typography](reference/TYPOGRAPHY.md) | Text wrapping, font smoothing, tabular numbers, optical sizing, tracking, and leading |
+| [Surfaces](reference/SURFACES.md) | Border radius, shadows, translucent materials and depth, image outlines, hit areas, hover and focus states |
+| [Animations](reference/ANIMATIONS.md) | Easing curves, `<300ms` duration budgets, springs, origin-aware popovers, `scale(0.95)` entry, interruptible transitions, gestures, `clip-path`, motion restraint |
 | [Icons and alignment](reference/ICONS-AND-ALIGNMENT.md) | Optical alignment, icon stroke weight, states via `currentColor`, outline vs fill, sizing, RTL flipping |
-| [Performance](reference/PERFORMANCE.md) | Transition specificity, `will-change` usage |
+| [Performance](reference/PERFORMANCE.md) | Compositor properties (`transform`/`opacity`), off-main-thread motion, CSS variable inheritance, transition specificity, `will-change` |
+| [Mobile web](reference/MOBILE-WEB.md) | Mobile web, touch, PWAs, viewport (`dvh`/`svh`), safe areas, input zoom, overscroll, `touch-action` |
 | [React](reference/REACT.md) | The project uses React |
 | [Angular](reference/ANGULAR.md) | The project uses Angular |
 | [React Native](reference/REACT-NATIVE.md) | The project uses React Native |
@@ -31,7 +32,7 @@ Outer radius = inner radius + padding. Mismatched radii on nested elements is th
 
 ### 2. Optical Over Geometric Alignment
 
-When geometric centering looks off, align optically. Buttons with icons, play triangles, and asymmetric icons all need manual adjustment.
+When geometric centering looks off, align optically by adjusting padding or fixing the SVG directly. Buttons with icons, play triangles, and asymmetric icons all need manual adjustment.
 
 ### 3. Shadows for Elevation, Borders for Structure
 
@@ -43,11 +44,11 @@ Use CSS transitions for interactive state changes, because they can be interrupt
 
 ### 5. Split and Stagger Enter Animations
 
-For an infrequent staged entrance where sequence helps communicate hierarchy, break content into semantic chunks and stagger them by ~100ms instead of animating one container. Do not stagger routine, high-frequency interactions.
+For an infrequent staged entrance where sequence helps communicate hierarchy, break content into semantic chunks (`~100ms` delay) or individual list and grid items (`30-80ms` delay) instead of animating one container. Do not stagger routine, high-frequency interactions.
 
 ### 6. Subtle Exit Animations
 
-Use a small fixed `translateY` instead of full height. Exits should be softer than enters. Use `ease-out` for both enter and exit transitions.
+Use a small fixed `translateY` instead of full height. Exits are softer and faster than enters. Keep UI animations under 300ms (`150-250ms` for dropdowns and popovers) using strong custom `ease-out` curves (`cubic-bezier(0.23, 1, 0.32, 1)`), and never use `ease-in` on UI. Never animate from `scale(0)`: start entrances from `scale(0.95)` with `opacity: 0`. Scale trigger-anchored popovers, dropdowns, and tooltips from their trigger (`transform-origin: var(--transform-origin)`), while keeping modals centered.
 
 ### 7. Contextual Icon Animations
 
@@ -71,7 +72,7 @@ Add a subtle `1px` outline with low opacity to images for consistent depth. The 
 
 ### 12. Scale on Press
 
-Press scale is `0.96`: a subtle shrink that gives buttons tactile feedback.
+Press scale is `0.96` over `150ms` `ease-out`: a subtle shrink that gives buttons tactile feedback.
 
 ### 13. Skip Animation on Page Load
 
@@ -79,7 +80,7 @@ Skip enter animations on first render. Verify this does not break intentional en
 
 ### 14. List the Exact Transition Properties
 
-Always specify exact properties: `transition-property: scale, opacity`. Tailwind's `transition-transform` covers `transform, translate, scale, rotate`.
+Always specify exact properties (`transition-property: scale, opacity`) instead of `transition: all`. Tailwind's `transition-transform` covers `transform, translate, scale, rotate`.
 
 ### 15. Use `will-change` Sparingly
 
@@ -99,32 +100,15 @@ Icons use `currentColor` and get their states (hover, selected, disabled) from C
 
 ### 19. Motion Restraint
 
-No custom animation on high-frequency interactions: the attention cost repeats on every trigger. Every animated state change also carries a static cue such as color, icon, or label.
+Use instant feedback or a `<= 150ms` opacity/color transition on repeated hover or keystroke interactions; avoid custom entrance animations on high-frequency interactions where the attention cost repeats on every trigger. Every animated state change also carries a static cue such as color, icon, or label.
 
 ### 20. Gated Hover, Distinct States
 
-Wrap hover styles in `@media (hover: hover) and (pointer: fine)`. Hover, pressed, and focus are three distinct looks, and hover changes color, background, shadow, or transform while layout stays put.
+Wrap hover styles in `@media (hover: hover) and (pointer: fine)` so hover never sticks on touch. Hover, pressed, and focus are three distinct looks, and hover changes color, background, shadow, or transform while layout stays put (avoid changing border width or font weight on hover, which shifts neighbouring elements).
 
-## Common Mistakes
+### 21. Mobile Web Viewport and Touch Ergonomics
 
-| Mistake | Fix |
-| --- | --- |
-| Same border radius on parent and child | Calculate `outerRadius = innerRadius + padding` |
-| Icons look off-center | Adjust optically with padding or fix SVG directly |
-| Border used only to fake elevation | Use layered `box-shadow` with transparency; keep structural and state borders |
-| Jarring staged entrance or contextual exit | Stagger infrequent entrances and keep context-preserving exits subtle |
-| Numbers cause layout shift | Apply `tabular-nums` |
-| Heavy text on macOS | Apply `antialiased` to root |
-| Animation plays on page load | Skip the enter animation on first render |
-| `transition: all` on elements | Specify exact properties |
-| First-frame animation stutter | Add `will-change: transform` (sparingly) |
-| Tiny hit areas on small controls | Extend with a pseudo-element to 44×44px for touch/mobile, or at least 40×40px in dense desktop UI |
-| Hairline icon beside bold text | Match the stroke width to the text weight |
-| Separate icon assets per state | One `currentColor` SVG, states via CSS |
-| Filled icons everywhere | Outline as default, fill only for the active state |
-| Hover style sticks on touch | Gate behind `(hover: hover) and (pointer: fine)` |
-| Hover shifts neighbouring elements | Change shadow, color, or transform instead of border width or font weight |
-| Entrance animation on every hover or keystroke | Instant feedback or ≤150ms opacity/color transition |
+Use `100dvh` for app shells and `100svh` for heroes, pad edge-to-edge chrome with `env(safe-area-inset-*)`, keep mobile form inputs at `16px` minimum to prevent iOS auto-zoom (never disable pinch-zoom), set `overscroll-behavior: contain` on inner scrollables, and clear `-webkit-tap-highlight-color` in favor of `:active` press feedback and `touch-action: manipulation`.
 
 ## Done
 
