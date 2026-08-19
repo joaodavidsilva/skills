@@ -2,7 +2,7 @@
 
 `interface-polish` is a checklist of the small details that decide whether an interface feels right: concentric border radius, optical alignment, layered shadows, tabular numbers, interruptible animations, hit areas, hover states, and the performance that keeps them smooth. The [agent](../references/agent.md) applies it when it builds or reviews UI, and tunes to the eye (_optical_) when the numbers and the render disagree.
 
-The skill keeps its principles in one entry point and its detailed guidance in separate files, one per topic (typography, surfaces, animations, icons and alignment, performance) plus one per stack (React, Angular, React Native). The agent reads only the files the change touches, so an animation tweak never loads the typography rules. It expresses every fix in the project's own styling system instead of adding a second one.
+The skill keeps its principles in one entry point and its detailed guidance in separate files, one per topic (typography, surfaces, animations, icons and alignment, performance, mobile web) plus one per stack (React, Angular, React Native). The agent reads only the files the change touches, so an animation tweak never loads the typography rules. It expresses every fix in the project's own styling system instead of adding a second one.
 
 ## When to reach for it
 
