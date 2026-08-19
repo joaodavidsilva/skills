@@ -94,6 +94,8 @@ Off the main flow entirely.
 - **`/wait-what`** is the corrective for a message that didn't land. Use it mid-conversation, inside any other skill, and the agent re-pitches what it just said with the context you were missing, in plain English, using the `GLOSSARY.md` vocabulary. It works after the fact; `/grill-with-docs` is the upfront cure, because a shared language agreed early is what stops the jargon arriving at all.
 - **`/teach`**: learn a concept over multiple sessions, using the current directory as a stateful workspace.
 - **`/writing-for-agents`** is the reference for writing documents agents consume: skills, AGENTS.md, pointed-at docs.
+- **`/beautify-readme`**: redesign a repository's `README.md` or create standalone README visuals (a project-native SVG hero, section headers, diagrams, hybrid SVG + raster cutouts, or opt-in GitHub-safe GIF motion). Model-invoked, and locks in `README` mode vs `asset-only` mode before touching any file.
+- **`/imagegen-gemini`**: generate or edit bitmap images with Gemini (photos, illustrations, textures, mockups, and chroma-keyed transparent cutouts). Model-invoked, and called by `/beautify-readme` whenever you pick hybrid SVG composition.
 
 ## Precondition
 
