@@ -36,6 +36,8 @@ Motion has spring physics; the CSS cross-fade approximates it with `cubic-bezier
 
 ## Staggered enter
 
+Use `staggerChildren: 0.1` (`~100ms`) between semantic page chunks (title, description, actions) and `0.03` to `0.08` (`30-80ms`) between individual list or grid items:
+
 ```tsx
 const item = {
   hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
@@ -116,11 +118,4 @@ function Button({ static: isStatic, className, children, ...props }) {
 </AnimatePresence>
 ```
 
-Leave it off when the component relies on its `initial` prop for a first-time enter, like a staggered page hero:
-
-```tsx
-// Bad: initial={false} skips the staggered page enter entirely
-<AnimatePresence initial={false}>
-  <motion.div initial="hidden" animate="visible" variants={...}>...</motion.div>
-</AnimatePresence>
-```
+Use `initial={false}` on toggles, icon swaps, and tabs that should render in their initial state without animating on mount. Omit `initial={false}` when a component relies on its `initial` prop for an intentional first-load reveal, such as a staggered page hero.
