@@ -139,3 +139,36 @@ If the extended hit area overlaps another interactive element, shrink the pseudo
 - Keep adjacent hoverable rows touching (no margin between them), so the pointer never crosses a gap that drops hover. For visual spacing, use padding inside the rows.
 - Tooltips and menus open after a short delay on first hover and instantly once one is already open.
 - On mobile, set `-webkit-tap-highlight-color: transparent` (it only has a visible effect on mobile browsers) and supply your own pressed state. Set `user-select: none` on controls and leave content selectable.
+
+## Translucent Materials and Depth
+
+Use translucent materials (`backdrop-filter`) for floating chrome such as toolbars, sticky headers, and sheets so content scrolls underneath without losing spatial context.
+
+- **Surface recipe**: combine a semi-transparent background with `backdrop-filter: blur(20px) saturate(180%)` and a `1px` bright top edge (`border-top: 1px solid oklch(1 0 0 / 0.4)`) that catches light.
+- **Material thickness and hierarchy**: darker or heavier materials separate structural regions (sidebars), while lighter materials highlight interactive controls. Larger surfaces use stronger blur and deeper shadow than small chips. Keep light translucent surfaces to a single layer, and never stack two light translucent surfaces on top of each other, which collapses legibility.
+- **Dimming scrim vs. parallel offset**: pair blocking modals with a dimming scrim that pushes the background back; for parallel, non-blocking panels, use translucency and spatial offset without a scrim so the user's flow continues.
+- **Vibrancy**: over blurred surfaces, maintain legibility with higher-contrast text, a slightly heavier font weight, and a small positive letter-spacing bump. Place saturated colors on solid layers rather than translucent foregrounds.
+- **Scroll edge masks**: where scrolling content meets floating chrome, fade a subtle blur or gradient mask instead of drawing a hard `1px` border, applied only when content overlaps the floating bar.
+- **Accessibility fallbacks**: provide `@media (prefers-reduced-transparency: reduce)` (solid or near-solid background, `backdrop-filter: none`) and `@media (prefers-contrast: more)` (high-contrast background and explicit border) fallbacks.
+
+```css
+.toolbar {
+  background: oklch(1 0 0 / 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid oklch(1 0 0 / 0.4);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .toolbar {
+    background: oklch(1 0 0);
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .toolbar {
+    background: oklch(1 0 0 / 0.95);
+    border-top: 1px solid oklch(0 0 0 / 0.8);
+  }
+}
+```
