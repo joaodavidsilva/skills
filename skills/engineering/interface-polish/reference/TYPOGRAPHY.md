@@ -74,3 +74,31 @@ When numbers update dynamically (counters, prices, timers, table columns), use t
 | Scoreboards, dashboards | |
 
 Some fonts (like Inter) change the visual appearance of numerals with this property: the digit `1` becomes wider and centered. This is expected behavior and usually desirable for alignment, but verify it looks right in your specific font.
+
+## Optical Sizing, Tracking, and Leading
+
+Size-specific `letter-spacing` (tracking) and `line-height` (leading) keep type legible and balanced across the scale:
+
+- **Large display text**: tighten `letter-spacing` (such as `-0.02em`) with tight leading (`line-height: 1.05`) and `font-optical-sizing: auto` so large glyphs do not drift apart.
+- **Body copy**: keep `letter-spacing` near `0` with comfortable leading (`line-height: 1.5`).
+- **Tiny labels and captions**: use slightly positive tracking (`0.01em` to `0.02em`) so small letterforms stay open and legible.
+- **Scalable spacing**: define font sizes and layout spacing in `rem` and `em` rather than fixed `px` so layouts survive user text-size increases without clipping or breaking hierarchy.
+
+```css
+:root {
+  font: 100%/1.5 system-ui, sans-serif;
+}
+
+.display {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-optical-sizing: auto;
+}
+
+.caption {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  letter-spacing: 0.015em;
+}
+```
