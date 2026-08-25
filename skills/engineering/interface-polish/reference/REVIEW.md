@@ -6,7 +6,7 @@ The mode comes from the request (`quick` or `full`). Use `full` when none is giv
 | Mode | Coverage | Finding cap |
 | --- | --- | --- |
 | `quick` | Primary user path and highest-traffic states; report only `HIGH` and `MEDIUM` issues | 5 |
-| `full` | Entire requested scope across typography, surfaces, animations, icons, and performance | 15 |
+| `full` | Entire requested scope across typography, surfaces, animations, icons, performance, and mobile web | 15 |
 
 ### Scope and Coverage
 
@@ -16,7 +16,7 @@ State the mode, exact scope, framework, styling conventions, and any review boun
 | --- | --- | --- |
 | Typography | Files, components, states, or checks | Findings count, `Clear`, or `Not reviewed` with a reason |
 
-Include all five category rows of the Quick Reference (Typography, Surfaces, Animations, Icons, Performance), not the stack rows. Mark every uninspected surface `Not reviewed`.
+Include all six category rows of the Quick Reference (Typography, Surfaces, Animations, Icons, Performance, Mobile web), not the stack rows. Mark every uninspected surface `Not reviewed`.
 
 ### Findings
 
@@ -28,6 +28,20 @@ Group findings by principle. Use a markdown table with **Severity**, **Location*
 - **Why**: name the violated principle and explain its user impact.
 
 Consolidate a repeated systemic issue into one row and list every affected location. Omit principles with no findings and stop at the findings that exist, even when the cap is higher.
+
+### Remedial Preference Hierarchy
+
+When proposing animation fixes, prefer earlier moves over later ones:
+
+1. **Delete high-frequency or unjustified motion**: remove animations on keyboard shortcuts, command palettes, `100+/day` actions, or transitions with no spatial or state purpose.
+2. **Reduce duration and transform**: shorten duration (`<300ms` for UI, `150-250ms` for popovers/dropdowns), shrink movement distance, and animate fewer properties.
+3. **Fix easing to custom `ease-out`**: replace `ease-in` or weak built-in curves with a strong custom `ease-out` (`cubic-bezier(0.23, 1, 0.32, 1)`).
+4. **Fix origin and physicality**: anchor popovers, dropdowns, and tooltips to `var(--transform-origin)` (keeping modals centered) and start entrances from `scale(0.95)` with `opacity: 0` instead of `scale(0)`.
+5. **Make interruptible with transitions or springs**: replace keyframes on toggles, toasts, and interactive state changes with CSS transitions, or use springs for gesture-driven motion.
+6. **Move to GPU `transform` and `opacity`**: replace layout or paint properties with `transform` and `opacity`, switch busy-thread shorthands to full `transform` strings, or use WAAPI.
+7. **Asymmetric timing**: make deliberate user actions (such as hold-to-confirm) slow and system responses or releases fast.
+8. **Polish with blur, stagger, or `@starting-style`**: add subtle `blur(2px-4px)` to mask crossfades, stagger infrequent entrances (`~100ms` semantic chunks, `30-80ms` list/grid items), or use `@starting-style` for CSS entry.
+9. **Accessibility and cohesion**: honor `prefers-reduced-motion: reduce`, gate `:hover` behind `@media (hover: hover) and (pointer: fine)`, and align timing tokens with the product's personality.
 
 ### Example
 
