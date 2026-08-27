@@ -17,7 +17,7 @@ You will also arrive here without choosing to. [wayfinder](https://aihero.dev/sk
 The question picks the branch, and the branches produce different artifacts:
 
 - **"Does this logic / state model feel right?"**: a **single shareable HTML file**. One self-contained page, no build and no server, that someone opens by double-clicking. It carries a labelled state panel that re-renders after every click, free-play buttons for poking at the model in any order, and tabbed **guided walkthroughs** (one scenario per tab, each with the ordered buttons to press underneath it). Everything is labelled in domain language, so you can hand it to a designer, a PM or a domain expert and let them try the model themselves. The logic behind the page is a small pure module (a reducer, a machine, a set of functions) with no DOM code in it, so you can move the validated version straight into the real code.
-- **"What should this look like?"**: several **radically different** UI variations on one route, switchable from a floating bottom bar and a `?variant=` URL param. Variants must disagree about structure, not colour; three card grids with small tweaks answer nothing. They render inside a real page wherever possible, against real data and real density, because a variant judged on an empty page always looks fine.
+- **"What should this look like?"**: several **radically different** UI variations on one route (or a standalone HTML file when there is no project yet), switchable from a floating dark-glass picker (`1-N`, `←`/`→`, `R` to replay entrance animations) and a `?variant=` URL param. Variants diverge on named axes (`Quiet`, `Editorial`, `Dense`, rather than `VariantA/B/C`) and must disagree about structure, not colour; three card grids with small tweaks answer nothing. They render inside a real page wherever possible, against real data and real density, because a variant judged on an empty page always looks fine.
 
 Both keep state in memory, start with no setup, and show you the full state after every step. The moment you find yourself hardening one (adding a test, wiring the real database, generalising for a case you might want later), you have stopped prototyping.
 
@@ -54,7 +54,7 @@ It can be, if you prototype questions you could have answered by talking, or let
 - You can say in one sentence what question the prototype exists to answer, and it's written at the top of the demo, not just in your head.
 - Someone who doesn't read code can drive the logic demo. They open the file, press the buttons in a walkthrough tab, and describe what they see in their own words.
 - Someone says "wait, that shouldn't be possible" or "huh, I assumed X". That's a bug in the *idea*, which is what the prototype is for.
-- The UI variants disagree about layout and information hierarchy, not just colour and copy, and the feedback you get is "the header from B with the sidebar from C".
+- The UI variants diverge on named axes (`Quiet`, `Editorial`, `Dense`), disagree about layout and information hierarchy rather than colour and copy, and the feedback you get is "the header from Editorial with the sidebar from Dense" or `riff Quiet`.
 - It is answered in one sitting. If you're still building it a day later, the question was too big; split it.
 - When it's over, main contains the decision and none of the prototype, and the implementation issue points at the branch that still holds it.
 
