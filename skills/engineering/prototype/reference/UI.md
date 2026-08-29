@@ -11,9 +11,9 @@ If the question is about logic/state rather than what something looks like, this
 - "Try a different layout for the settings screen."
 - Any time the user would otherwise spend a day picking between three vague mockups in their head.
 
-## Two sub-shapes: strongly prefer sub-shape A
+## Three sub-shapes: strongly prefer sub-shape A
 
-A UI prototype is much easier to judge when it's **butting up against the rest of the app**: real header, real sidebar, real data, real density. A throwaway route on its own is a vacuum: every variant looks fine in isolation. Default to sub-shape A whenever there's a plausible existing page to host the variants. Only reach for sub-shape B if the prototype genuinely has no nearby home.
+A UI prototype is much easier to judge when it's **butting up against the rest of the app**: real header, real sidebar, real data, real density. A throwaway route on its own is a vacuum: every variant looks fine in isolation. Default to sub-shape A whenever there's a plausible existing page to host the variants. Only reach for sub-shape B if the prototype genuinely has no nearby home, and sub-shape C when there is no existing project or dev server.
 
 ### Sub-shape A: adjustment to an existing page (preferred)
 
@@ -21,7 +21,7 @@ The route already exists. Variants are rendered **on the same route**, gated by 
 
 If the prototype is for something that doesn't yet have a page but *would naturally live inside one* (a new section of the dashboard, a new card on the settings screen, a new step in an existing flow), it's still sub-shape A. Mount the variants inside the host page.
 
-### Sub-shape B: a new page (last resort)
+### Sub-shape B: a new page (when no host page exists)
 
 Only use this when the thing being prototyped genuinely has no existing page to live inside (e.g. an entirely new top-level surface, or a flow that can't be embedded anywhere sensible).
 
@@ -29,43 +29,61 @@ Create a **throwaway route** following whatever routing convention the project a
 
 Before committing to sub-shape B, sanity-check: is there really no existing page this could be embedded in? An empty route hides design problems that a populated one would expose.
 
-In both sub-shapes the floating bottom bar is identical.
+### Sub-shape C: standalone HTML file (when there is no project or dev server)
+
+When there is no existing project or dev server (an empty directory, or the user is exploring a standalone piece of UI in a static context), build a **single self-contained HTML file** with inline CSS and JS that opens directly in a browser. Choose a restrained default look: neutral grays, one accent, system font stack. Render one variant at a time, full size, in realistic surrounding context (a toast needs a page behind it, a card needs siblings, a button needs a form; never side-by-side thumbnails).
+
+In all three sub-shapes the floating picker is identical.
 
 ## Process
 
 ### 1. State the question and pick N
 
-Default to **3 variants**. More than 5 stops being radically different and starts being noise, so cap there.
+Default to **3 variants** (or up to 5 when the user asks, e.g. `<description> x5`, or the design space is genuinely wide). More than 5 stops being radically different and starts being noise, so cap there.
 
 Write down the plan in one line, in the prototype's location or a top-of-file comment:
 
-> "Three variants of the settings page, switchable via `?variant=`, on the existing `/settings` route."
+> "Three variants of the settings page (`Quiet`, `Editorial`, `Dense`), switchable via `?variant=`, on the existing `/settings` route."
 
 This works whether the user is here to push back or not.
 
-### 2. Generate radically different variants
+Done when the prototype question, variant count (N <= 5), named variants, and target route or file are written down in one line.
+
+### 2. Choose directions and generate radically different variants
+
+Before writing code, define **named divergence axes** for the set. Names describe the direction (`Quiet`, `Editorial`, `Playful`, `Dense`), never `VariantA`, `VariantB`, `VariantC` or `Option A/B/C`. Each variant must state its axis in a phrase (layout, density, personality, motion, interaction model), and **no two variants may share an axis position**.
 
 Draft each variant. Hold each one to:
 
 - The page's purpose and the data it has access to.
-- The project's component library / styling system (TailwindCSS, shadcn, MUI, plain CSS, whatever).
-- A clear exported component name, e.g. `VariantA`, `VariantB`, `VariantC`.
+- The project's component library, tokens, and styling system (TailwindCSS, shadcn, MUI, plain CSS, whatever) so every variant looks like it could ship in this product tomorrow.
+- **Realistic product-shaped copy and data**: actual domain-appropriate copy, plausible names and numbers, and real working interactions. Point any mutations at local state or a stub so the prototype stays safe to click through while focusing on what the UI looks like.
+- **UI craft standards**: `ease-out` on entrances (never `ease-in`), sub-300ms UI motion, `transform` and `opacity` only, and `prefers-reduced-motion` handled. A sloppy variant loses on execution and teaches nothing about the direction it represents. If you need the full craft rules, call the Skill tool with "interface-polish".
 
-Variants must be **structurally different**: different layout, different information hierarchy, different primary affordance, not just different colours. Three slightly-tweaked card grids isn't a UI prototype, it's wallpaper. If two drafts come out too similar, redo one with explicit "do not use a card grid" guidance.
+Variants must be **structurally different**: different layout, different information hierarchy, different primary affordance, not just different colours or copy. Keep each variant's layout container independent (sharing leaf chrome like `<Header>` is fine, while each variant owns its own layout structure so it can rethink the page freely). If two drafts come out too similar, redo one with a distinct layout model.
+
+Done when every variant has a distinct named divergence axis and is implemented with realistic copy, working stubbed interactions, an independent layout structure, and compliant UI motion.
 
 ### 3. Wire them together
 
-Create a single switcher component on the route:
+Create a single switcher harness on the route (or in the standalone HTML file):
 
 ```tsx
 // pseudo-code, adapt to the project's framework
-const variant = searchParams.get('variant') ?? 'A';
+const variant = searchParams.get('variant') ?? 'quiet';
 return (
   <>
-    {variant === 'A' && <VariantA {...data} />}
-    {variant === 'B' && <VariantB {...data} />}
-    {variant === 'C' && <VariantC {...data} />}
-    <PrototypeSwitcher variants={['A','B','C']} current={variant} />
+    {/* Key by variant + replay tick so switching or pressing R re-mounts and replays entrance animations */}
+    <div key={`${variant}-${replayTick}`}>
+      {variant === 'quiet' && <QuietVariant {...data} />}
+      {variant === 'editorial' && <EditorialVariant {...data} />}
+      {variant === 'dense' && <DenseVariant {...data} />}
+    </div>
+    <PrototypePicker
+      variants={['Quiet', 'Editorial', 'Dense']}
+      current={variant}
+      onReplay={() => setReplayTick((t) => t + 1)}
+    />
   </>
 );
 ```
@@ -74,39 +92,47 @@ For sub-shape A (existing page): keep all the existing data fetching above the s
 
 For sub-shape B (new page): the throwaway route under `/prototype/<name>` mounts the same switcher.
 
+For sub-shape C (standalone HTML): mount one variant at a time into the stage container using the reference wiring in [PICKER.md](PICKER.md).
+
+Done when all variants mount inside the switcher harness keyed by variant and replay tick.
+
 ### 4. Build the floating switcher
 
-A small fixed-position bar at the bottom-centre of the screen with three pieces:
+Use the exact dark-glass pill markup, CSS, and wiring specified in [PICKER.md](PICKER.md). Its look is fixed chrome, not a design decision, so copy it verbatim rather than styling it with project tokens:
 
-- **Left arrow**: cycles to the previous variant (wraps around).
-- **Variant label**: shows the current variant key and, if the variant exports a name, that name too. e.g. `B (Sidebar layout)`.
-- **Right arrow**: cycles forward (wraps around).
+- **Dark-glass pill** fixed at bottom-centre of the screen (`data-position="top"` when a variant occupies bottom-centre, such as a toast stack, bottom sheet, or dock).
+- **Sliding highlight** across variant buttons (named `Quiet`, `Editorial`, `Playful`, etc.), plus an optional `↻` replay button when at least one variant has motion to re-trigger. Switching between variants is instant (no transition on the stage itself) and re-mounts the variant so entrance animations run cleanly.
+- **URL persistence**: updates the URL search param (`?variant=` or `?v=`) so the active variant is shareable and reload-stable.
+- **Keyboard shortcuts**: number keys `1-N` and `←`/`→` arrow keys switch variants; `R` re-mounts the current variant to replay entrance animations. Ignore key events when focus is in an `<input>`, `<textarea>`, `<select>`, or `[contenteditable]`, or when a modifier key is held.
+- **Hidden in production builds** (for in-app routes): gate on `process.env.NODE_ENV !== 'production'` or an equivalent check, so a stray prototype merge can't ship the bar to users.
 
-Behaviour:
-
-- Clicking an arrow updates the URL search param (use the framework's router, e.g. `router.replace` on Next, `navigate` on React Router, etc) so the variant is shareable and reload-stable.
-- Keyboard: `←` and `→` arrow keys also cycle. Don't intercept arrow keys when an `<input>`, `<textarea>`, or `[contenteditable]` is focused.
-- Visually distinct from the page (e.g. high-contrast pill, subtle shadow) so it's obviously not part of the design being evaluated.
-- Hidden in production builds: gate on `process.env.NODE_ENV !== 'production'` or an equivalent check, so a stray prototype merge can't ship the bar to users.
-
-Put the switcher in a single shared component so both sub-shapes can reuse it. Locate it wherever shared UI lives in the project.
+Done when the dark-glass picker switches variants via click, URL param, and keyboard shortcuts (`1-N`, `←`/`→`, `R`) and is gated out of production builds.
 
 ### 5. Hand it over
 
-Surface the URL (and the `?variant=` keys). The user will flip through whenever they get to it. The interesting feedback is usually **"I want the header from B with the sidebar from C"**, which is the actual design they want.
+Verify every variant renders, interactions respond, and the console is clean. Present the summary table comparing the tradeoffs honestly (never pre-pick a favourite unless asked), followed by the URL or file path and the keyboard shortcuts (`1-N`, `←`/`→`, `R`):
+
+| # | Variant | Axis | When it's the right choice | Its cost |
+| --- | --- | --- | --- | --- |
+| 1 | Quiet | Minimal motion, borders over shadows | The product is a daily-use tool | Least memorable |
+| 2 | Editorial | Large type, generous whitespace | The moment deserves weight | Eats vertical space |
+| 3 | Dense | Compact rows, inline actions | High-volume scanning and triage | Steeper first-glance load |
+
+The user will flip through and respond:
+
+- **Pick or combine** (e.g. `keep Quiet`, or *"I want the header from Editorial with the table from Dense"*): proceed to step 6.
+- **Riff on a direction** (`riff <variant>`): keep the harness and run another round of variants diverging around the chosen direction.
+
+Done when every variant renders cleanly with zero console errors, the tradeoff comparison table and access instructions are presented to the user, and the user has selected or riffed on a direction.
 
 ### 6. Capture the answer and clean up
 
-Once a variant has won, capture the answer (which variant and why), then capture the prototype the way the [SKILL](../SKILL.md) describes. Fold the winner into the real code and move the rest onto the throwaway branch, not into main:
+Once a variant has won, capture the answer (which variant and why), then capture the prototype the way the [SKILL](../SKILL.md) describes. Rewrite the winning direction to production standards (full error handling and tests) when folding it into the real code, and move the prototype variants and switcher onto the throwaway branch rather than main:
 
-- **Sub-shape A**: fold the winner into the existing page; drop the losing variants and the switcher from main.
+- **Sub-shape A**: fold the production-ready winner into the existing page; drop the losing variants and the switcher from main.
 - **Sub-shape B**: promote the winning variant to a real route; drop the throwaway route and the switcher from main.
+- **Sub-shape C**: fold the validated UI into the target component (or commit the standalone HTML to the throwaway `prototype/<name>` branch if there is no app yet).
 
 The full set of variants is the primary source, so it lands on the throwaway branch, not the bin, since variant components and the switcher left in the main branch rot fast and confuse the next reader.
 
-## Anti-patterns
-
-- **Variants that differ only in colour or copy.** That's a tweak, not a prototype. Real variants disagree about structure.
-- **Sharing too much code between variants.** A shared `<Header>` is fine; a shared `<Layout>` defeats the point. Each variant should be free to throw out the layout.
-- **Wiring variants to real mutations.** Read-only prototypes are fine. If a variant needs to mutate, point it at a stub: the question is "what should this look like", not "does the backend work".
-- **Promoting the prototype directly to production.** The variant code was written under prototype constraints (no tests, minimal error handling). Rewrite it properly when you fold it in.
+Done when the winning direction is rewritten cleanly into the target codebase, the prototype variants and switcher are removed from main, and the full prototype is preserved on its throwaway branch.
