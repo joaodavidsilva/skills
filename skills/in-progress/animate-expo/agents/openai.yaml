@@ -1,0 +1,3 @@
+interface:
+  display_name: "Animate Expo"
+  short_description: "Build React Native and Expo animations on the UI thread"
