@@ -1,0 +1,5 @@
+interface:
+  display_name: "Improve Animations"
+  short_description: "Audit codebase motion, find animation opportunities, and write plans"
+policy:
+  allow_implicit_invocation: false
