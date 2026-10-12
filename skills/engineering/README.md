@@ -17,6 +17,8 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[implement-spec](./implement-spec/SKILL.md)**: Implement a whole spec on one integration branch. Works the tickets as a task graph, running implementer subagents across the ready frontier for maximum concurrency, then closes out with `/code-review`.
 - **[wayfinder](./wayfinder/SKILL.md)**: Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
 - **[retro](./retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
+- **[break-ui](./break-ui/SKILL.md)**: Stress-test a UI component with realistic worst-case data behind a dev-only toggle and report what breaks.
+- **[improve-animations](./improve-animations/SKILL.md)**: Audit a codebase's animations or hunt for motion opportunities, then write self-contained implementation plans.
 
 ## Model-invoked
 
@@ -32,5 +34,7 @@ Model- or user-reachable (rich trigger phrasing so the model can reach for them)
 - **[code-review](./code-review/SKILL.md)**: Two-axis review of the diff since a fixed point: **Standards** (does it follow the repo's coding standards, plus a Fowler smell baseline?) and **Spec** (does it faithfully implement the originating issue/spec?), run as parallel sub-agents.
 - **[commit](./commit/SKILL.md)**: Write a commit message as a Conventional Commit: the scope in your `GLOSSARY.md` terms, one type per commit, and a body that states the why.
 - **[interface-polish](./interface-polish/SKILL.md)**: Tune the small details that make an interface feel better: animation, typography, surfaces, hover states, hit areas, icons, and optical alignment.
+- **[animate-expo](./animate-expo/SKILL.md)**: Build React Native and Expo animations, gestures, sheets, screen transitions, and haptics on the UI thread with Reanimated 4, Gesture Handler, Expo Router, and `expo-haptics`.
+- **[animation-vocabulary](./animation-vocabulary/SKILL.md)**: Reverse-lookup a motion effect's exact term from a visual or feel description when you ask "what's it called when...".
 - **[pr](./pr/SKILL.md)**: The shape a pull request body should take: a summary as the smallest visual that makes the change clear, before/after evidence that it works, and a merge-danger call (one-way or two-way door, plus blast radius).
 - **[wizard](./wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
