@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./readme/hero.svg" width="100%" alt="Skills For Real Engineers: my daily agent skills for real engineering, not vibe coding. The main flow runs /grill-with-docs, /to-spec, /to-tickets, /implement, /retro.">
+  <img src="./assets/readme/hero.svg" width="100%" alt="Skills For Real Engineers: my daily agent skills for real engineering, not vibe coding. The main flow runs /grill-with-docs, /to-spec, /to-tickets, /implement, /retro.">
 </p>
 
 Developing real applications is hard. Approaches like GSD, BMAD, and Spec-Kit try to help by owning the process. But while doing so, they take away your control and make bugs in the process hard to resolve.
@@ -9,7 +9,7 @@ These skills are small, easy to adapt, and composable. They work with any model.
 Each one fixes a failure mode I keep seeing with Claude Code, Codex, and other coding agents:
 
 <p align="center">
-  <img src="./readme/failure-modes.svg" width="100%" alt="Four agent failures and the skill for each: it didn't do what I want and it's too verbose are fixed by /grill-with-docs; the code doesn't work is fixed by /tdd and /diagnosing-bugs; a ball of mud is fixed by /improve-codebase-architecture and /to-spec.">
+  <img src="./assets/readme/failure-modes.svg" width="100%" alt="Four agent failures and the skill for each: it didn't do what I want and it's too verbose are fixed by /grill-with-docs; the code doesn't work is fixed by /tdd and /diagnosing-bugs; a ball of mud is fixed by /improve-codebase-architecture and /to-spec.">
 </p>
 
 ## How the skills fit together
@@ -17,7 +17,7 @@ Each one fixes a failure mode I keep seeing with Claude Code, Codex, and other c
 Most work travels one **main flow**, from idea to ship. Bugs, big efforts, and prototypes join it from the side.
 
 <p align="center">
-  <img src="./readme/workflow.svg" width="100%" alt="The main flow runs /grill-with-docs, /to-spec, /to-tickets, /implement, /retro. /prototype detours from grilling, /wayfinder feeds /to-spec, /triage feeds /implement, and /diagnosing-bugs leads to /retro.">
+  <img src="./assets/readme/workflow.svg" width="100%" alt="The main flow runs /grill-with-docs, /to-spec, /to-tickets, /implement, /retro. /prototype detours from grilling, /wayfinder feeds /to-spec, /triage feeds /implement, and /diagnosing-bugs leads to /retro.">
 </p>
 
 Not sure which skill fits? Run [`/ask-joao`](./skills/engineering/ask-joao/SKILL.md) and describe your situation.
