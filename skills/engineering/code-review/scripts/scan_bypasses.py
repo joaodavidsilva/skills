@@ -56,19 +56,27 @@ def scan(lines):
     path = None
     new_line = 0
     pending = None  # (line number, text, kind) of the previous added line
+    saw_minus_header = False
     for raw in lines:
         raw = raw.rstrip("\n")
-        if raw.startswith("+++ "):
-            target = raw[4:].split("\t")[0]
-            path = None if target == "/dev/null" else re.sub(r"^b/", "", target)
+        if raw.startswith("diff "):
+            saw_minus_header = False
             pending = None
             continue
-        if raw.startswith("--- ") or raw.startswith("diff "):
+        if raw.startswith("--- "):
+            saw_minus_header = True
+            pending = None
+            continue
+        if raw.startswith("+++ ") and saw_minus_header:
+            target = raw[4:].split("\t")[0]
+            path = None if target == "/dev/null" else re.sub(r"^b/", "", target)
+            saw_minus_header = False
             pending = None
             continue
         hunk = HUNK.match(raw)
         if hunk:
             new_line = int(hunk.group(1))
+            saw_minus_header = False
             pending = None
             continue
         if path is None or not raw:
