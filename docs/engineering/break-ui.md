@@ -13,9 +13,9 @@ Reach for it when a component or screen looks done against clean demo data and y
 | Your situation | Reach for |
 | --- | --- |
 | A component looks finished on happy-path fixtures and needs stress-testing with hostile but realistic data | `break-ui` |
-| A screen works with real data, but the spacing, alignment, shadows, or hit areas feel off | [interface-polish](https://aihero.dev/skills-interface-polish) |
-| You are still deciding what the screen should look like or how its state model should work | [prototype](https://aihero.dev/skills-prototype) |
-| You are building a behavioral feature with defined inputs and outputs test-first | [tdd](https://aihero.dev/skills-tdd) |
+| A screen works with real data, but the spacing, alignment, shadows, or hit areas feel off | [interface-polish](./interface-polish.md) |
+| You are still deciding what the screen should look like or how its state model should work | [prototype](./prototype.md) |
+| You are building a behavioral feature with defined inputs and outputs test-first | [tdd](./tdd.md) |
 
 ## Schema-backed worst cases and the dev-only toggle
 
@@ -63,8 +63,8 @@ Ask for `/break-ui` on the component anyway, or run `/break-ui data only <compon
 
 `break-ui` is a **reach-for-it-anytime standalone** that you run once a component renders and before you call it done. Its neighbours cover the surrounding UI and testing work:
 
-- [interface-polish](https://aihero.dev/skills-interface-polish) tunes optical alignment, border radii, shadows, animations, and interaction feel, whereas `break-ui` feeds hostile data to see what overflows, squishes, or clips.
-- [prototype](https://aihero.dev/skills-prototype) builds throwaway UI variations to settle what a screen should look like before production code exists.
-- [tdd](https://aihero.dev/skills-tdd) locks down behavioral contracts test-first at agreed seams, while `break-ui` exposes visual and data-shape breaks across the rendered surface.
+- [interface-polish](./interface-polish.md) tunes optical alignment, border radii, shadows, animations, and interaction feel, whereas `break-ui` feeds hostile data to see what overflows, squishes, or clips.
+- [prototype](./prototype.md) builds throwaway UI variations to settle what a screen should look like before production code exists.
+- [tdd](./tdd.md) locks down behavioral contracts test-first at agreed seams, while `break-ui` exposes visual and data-shape breaks across the rendered surface.
 
 For which skill fits your situation across the whole set, **ask-joao** is the router.
