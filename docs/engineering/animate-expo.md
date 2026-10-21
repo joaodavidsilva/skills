@@ -13,9 +13,9 @@ Reach for it when you are adding or fixing motion, gestures, or haptics in an Ex
 | Your situation | Reach for |
 | --- | --- |
 | Building a gesture, sheet, transition, press state, or haptic in Expo / React Native | `animate-expo` |
-| Checking universal frequency gates, easing curves, or React Native surface rules | [interface-polish](https://aihero.dev/skills-interface-polish) |
-| Auditing a codebase's animations or hunting for motion opportunities to turn into plans | [improve-animations](https://aihero.dev/skills-improve-animations) |
-| Naming a motion effect you can picture ("what's it called when...") | [animation-vocabulary](https://aihero.dev/skills-animation-vocabulary) |
+| Checking universal frequency gates, easing curves, or React Native surface rules | [interface-polish](./interface-polish.md) |
+| Auditing a codebase's animations or hunting for motion opportunities to turn into plans | [improve-animations](./improve-animations.md) |
+| Naming a motion effect you can picture ("what's it called when...") | [animation-vocabulary](./animation-vocabulary.md) |
 
 ## Prerequisites
 
@@ -60,7 +60,7 @@ Reach for `useSharedValue` only when the value is continuous or driven by a fing
 
 **Why does the skill reject sliding animations between tabs?**
 
-Before choosing a tool, the skill runs the frequency and purpose gates from [interface-polish](https://aihero.dev/skills-interface-polish). Tabs are peers switched dozens of times a [session](../references/session.md), not a hierarchy; sliding between them implies spatial depth that isn't there and taxes every switch, so tab navigation uses `animation: 'none'`.
+Before choosing a tool, the skill runs the frequency and purpose gates from [interface-polish](./interface-polish.md). Tabs are peers switched dozens of times a [session](../references/session.md), not a hierarchy; sliding between them implies spatial depth that isn't there and taxes every switch, so tab navigation uses `animation: 'none'`.
 
 ## It's working if
 
@@ -75,7 +75,7 @@ Before choosing a tool, the skill runs the frequency and purpose gates from [int
 
 `animate-expo` is a **reach-for-it-anytime standalone**, model-invoked whenever UI work touches motion, gestures, or haptics in Expo or React Native.
 
-- [interface-polish](https://aihero.dev/skills-interface-polish) owns the universal frequency gate, valid motion purposes, easing curves, and React Native surface rules that `animate-expo` reads at the start of its build sequence.
-- [improve-animations](https://aihero.dev/skills-improve-animations) audits an existing codebase's animations or sweeps for missing motion opportunities and writes self-contained implementation plans.
+- [interface-polish](./interface-polish.md) owns the universal frequency gate, valid motion purposes, easing curves, and React Native surface rules that `animate-expo` reads at the start of its build sequence.
+- [improve-animations](./improve-animations.md) audits an existing codebase's animations or sweeps for missing motion opportunities and writes self-contained implementation plans.
 
 **ask-joao** routes across the whole set when you are unsure which skill the situation wants.
