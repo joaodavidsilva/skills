@@ -1,2 +1,11 @@
 node_modules
 .claude
+.DS_Store
+.env
+.env.*
+!.env.example
+!.env.template
+.scratch/
+.out-of-scope/
+__pycache__/
+*.pyc
