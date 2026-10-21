@@ -12,7 +12,7 @@ You invoke this by typing `/ask-joao`; the agent won't reach for it on its own.
 | --- | --- |
 | An idea, and no idea where to start | The head of the main flow, and whether the build is small enough to skip the spec |
 | Bugs and requests arriving from other people | The [triage](./triage.md) on-ramp, and why [tickets](../references/ticket.md) you generated yourself don't belong on it |
-| Two skills that look interchangeable | The line between them, and it is usually one concrete test rather than a matter of taste. [grill-me](./grill-me.md) or [grill-with-docs](./grill-with-docs.md) turns on whether you are in a working directory; [grill-with-docs](./grill-with-docs.md) or [wayfinder](./wayfinder.md) turns on whether the effort fits one session |
+| Two skills that look interchangeable | The line between them, and it is usually one concrete test rather than a matter of taste. [grill-me](../productivity/grill-me.md) or [grill-with-docs](./grill-with-docs.md) turns on whether you are in a working directory; [grill-with-docs](./grill-with-docs.md) or [wayfinder](./wayfinder.md) turns on whether the effort fits one session |
 | A long session and a decision about the [context](../references/context.md) | The ordered tree over the five options at a phase boundary |
 | A skill you have already picked | Nothing useful. Invoke that skill directly. |
 
@@ -40,7 +40,7 @@ The skill's other key idea is the **phase boundary**. A phase is a chunk of work
 | --- | --- |
 | **Continue** | The next phase wants this one verbatim, or you have [smart zone](../references/smart-zone.md) left. It is the only move that keeps the session as a [primary source](../references/primary-source.md), so rule it out first |
 | **`/clear`** | Everything behind you is disposable. The cheapest option, and you cannot undo it if you were wrong |
-| **[handoff](./handoff.md)** | Something has to travel: a new [harness](../references/harness.md), a new directory, a colleague, a side task forked mid-phase |
+| **[handoff](../productivity/handoff.md)** | Something has to travel: a new [harness](../references/harness.md), a new directory, a colleague, a side task forked mid-phase |
 | **Subagent** | The task is scoped tightly enough to run with you [away from the keyboard](../references/afk.md) |
 | **`/compact`** | None of the above. It is the default, and the tree often ends here |
 
@@ -74,7 +74,7 @@ That advice is often correct, but the edit rarely lasts. Someone asked it how to
 
 **It named a skill I don't have, or missed one I do.**
 
-Check the changelog for a rename before assuming it is gone. `writing-great-skills` became [writing-for-agents](./writing-for-agents.md) with no alias, `to-prd` became [to-spec](./to-spec.md), and `pathfinder` became [wayfinder](./wayfinder.md). Four skills were retired outright into the skills that absorbed them: `ubiquitous-language`, `design-an-interface`, `qa` and `request-refactor-plan`. If it misses a skill you have, that is the router's own lag, described above.
+Check the changelog for a rename before assuming it is gone. `writing-great-skills` became [writing-for-agents](../productivity/writing-for-agents.md) with no alias, `to-prd` became [to-spec](./to-spec.md), and `pathfinder` became [wayfinder](./wayfinder.md). Four skills were retired outright into the skills that absorbed them: `ubiquitous-language`, `design-an-interface`, `qa` and `request-refactor-plan`. If it misses a skill you have, that is the router's own lag, described above.
 
 ## It's working if
 
