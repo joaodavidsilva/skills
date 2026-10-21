@@ -13,13 +13,13 @@ Type `/beautify-readme`, or the agent reaches for it automatically when you ask 
 | The whole README needs stronger hierarchy, proof order, and a cohesive visual system | `beautify-readme` in **README mode** |
 | You only want a hero, section headers, diagrams, or an animated GIF without touching `README.md` | `beautify-readme` in **Asset-only mode** |
 | You want to check broken image refs, missing alt text, or unsafe SVG tags without editing | `beautify-readme` in **Audit** mode |
-| You need a standalone raster illustration, photo, texture, or transparent cutout outside a README | [imagegen-gemini](https://aihero.dev/skills-imagegen-gemini) |
+| You need a standalone raster illustration, photo, texture, or transparent cutout outside a README | [imagegen-gemini](./imagegen-gemini.md) |
 
 ## Prerequisites
 
 Pure SVG heroes, diagrams, section headers, and `scripts/audit_readme.py` run on standard `python3` with no external dependencies. Optional paths need extra tooling:
 
-- **Hybrid SVG composition**: calls [imagegen-gemini](https://aihero.dev/skills-imagegen-gemini), which requires `GEMINI_API_KEY` in the [environment](../references/environment.md) and `Pillow` for chroma-key background removal.
+- **Hybrid SVG composition**: calls [imagegen-gemini](./imagegen-gemini.md), which requires `GEMINI_API_KEY` in the [environment](../references/environment.md) and `Pillow` for chroma-key background removal.
 - **GitHub-safe GIF motion**: `scripts/render_motion_gif.py` requires `Pillow` (`python3 -m pip install Pillow`) and an SVG rasterizer (`resvg`, `rsvg-convert`, ImageMagick, or `sips`).
 
 ## Project-native heroes and the pure-vs-hybrid fork
@@ -59,6 +59,6 @@ GitHub sanitizes scripts and blocks or inconsistently renders many CSS/SMIL anim
 
 ## Where it fits
 
-A reach-for-it-anytime standalone in the `productivity/` bucket for repository documentation and visual storytelling. When you choose hybrid SVG composition, it calls [imagegen-gemini](https://aihero.dev/skills-imagegen-gemini) via the [tool](../references/tool.md) call to generate and key out the raster subject. For agent-facing files (`SKILL.md`, `AGENTS.md`, `CLAUDE.md`) rather than human-facing READMEs, use [writing-for-agents](https://aihero.dev/skills-writing-for-agents).
+A reach-for-it-anytime standalone in the `productivity/` bucket for repository documentation and visual storytelling. When you choose hybrid SVG composition, it calls [imagegen-gemini](./imagegen-gemini.md) via the [tool](../references/tool.md) call to generate and key out the raster subject. For agent-facing files (`SKILL.md`, `AGENTS.md`, `CLAUDE.md`) rather than human-facing READMEs, use [writing-for-agents](./writing-for-agents.md).
 
 **ask-joao** routes across the whole set when you are unsure which skill the situation wants.
