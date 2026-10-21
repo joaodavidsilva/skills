@@ -17,7 +17,7 @@ Reach for it when the next thing blocking you is a trip through a dashboard:
 | A project has to move from state A to state B once | Walks the transition and reports what it could not do |
 | You are about to write those steps into a README | Writes an executable version instead, which fails visibly when a step goes stale |
 
-Don't reach for it to *decide* what to build; for that, [grill-with-docs](https://aihero.dev/skills-grill-with-docs) and [to-spec](https://aihero.dev/skills-to-spec) are the tools.
+Don't reach for it to *decide* what to build; for that, [grill-with-docs](./grill-with-docs.md) and [to-spec](./to-spec.md) are the tools.
 
 ## Prerequisites
 
@@ -41,7 +41,7 @@ For each captured value, scoping decides where it goes:
 
 ## The template already solves the UX
 
-The [template]() ships the whole experience: progress with time remaining, confirmation gates, cross-platform URL opening including WSL, hidden entry for secrets, idempotent `.env` upserts, `gh secret` / `gh variable` writes, and a closing summary of everything it had to skip. Everything above the `STAGES` marker is a fixed library, identical in every wizard and never hand-edited. Because the library never changes, every wizard behaves the same way. The only work per wizard is to scope the procedure and author its stages.
+The [template](../../skills/engineering/wizard/template.sh) ships the whole experience: progress with time remaining, confirmation gates, cross-platform URL opening including WSL, hidden entry for secrets, idempotent `.env` upserts, `gh secret` / `gh variable` writes, and a closing summary of everything it had to skip. Everything above the `STAGES` marker is a fixed library, identical in every wizard and never hand-edited. Because the library never changes, every wizard behaves the same way. The only work per wizard is to scope the procedure and author its stages.
 
 The agent that writes a wizard never runs it end to end, because the script opens browsers and waits for human input. The agent checks it statically instead: `bash -n`, `shellcheck` where available, and a trace that every value lands where scoping said it would, with every `set_secret` name matching a real `secrets.*` reference in CI. So the first run is yours, and that run is the test.
 
@@ -72,7 +72,7 @@ Nowhere in particular. It's a standalone, not a chain step. The common guess is 
 
 **Does it work outside Claude Code?**
 
-The script does. It's plain bash, and it runs the same whatever [harness](../references/harness.md) generated it. The skill itself is model-invoked, so it's listed everywhere: type `/wizard` in Claude Code or `$wizard` in Codex, or just describe the setup you're stuck on. Being model-invoked also keeps it clear of [#693](), where Claude's desktop and web apps drop *user-invoked* skills from the [model](../references/model.md)'s listing and report them as not installed.
+The script does. It's plain bash, and it runs the same whatever [harness](../references/harness.md) generated it. The skill itself is model-invoked, so it's listed everywhere: type `/wizard` in Claude Code or `$wizard` in Codex, or just describe the setup you're stuck on. Being model-invoked also keeps it clear of an issue where Claude's desktop and web apps drop *user-invoked* skills from the [model](../references/model.md)'s listing and report them as not installed.
 
 **Didn't this used to be user-invoked?**
 
@@ -93,4 +93,4 @@ It did. It's now model-invoked, so the agent reaches for it unprompted when it h
 
 ## Where it fits
 
-`wizard` is a reach-for-it-anytime standalone, sitting at the line where automation stops and a human has to click. Its nearest neighbour is **setup-joao-david-silva-skills**, because both exist to get a repo into a working state. That one configures this skill set, and `wizard` generates a setup path for everything else. It also pairs with [implement](https://aihero.dev/skills-implement): when a build lands a feature that needs credentials or a manual cutover, a wizard covers the steps only a human can do. When you're unsure which skill fits the moment, **ask-joao** routes you.
+`wizard` is a reach-for-it-anytime standalone, sitting at the line where automation stops and a human has to click. Its nearest neighbour is **setup-joao-david-silva-skills**, because both exist to get a repo into a working state. That one configures this skill set, and `wizard` generates a setup path for everything else. It also pairs with [implement](./implement.md): when a build lands a feature that needs credentials or a manual cutover, a wizard covers the steps only a human can do. When you're unsure which skill fits the moment, **ask-joao** routes you.
