@@ -166,7 +166,7 @@ python3 scripts/audit_readme.py /path/to/repository/README.md
 Then render every SVG and inspect it visually. On macOS, a quick local render is:
 
 ```bash
-sips -s format png assets/readme/hero.svg --out /tmp/hero.png
+SCRATCH_DIR="$(mktemp -d)" && sips -s format png assets/readme/hero.svg --out "$SCRATCH_DIR/hero.png"
 ```
 
 Otherwise use a browser, `rsvg-convert`, or another SVG renderer. Check:
