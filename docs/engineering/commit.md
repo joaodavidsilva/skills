@@ -15,15 +15,15 @@ Type `/commit`, or the agent reaches for it automatically whenever it is writing
 | Your situation | Reach for |
 | --- | --- |
 | The work is done and needs a commit message | `commit` |
-| A ticket to build and commit | [implement](https://aihero.dev/skills-implement), which calls `commit` for the message |
-| A whole spec to build | [implement-spec](https://aihero.dev/skills-implement-spec), whose implementers call `commit` |
-| The branch is ready for review and needs a body | [pr](https://aihero.dev/skills-pr) |
+| A ticket to build and commit | [implement](./implement.md), which calls `commit` for the message |
+| A whole spec to build | [implement-spec](./implement-spec.md), whose implementers call `commit` |
+| The branch is ready for review and needs a body | [pr](./pr.md) |
 
 ## Common questions
 
 **Does it make the commit for me?**
 
-No. `commit` covers only the message. [implement](https://aihero.dev/skills-implement) commits to the current branch and calls `commit` to write the message. `commit` never creates a branch.
+No. `commit` covers only the message. [implement](./implement.md) commits to the current branch and calls `commit` to write the message. `commit` never creates a branch.
 
 **Why doesn't it list the types or explain the format?**
 
@@ -41,7 +41,7 @@ The agent already knows Conventional Commits, so spelling out the types, the `!`
 
 `commit` is model-invoked, so it fires whenever the agent writes a commit message. In the build chain `to-spec → to-tickets → implement → code-review → pr → retro`, it sits inside `implement`, at the commit.
 
-- [implement](https://aihero.dev/skills-implement) and [implement-spec](https://aihero.dev/skills-implement-spec) call it when they commit.
-- [pr](https://aihero.dev/skills-pr) shapes the body once the commits exist.
+- [implement](./implement.md) and [implement-spec](./implement-spec.md) call it when they commit.
+- [pr](./pr.md) shapes the body once the commits exist.
 
 **ask-joao** routes across the whole set when you are unsure which skill the situation wants.
