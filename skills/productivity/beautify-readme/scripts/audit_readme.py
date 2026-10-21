@@ -19,7 +19,11 @@ def local_target(src: str, base: Path) -> Path | None:
     if src.startswith(("http://", "https://", "data:", "#")):
         return None
     clean = src.split("#", 1)[0].split("?", 1)[0]
-    return (base / clean).resolve()
+    base_resolved = base.resolve()
+    resolved = (base_resolved / clean).resolve()
+    if not resolved.is_relative_to(base_resolved):
+        return None
+    return resolved
 
 
 def audit_svg(path: Path) -> list[str]:
@@ -39,6 +43,12 @@ def audit_svg(path: Path) -> list[str]:
             title_found = True
         if tag in UNSAFE_SVG_TAGS:
             issues.append(f"contains unsupported <{tag}>")
+        for attr_name, attr_val in node.attrib.items():
+            attr_local = attr_name.rsplit("}", 1)[-1].lower()
+            if attr_local.startswith("on"):
+                issues.append(f"contains event handler attribute {attr_local} on <{tag}>")
+            if attr_local == "href" and str(attr_val).strip().lower().startswith("javascript:"):
+                issues.append(f"contains javascript: URL in {attr_local} on <{tag}>")
     if not title_found:
         issues.append("missing <title>")
     return issues
