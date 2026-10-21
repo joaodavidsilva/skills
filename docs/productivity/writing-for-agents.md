@@ -10,7 +10,7 @@ It was called `writing-great-skills` until v1.1. The new name fits what it alway
 
 Type `/writing-for-agents`, or the agent reaches for it on its own when you're creating or editing a skill, or modifying `AGENTS.md` or `CLAUDE.md`.
 
-Reach for it by hand for everything else an agent reads: your docs, specs and [tickets](../references/ticket.md), system and [AFK](../references/afk.md) prompts. The test is one question: does an agent read this? It does not matter how the agent gets the document: a pointer names it, a human pastes it, or it is in the repo. To find out what a codebase contains, use [grill-with-docs](https://aihero.dev/skills-grill-with-docs). This reference controls how a document reads, not what it knows.
+Reach for it by hand for everything else an agent reads: your docs, specs and [tickets](../references/ticket.md), system and [AFK](../references/afk.md) prompts. The test is one question: does an agent read this? It does not matter how the agent gets the document: a pointer names it, a human pastes it, or it is in the repo. To find out what a codebase contains, use [grill-with-docs](../engineering/grill-with-docs.md). This reference controls how a document reads, not what it knows.
 
 ## The two loads
 
@@ -67,4 +67,4 @@ No. Finding the word that packs the most behaviour into the fewest [tokens](../r
 
 ## Where it fits
 
-This is a reach-for-it-anytime standalone reference. It applies to the whole set, not to one skill. Every skill here was written with it, and it also covers the documents the other skills produce (a `GLOSSARY.md` and its ADRs, a spec, a ticket) once an agent has to read them. Its one direct caller is [retro](https://aihero.dev/skills-retro), which loads it before proposing any steering file or skill. When you're unsure which skill or flow fits a task, **ask-joao** routes you over the whole set.
+This is a reach-for-it-anytime standalone reference. It applies to the whole set, not to one skill. Every skill here was written with it, and it also covers the documents the other skills produce (a `GLOSSARY.md` and its ADRs, a spec, a ticket) once an agent has to read them. Its one direct caller is [retro](../engineering/retro.md), which loads it before proposing any steering file or skill. When you're unsure which skill or flow fits a task, **ask-joao** routes you over the whole set.
