@@ -13,9 +13,9 @@ Reach for it when you can picture or feel an animation ("that iOS scroll where i
 | Your situation | Reach for |
 | --- | --- |
 | You can describe how an effect looks or feels, and need its name | `animation-vocabulary` |
-| Polishing or reviewing UI details, easing curves, and surface rules | [interface-polish](https://aihero.dev/skills-interface-polish) |
-| Building gestures, sheets, transitions, or haptics in Expo / React Native | [animate-expo](https://aihero.dev/skills-animate-expo) |
-| Building throwaway UI variations to see how a screen or state model feels | [prototype](https://aihero.dev/skills-prototype) |
+| Polishing or reviewing UI details, easing curves, and surface rules | [interface-polish](./interface-polish.md) |
+| Building gestures, sheets, transitions, or haptics in Expo / React Native | [animate-expo](./animate-expo.md) |
+| Building throwaway UI variations to see how a screen or state model feels | [prototype](./prototype.md) |
 
 ## Sensation to exact term, with disambiguation
 
@@ -35,7 +35,7 @@ It quotes the glossary's definitions verbatim rather than paraphrasing, and when
 
 **Does it write the CSS or animation code for me?**
 
-No. A naming question gets a name and a one-line definition, not an essay or a component. Once you know the term you want (for example, `Origin-aware animation` or `Rubber-banding`), ask the agent to build it with [interface-polish](https://aihero.dev/skills-interface-polish) on web or [animate-expo](https://aihero.dev/skills-animate-expo) on React Native.
+No. A naming question gets a name and a one-line definition, not an essay or a component. Once you know the term you want (for example, `Origin-aware animation` or `Rubber-banding`), ask the agent to build it with [interface-polish](./interface-polish.md) on web or [animate-expo](./animate-expo.md) on React Native.
 
 **What if the effect I'm describing isn't a single term in the glossary?**
 
@@ -52,8 +52,8 @@ The skill never invents terminology outside its glossary. When no single entry m
 
 `animation-vocabulary` is a **reach-for-it-anytime standalone** and vocabulary reference, model-invoked whenever the words for motion are what is missing.
 
-- [interface-polish](https://aihero.dev/skills-interface-polish) turns those named concepts (`Origin-aware animation`, `Stagger`, `Tabular numbers`, `Ease-out`) into concrete CSS and component rules.
-- [animate-expo](https://aihero.dev/skills-animate-expo) implements the mobile and gesture equivalents (`Rubber-banding`, `Velocity`, `Interruptible animation`) on the UI runtime in Expo and React Native.
-- [prototype](https://aihero.dev/skills-prototype) builds throwaway UI variants when you need to see several motion or layout directions side by side before committing.
+- [interface-polish](./interface-polish.md) turns those named concepts (`Origin-aware animation`, `Stagger`, `Tabular numbers`, `Ease-out`) into concrete CSS and component rules.
+- [animate-expo](./animate-expo.md) implements the mobile and gesture equivalents (`Rubber-banding`, `Velocity`, `Interruptible animation`) on the UI runtime in Expo and React Native.
+- [prototype](./prototype.md) builds throwaway UI variants when you need to see several motion or layout directions side by side before committing.
 
 **ask-joao** routes across the whole set when you are unsure which skill the situation wants.
