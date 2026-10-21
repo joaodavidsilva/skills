@@ -2,7 +2,7 @@
 
 `imagegen-gemini` generates and edits raster images (photos, illustrations, textures, sprites, UI mockups, and transparent-background cutouts) through a standard-library Python CLI (`scripts/image_gen.py`) that calls the Gemini Image API. It turns vague image requests into a structured prompt spec (`Use case`, `Subject`, `Composition`, `Lighting`, `Constraints`, `Avoid` phrased positively) and keeps only the approved final assets in your workspace while cleaning up intermediate scratch variants.
 
-It refuses to generate what code should draw directly. Diagrams, icons, logos that extend an existing SVG system, and deterministic layouts belong in SVG, HTML/CSS, or [beautify-readme](https://aihero.dev/skills-beautify-readme), and a real project screenshot always beats a generated stand-in.
+It refuses to generate what code should draw directly. Diagrams, icons, logos that extend an existing SVG system, and deterministic layouts belong in SVG, HTML/CSS, or [beautify-readme](./beautify-readme.md), and a real project screenshot always beats a generated stand-in.
 
 ## When to reach for it
 
@@ -13,7 +13,7 @@ Type `/imagegen-gemini`, or the [agent](../references/agent.md) reaches for it a
 | Photo, illustration, character cutout, texture, sprite, or visual mockup | `imagegen-gemini` (`generate` or `generate-batch`) |
 | Targeted change to an existing image while preserving identity, pose, or layout | `imagegen-gemini` (`edit` with `--image` and invariants) |
 | Transparent-background subject or sticker cutout | `imagegen-gemini` + `scripts/remove_chroma_key.py` |
-| Architecture diagram, badge, section banner, or deterministic README hero | [beautify-readme](https://aihero.dev/skills-beautify-readme) (pure SVG) |
+| Architecture diagram, badge, section banner, or deterministic README hero | [beautify-readme](./beautify-readme.md) (pure SVG) |
 
 ## Prerequisites
 
@@ -49,6 +49,6 @@ Not unless you ask it to. `scripts/image_gen.py` refuses to overwrite an existin
 
 ## Where it fits
 
-A reach-for-it-anytime standalone in `productivity/`, and the raster-generation helper behind [beautify-readme](https://aihero.dev/skills-beautify-readme)'s hybrid SVG workflow.
+A reach-for-it-anytime standalone in `productivity/`, and the raster-generation helper behind [beautify-readme](./beautify-readme.md)'s hybrid SVG workflow.
 
 **ask-joao** routes across the whole set when you are unsure which skill the situation wants.
