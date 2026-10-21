@@ -12,11 +12,11 @@ You invoke this by typing `/to-tickets`. The [agent](../references/agent.md) won
 | --- | --- |
 | You have a spec issue and the build spans several sessions | `/to-tickets`, or `/to-tickets #<spec_issue>` |
 | The plan is only in the conversation, never written up | `/to-tickets` reads the thread directly, no spec needed |
-| The whole change fits in one context window | [implement](https://aihero.dev/skills-implement), skip the tickets |
-| Nothing is decided yet | [grill-with-docs](https://aihero.dev/skills-grill-with-docs), then [to-spec](https://aihero.dev/skills-to-spec) |
-| A [wayfinder](https://aihero.dev/skills-wayfinder) map has cleared | [to-spec](https://aihero.dev/skills-to-spec) first, to collapse the map, then `/to-tickets` |
+| The whole change fits in one context window | [implement](./implement.md), skip the tickets |
+| Nothing is decided yet | [grill-with-docs](./grill-with-docs.md), then [to-spec](./to-spec.md) |
+| A [wayfinder](./wayfinder.md) map has cleared | [to-spec](./to-spec.md) first, to collapse the map, then `/to-tickets` |
 
-Tickets that `to-tickets` produced are agent-ready by construction. Don't run [triage](https://aihero.dev/skills-triage) over them. Triage is for work that arrived from someone else.
+Tickets that `to-tickets` produced are agent-ready by construction. Don't run [triage](./triage.md) over them. Triage is for work that arrived from someone else.
 
 ## Prerequisites
 
@@ -56,16 +56,16 @@ Where even the batches can't stay green alone, they share an integration branch 
 ## Common questions
 
 **It produced twelve tickets for a three-line change.**
-Over-decomposition is the most reported problem with this skill, and many users see it. The [model](../references/model.md) defaults to atomic units and loses the grouping that would make them meaningful. The quiz step is where you fix this. Ask it to merge tickets, and it will. There is also a lower limit. If the whole change fits in one context window, you don't need this skill at all. Go straight to [implement](https://aihero.dev/skills-implement).
+Over-decomposition is the most reported problem with this skill, and many users see it. The [model](../references/model.md) defaults to atomic units and loses the grouping that would make them meaningful. The quiz step is where you fix this. Ask it to merge tickets, and it will. There is also a lower limit. If the whole change fits in one context window, you don't need this skill at all. Go straight to [implement](./implement.md).
 
 **The tickets came out one per layer: all the schema in one, all the API in another.**
 This is the failure the vertical-slice rule is written against, and the skill still produces it sometimes. Catch it at the quiz step by asking one question per ticket: what can I demo when this is done? A ticket with no answer is a horizontal slice. Some people add a "demo path" line to each ticket for this reason, and report that it pushes the model toward vertical slices.
 
 **On GitHub the tickets weren't created as sub-issues of the spec issue.**
-This was reported across a dozen runs and several models, [most fully in issue #554](). Fixed: `to-tickets` now makes each ticket a sub-issue of its source issue, and the GitHub tracker template gives the command (`gh issue create --parent <n>`, `gh` 2.94+). Re-run **setup-joao-david-silva-skills** to refresh an older `docs/agents/issue-tracker.md`.
+This was reported across a dozen runs and several models. Fixed: `to-tickets` now makes each ticket a sub-issue of its source issue, and the GitHub tracker template gives the command (`gh issue create --parent <n>`, `gh` 2.94+). Re-run **setup-joao-david-silva-skills** to refresh an older `docs/agents/issue-tracker.md`.
 
 **"Blocked by" was written into the issue body instead of a real blocking link.**
-This is the same kind of problem, [reported in issue #513](), where the agent even stated that GitHub has no native blocking relationship at all. It does: `gh issue create --blocked-by 12,15`. Because the skill publishes blockers first, their numbers are always available at creation time. The body text is meant to be the fallback for trackers with no native edge, not the default. The ticket template now omits `## Blocked by` when the edges are native.
+This is the same kind of problem, where the agent even stated that GitHub has no native blocking relationship at all. It does: `gh issue create --blocked-by 12,15`. Because the skill publishes blockers first, their numbers are always available at creation time. The body text is meant to be the fallback for trackers with no native edge, not the default. The ticket template now omits `## Blocked by` when the edges are native.
 
 **Where do the local tickets go? The v1.1 notes said a root-level `tickets.md`.**
 They did, and that was a bug. A single shared file also caused race conditions when parallel agents wrote to it. Local mode now writes one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, in dependency order, matching the layout the local tracker template already described. The `NN` prefix is a real ticket ID, so `/implement 03` works instead of retyping a long title.
@@ -77,7 +77,7 @@ A very large spec can outgrow what a tracker issue serves back cleanly. There is
 The template asks for criteria and says nothing about whether they can fail, so this happens. Three shapes recur: a criterion already true at the base commit, a criterion that only work in another ticket can satisfy, and one that restates the request rather than deriving from the artifact. Vertical slicing prevents most of it, because a slice that delivers new behaviour fails at the base commit by construction. The check is still worth doing by hand. For each criterion, name the observation that would show it false, and confirm it fails at the commit the implementer starts from.
 
 **The tickets are published. How do I actually run them?**
-The skill stops at the artifact, and there is no auto-dispatch mode. Dispatch is manual: look at the board, count the tickets with no open blockers, and open that many agent sessions. Give each ticket a fresh context, and clear between them. [implement](https://aihero.dev/skills-implement) does not reliably close or check off the ticket when it finishes, on GitHub or in local markdown, so you update the ticket's state yourself.
+The skill stops at the artifact, and there is no auto-dispatch mode. Dispatch is manual: look at the board, count the tickets with no open blockers, and open that many agent sessions. Give each ticket a fresh context, and clear between them. [implement](./implement.md) does not reliably close or check off the ticket when it finishes, on GitHub or in local markdown, so you update the ticket's state yourself.
 
 ## It's working if
 
@@ -96,4 +96,4 @@ The skill stops at the artifact, and there is no auto-dispatch mode. Dispatch is
 grill-with-docs → to-spec → to-tickets → implement → code-review → retro
 ```
 
-Upstream is [to-spec](https://aihero.dev/skills-to-spec), which hands it a settled spec to slice against. Keep both in one context window, with no clear between them. Downstream is [implement](https://aihero.dev/skills-implement), which builds one ticket per fresh session, driving [tdd](https://aihero.dev/skills-tdd) for the tests and closing with [code-review](https://aihero.dev/skills-code-review). [implement-spec](https://aihero.dev/skills-implement-spec) is the other way down. It reads the same blocking edges as a task graph and builds every ready ticket in parallel on one integration branch. When you're unsure which skill or flow fits, **ask-joao** routes you.
+Upstream is [to-spec](./to-spec.md), which hands it a settled spec to slice against. Keep both in one context window, with no clear between them. Downstream is [implement](./implement.md), which builds one ticket per fresh session, driving [tdd](./tdd.md) for the tests and closing with [code-review](./code-review.md). [implement-spec](./implement-spec.md) is the other way down. It reads the same blocking edges as a task graph and builds every ready ticket in parallel on one integration branch. When you're unsure which skill or flow fits, **ask-joao** routes you.
