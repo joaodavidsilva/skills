@@ -2,7 +2,7 @@
 
 `improve-animations` audits a codebase's existing animations or hunts for missing motion opportunities, then writes prioritized, self-contained implementation plans.
 
-It is strictly read-only on source code: it surveys existing motion (`audit` mode) or hunts for missing motion (`opportunities` mode), gates every candidate against frequency and purpose, pauses for your selection, and writes self-contained `plans/NNN-short-slug.md` files for an executor [agent](../references/agent.md) to run in a separate [context window](../references/context-window.md). Rather than inventing curves or durations on the spot, it pulls every target value from [interface-polish](https://aihero.dev/skills-interface-polish) and stamps each plan with the current git commit so a weaker [model](../references/model.md) can execute it later without conversation history.
+It is strictly read-only on source code: it surveys existing motion (`audit` mode) or hunts for missing motion (`opportunities` mode), gates every candidate against frequency and purpose, pauses for your selection, and writes self-contained `plans/NNN-short-slug.md` files for an executor [agent](../references/agent.md) to run in a separate [context window](../references/context-window.md). Rather than inventing curves or durations on the spot, it pulls every target value from [interface-polish](./interface-polish.md) and stamps each plan with the current git commit so a weaker [model](../references/model.md) can execute it later without conversation history.
 
 ## When to reach for it
 
@@ -15,15 +15,15 @@ Reach for it when an app's transitions feel sluggish, inconsistent, or abrupt an
 | Existing animations feel slow, bouncy, uninterruptible, or inconsistent across the app | `/improve-animations` (runs `audit` mode by default) |
 | The interface feels flat or abrupt and you want to find high-leverage places to add motion | `/improve-animations opportunities` |
 | You already have a plan in `plans/` and want an isolated [subagent](../references/subagent.md) to implement and review it | `/improve-animations execute <plan>` |
-| You are building or polishing a single component right now and want its motion tuned inline | [interface-polish](https://aihero.dev/skills-interface-polish) |
-| You are building native gestures, layout transitions, or haptics in Expo / React Native | [animate-expo](https://aihero.dev/skills-animate-expo) |
-| You want to survey a codebase for shallow modules and architectural deepening rather than UI motion | [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) |
+| You are building or polishing a single component right now and want its motion tuned inline | [interface-polish](./interface-polish.md) |
+| You are building native gestures, layout transitions, or haptics in Expo / React Native | [animate-expo](./animate-expo.md) |
+| You want to survey a codebase for shallow modules and architectural deepening rather than UI motion | [improve-codebase-architecture](./improve-codebase-architecture.md) |
 
 ## Prerequisites
 
 The skill leaves application source code untouched and writes its output into `plans/NNN-short-slug.md` and `plans/README.md` in your workspace (or `animation-plans/` if `plans/` is already used for something else).
 
-It also requires [interface-polish](https://aihero.dev/skills-interface-polish) to be installed, because both the planner and any audit subagents load `interface-polish` for the authoritative easing curves, duration budgets, spring configs, and review checklist.
+It also requires [interface-polish](./interface-polish.md) to be installed, because both the planner and any audit subagents load `interface-polish` for the authoritative easing curves, duration budgets, spring configs, and review checklist.
 
 ## The 4-question gate and motion restraint
 
@@ -74,8 +74,8 @@ Run `/improve-animations reconcile`. Because each plan carries the git commit ha
 
 `improve-animations` is **periodic maintenance** for UI motion: you run it to audit or discover motion work and queue it up as self-contained plans, then execute those plans one at a time. Its neighbours:
 
-- [interface-polish](https://aihero.dev/skills-interface-polish) owns the curves, duration budgets, 4-question gate, and review bar that `improve-animations` pulls into every audit and plan.
-- [animate-expo](https://aihero.dev/skills-animate-expo) handles native Expo and React Native motion (`react-native-reanimated`, `react-native-gesture-handler`, layout animations, and haptics) when you are building for native mobile rather than CSS or web motion libraries.
-- [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) runs the same read-only survey-then-choose pattern for module boundaries and architectural depth instead of UI motion.
+- [interface-polish](./interface-polish.md) owns the curves, duration budgets, 4-question gate, and review bar that `improve-animations` pulls into every audit and plan.
+- [animate-expo](./animate-expo.md) handles native Expo and React Native motion (`react-native-reanimated`, `react-native-gesture-handler`, layout animations, and haptics) when you are building for native mobile rather than CSS or web motion libraries.
+- [improve-codebase-architecture](./improve-codebase-architecture.md) runs the same read-only survey-then-choose pattern for module boundaries and architectural depth instead of UI motion.
 
 When you are unsure which skill fits your situation across the whole set, **ask-joao** routes you.
