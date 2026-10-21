@@ -231,6 +231,8 @@ def run_job(job: Dict[str, Any], *, edit: bool, force: bool, dry_run: bool,
     if job.get("size") and job["size"] not in SIZES:
         raise JobError("size must be one of 512, 1K, 2K, 4K (uppercase K).")
     n = int(job.get("n") or 1)
+    if not 1 <= n <= 8:
+        raise JobError("n must be between 1 and 8.")
     targets = output_paths(Path(job["out"]), n)
     if not dry_run and not force:
         existing = [p for p in targets if p.exists()]
@@ -298,7 +300,12 @@ def cmd_batch(args: argparse.Namespace) -> None:
             raw = json.loads(line)
         except json.JSONDecodeError as exc:
             die(f"{args.input} line {number}: invalid JSON ({exc}).")
-        if "out" in raw and Path(raw["out"]).name != raw["out"]:
+        if "out" in raw and (
+            not isinstance(raw["out"], str)
+            or not raw["out"]
+            or Path(raw["out"]).name != raw["out"]
+            or raw["out"] in {".", ".."}
+        ):
             die(f"line {number}: 'out' must be a filename; --out-dir sets the folder.")
         job = {
             "model": args.model, "aspect_ratio": args.aspect_ratio, "size": args.size,
