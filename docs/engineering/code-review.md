@@ -12,10 +12,10 @@ Type `/code-review`, or the agent reaches for it automatically when you ask to r
 | --- | --- |
 | A diff exists and you want to know if it is built right *and* is the right thing | `code-review` |
 | You want bugs hunted in the diff: null paths, races, off-by-one | Claude Code's own built-in review, not this one (see the name clash below) |
-| Nothing is written yet and you want it written test-first | [tdd](https://aihero.dev/skills-tdd) |
-| A whole spec needs building, review included | [implement](https://aihero.dev/skills-implement), which calls this skill itself |
-| The whole codebase has drifted, not one diff | [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) |
-| Something is broken and you do not know why | [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs) |
+| Nothing is written yet and you want it written test-first | [tdd](./tdd.md) |
+| A whole spec needs building, review included | [implement](./implement.md), which calls this skill itself |
+| The whole codebase has drifted, not one diff | [improve-codebase-architecture](./improve-codebase-architecture.md) |
+| Something is broken and you do not know why | [diagnosing-bugs](./diagnosing-bugs.md) |
 
 You must supply the fixed point. If you do not, the skill asks for one rather than guessing. Before it spawns anything, it checks that the ref resolves and that the diff is not empty, so a mistyped branch name fails in front of you instead of inside two sub-agents.
 
@@ -66,7 +66,7 @@ This is a known open bug. Several people have reproduced it, in more than one ha
 
 **Should I run it in the same [session](../references/session.md) that wrote the code?**
 
-Prefer a fresh one. As one reader put it: "Same context reviewing itself isn't review, it's confirmation bias with a slash command." An agent that reviews in the authoring session has every assumption that shaped the code in its context. An independent reviewer would not have that context. This is also why people ask for [implement](https://aihero.dev/skills-implement) without its built-in review step, because that step runs the review inside the session that just wrote the diff. The independent version is to invoke `/code-review` yourself from a clean session.
+Prefer a fresh one. As one reader put it: "Same context reviewing itself isn't review, it's confirmation bias with a slash command." An agent that reviews in the authoring session has every assumption that shaped the code in its context. An independent reviewer would not have that context. This is also why people ask for [implement](./implement.md) without its built-in review step, because that step runs the review inside the session that just wrote the diff. The independent version is to invoke `/code-review` yourself from a clean session.
 
 **After every ticket, or once at the end?**
 
@@ -98,10 +98,10 @@ No. It diffs `<fixed-point>...HEAD`. The three-dot form measures from the merge-
 
 `code-review` is the review step near the tail of the build chain: `grill-with-docs → to-spec → to-tickets → implement → code-review → retro`. It also stands alone on any branch or PR you point it at.
 
-- [implement](https://aihero.dev/skills-implement) is the closest neighbour. It drives the build and calls this skill as its own closing review before committing. [implement-spec](https://aihero.dev/skills-implement-spec) does the same once, over the whole integration branch.
-- [retro](https://aihero.dev/skills-retro) comes after it and tunes it. When a session shows the review missing a class of mistake, `retro` proposes the check or the `CODING_STANDARDS.md` rule the Standards axis then reads.
-- [pr](https://aihero.dev/skills-pr) writes the pull request body once the reviewed work goes up.
-- [to-spec](https://aihero.dev/skills-to-spec) and [to-tickets](https://aihero.dev/skills-to-tickets) produce the document the Spec axis checks against, so a vague spec makes that axis vague.
-- [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) is the whole-codebase counterpart, because this skill only looks at one diff.
+- [implement](./implement.md) is the closest neighbour. It drives the build and calls this skill as its own closing review before committing. [implement-spec](./implement-spec.md) does the same once, over the whole integration branch.
+- [retro](./retro.md) comes after it and tunes it. When a session shows the review missing a class of mistake, `retro` proposes the check or the `CODING_STANDARDS.md` rule the Standards axis then reads.
+- [pr](./pr.md) writes the pull request body once the reviewed work goes up.
+- [to-spec](./to-spec.md) and [to-tickets](./to-tickets.md) produce the document the Spec axis checks against, so a vague spec makes that axis vague.
+- [improve-codebase-architecture](./improve-codebase-architecture.md) is the whole-codebase counterpart, because this skill only looks at one diff.
 
 **ask-joao** routes across the whole set when you are unsure which skill the situation wants.
