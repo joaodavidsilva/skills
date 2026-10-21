@@ -81,7 +81,7 @@ python3 scripts/render_motion_gif.py \
   --spec assets/readme/hero-motion.json
 ```
 
-Use `--keep-frames /tmp/readme-motion-frames` only when individual layers or frames need inspection.
+Use `--keep-frames "$(mktemp -d)/readme-motion-frames"` only when individual layers or frames need inspection.
 
 ## Keep flat animation compact
 
