@@ -15,11 +15,11 @@ Reach for it on the hard ones: a bug you can't solve at first look, an intermitt
 | A specific defect you can describe as a symptom | This skill |
 | A slow endpoint or a timing regression with a known before-and-after | This skill. It has a performance branch (measure a baseline, then bisect) |
 | "Where are the bottlenecks in this codebase?", no specific symptom | Not this skill. It diagnoses one known failure, it does not audit |
-| A raw bug report from someone else, not yet confirmed or written up | [triage](https://aihero.dev/skills-triage) first |
-| Throwaway code to answer a design question, not chase a defect | [prototype](https://aihero.dev/skills-prototype) |
-| Building a planned behaviour test-first | [tdd](https://aihero.dev/skills-tdd) |
-| Asking what would have prevented the bug, once it is fixed | [retro](https://aihero.dev/skills-retro), run in the same session |
-| No good seam exists to lock the bug down | [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture), which you start yourself |
+| A raw bug report from someone else, not yet confirmed or written up | [triage](./triage.md) first |
+| Throwaway code to answer a design question, not chase a defect | [prototype](./prototype.md) |
+| Building a planned behaviour test-first | [tdd](./tdd.md) |
+| Asking what would have prevented the bug, once it is fixed | [retro](./retro.md), run in the same session |
+| No good seam exists to lock the bug down | [improve-codebase-architecture](./improve-codebase-architecture.md), which you start yourself |
 
 ## The tight loop is the skill
 
@@ -57,19 +57,19 @@ Phase 5 has one exception. The agent writes the regression test before the fix, 
 ## Common questions
 
 **It fires on quick questions where I just wanted a direct answer.**
-This is the most-reported problem with the skill. On GPT-5.6-Sol especially, users report it triggering on a plain description of a problem: "the model triggers the rather formal diagnosing-bugs skill instead. It then goes on to construct a reproduction scenario (often building a mock scenario with limited value) before giving me a response or suggestion. This results in considerable reply delays." Four separate people reported the same problem on [issue #578](). The accepted fix is to start with a lighter approach and move to the full diagnosis only when the problem needs it, but that change has not shipped. The skill is tuned for Claude Code's invocation behaviour, and a [model](../references/model.md) with a lower activation threshold fires it too often. Until the fix ships, the workaround is to say what you want ("just answer this, don't diagnose") or to disable model invocation for it in your [harness](../references/harness.md).
+This is the most-reported problem with the skill. On GPT-5.6-Sol especially, users report it triggering on a plain description of a problem: "the model triggers the rather formal diagnosing-bugs skill instead. It then goes on to construct a reproduction scenario (often building a mock scenario with limited value) before giving me a response or suggestion. This results in considerable reply delays." Four separate people reported the same problem. The accepted fix is to start with a lighter approach and move to the full diagnosis only when the problem needs it, but that change has not shipped. The skill is tuned for Claude Code's invocation behaviour, and a [model](../references/model.md) with a lower activation threshold fires it too often. Until the fix ships, the workaround is to say what you want ("just answer this, don't diagnose") or to disable model invocation for it in your [harness](../references/harness.md).
 
 **Can I point it at a codebase and ask where the performance problems are?**
-No. It diagnoses one failure you can already name. Its performance branch is for a regression with a symptom (establish a baseline measurement, then bisect, measure first and fix second), not for a proactive sweep. A skill for the proactive version was [proposed and closed](); no skill does it now.
+No. It diagnoses one failure you can already name. Its performance branch is for a regression with a symptom (establish a baseline measurement, then bisect, measure first and fix second), not for a proactive sweep. A skill for the proactive version was proposed and closed; no skill does it now.
 
 **Does it stop and ask me before it writes the fix?**
-No. Only Phase 3 has a human checkpoint: the ranked hypothesis list is shown to you before any is tested, and the agent continues with its own ranking if you are away. There is no gate between instrumentation and the fix, so the agent can start writing code before you have agreed with its root cause. [Issue #124]() asks for that gate and is still open. If you want it, say so when you invoke the skill.
+No. Only Phase 3 has a human checkpoint: the ranked hypothesis list is shown to you before any is tested, and the agent continues with its own ranking if you are away. There is no gate between instrumentation and the fix, so the agent can start writing code before you have agreed with its root cause. An open issue asks for that gate. If you want it, say so when you invoke the skill.
 
 **I already ran `/triage` on this bug report. Is this the same work again?**
 Partly, and neither skill says so. As one reader put it: "Triage's step 3 is essentially a shallow, bounded instance of diagnosing-bugs Phase 1–2, but neither file mentions the other." Triage does a bounded "is this actually a bug, and what is the surface" pass; this skill does the thorough version. Running triage first is not wasted, because its verification often gives you most of Phase 1's raw material. But expect this skill to redo that work in full, and expect no cross-reference to tell you so.
 
 **Will the repro output it pastes leak secrets?**
-It might. The skill asks the agent to paste the invocation and its output, and to request artifacts like HAR files, log dumps, and core dumps. No instruction tells the agent to sanitise them. [Issue #674]() raises exactly this (credentials, tokens, cookies, and personal data copied into a chat, an issue, or a PR) and proposes a redaction guardrail. It is open and unimplemented. Treat redaction as your job for now, particularly before the output goes anywhere public.
+`SKILL.md` includes a `## Redact` rule requiring credentials, tokens, cookies, internal URLs, and personal data to be replaced with `<REDACTED>` before pasting into an issue, PR, or chat, and keeping authentication steps out of `capture` in `hitl-loop.sh`.
 
 **My security scanner flagged this skill as high risk.**
 Snyk flags it, and the flag is a false positive. It is the only skill in the set that ships an executable shell script (`hitl-loop.template.sh`) alongside instructions to run it and to curl a dev server. A shipped `.sh` file, instructions to run it, and outbound HTTP together are enough to trigger a static scanner. The script itself is about 30 lines of `read -r -p` prompts that pause for human input. The scanner rates what the skill could do, not a proven exploit.
@@ -91,4 +91,4 @@ v1.0.0 renamed it to `/diagnosing-bugs`. The old name no longer exists. Anything
 
 `diagnosing-bugs` is a reach-for-it-anytime standalone. You start it when something is broken, and it ends when the fix and its regression test are in. It keeps no state and needs no prior setup. **ask-joao** routes "Something's broken" here.
 
-Two neighbours matter. [retro](https://aihero.dev/skills-retro) comes after it: once the fix is in, run it in the same session to ask what would have prevented the bug, while the session has more information than it had at the start. `diagnosing-bugs` never invokes `retro` itself, because `retro` is user-invoked. [triage](https://aihero.dev/skills-triage) comes before it for bugs that arrive as raw reports from other people, and does a shallower version of the same first two phases.
+Two neighbours matter. [retro](./retro.md) comes after it: once the fix is in, run it in the same session to ask what would have prevented the bug, while the session has more information than it had at the start. `diagnosing-bugs` never invokes `retro` itself, because `retro` is user-invoked. [triage](./triage.md) comes before it for bugs that arrive as raw reports from other people, and does a shallower version of the same first two phases.
