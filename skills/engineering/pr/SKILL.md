@@ -157,6 +157,8 @@ Screenshots are S-tier - when the environment is set up for it and the change is
 
 Execution-based evidence is A-tier. Test results, console output. Show the exact test that now fails and passes, using pseudocode.
 
+Before pasting any command output, logs, or screenshots into a PR body, redact credentials, API keys, tokens, cookies, internal URLs, and PII to `<REDACTED>`.
+
 ### Merge Danger
 
 Describe whether it's a one-way or two-way door. You can walk back through two-way doors, but not one-way doors. A PR that is cheap to roll back is lower risk. Changes that involve destructive actions or hard-to-reverse decisions are one-way doors.
