@@ -72,10 +72,10 @@ def load_spec(path: Path) -> dict:
 def validate_spec(spec: dict) -> None:
     if not 1 <= int(spec["fps"]) <= 60:
         fail("fps must be between 1 and 60")
-    if float(spec["duration"]) <= 0:
-        fail("duration must be positive")
-    if int(spec["width"]) <= 0:
-        fail("width must be positive")
+    if not 0 < float(spec["duration"]) <= 30.0:
+        fail("duration must be > 0 and <= 30.0")
+    if not 1 <= int(spec["width"]) <= 4096:
+        fail("width must be between 1 and 4096")
     if not 2 <= int(spec["colors"]) <= 256:
         fail("colors must be between 2 and 256")
     if not 0 <= int(spec["alpha_threshold"]) <= 255:
@@ -97,8 +97,10 @@ def validate_spec(spec: dict) -> None:
     ids: list[str] = []
     for item in [*spec["reveals"], *spec["layers"]]:
         element_id = item.get("id")
-        if not element_id:
-            fail("every reveal and layer needs a non-empty id")
+        if not element_id or not isinstance(element_id, str):
+            fail("every reveal and layer needs a non-empty string id")
+        if element_id in {".", ".."} or not re.fullmatch(r"[A-Za-z0-9_.:-]+", str(element_id)):
+            fail(f"invalid motion element id: {element_id}")
         ids.append(element_id)
     if len(ids) != len(set(ids)):
         fail("motion element ids must be unique")
