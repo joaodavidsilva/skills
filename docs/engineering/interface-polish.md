@@ -12,7 +12,7 @@ Type `/interface-polish`, or the agent reaches for it automatically when it buil
 | --- | --- |
 | A new component that has to feel finished | `interface-polish` |
 | A screen that works but feels off | `interface-polish`, as a review |
-| A throwaway UI to answer a design question | [prototype](https://aihero.dev/skills-prototype) |
+| A throwaway UI to answer a design question | [prototype](./prototype.md) |
 
 ## Common questions
 
@@ -34,6 +34,6 @@ No. The principles are written as plain CSS ideas, and the framework-specific fo
 
 ## Where it fits
 
-A reach-for-it-anytime standalone, model-invoked during UI work. Inside the build chain it runs under [implement](https://aihero.dev/skills-implement) whenever the ticket touches UI.
+A reach-for-it-anytime standalone, model-invoked during UI work. Inside the build chain it runs under [implement](./implement.md) whenever the ticket touches UI.
 
 **ask-joao** routes across the whole set when you are unsure which skill the situation wants.
