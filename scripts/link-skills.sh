@@ -12,7 +12,12 @@ set -euo pipefail
 # Each entry is a symlink into this repo, so a `git pull` is all that's needed
 # to keep installed skills up to date.
 
-REPO="$(cd "$(dirname "$0")/.." && pwd)"
+FORCE=0
+if [ "${1:-}" = "--force" ]; then
+  FORCE=1
+fi
+
+REPO="$(cd "$(dirname "$0")/.." && pwd -P)"
 DESTS=("$HOME/.claude/skills" "$HOME/.agents/skills")
 
 # Collect the repo's skills once, link into every destination. `deprecated/`
@@ -47,15 +52,28 @@ for DEST in "${DESTS[@]}"; do
 
   mkdir -p "$DEST"
 
+  resolved="$(cd "$DEST" && pwd -P)"
+  case "$resolved" in
+    "$REPO"|"$REPO"/*)
+      echo "error: $DEST resolves into this repo ($resolved)." >&2
+      echo "Remove the symlink along $DEST and re-run." >&2
+      exit 1
+      ;;
+  esac
+
   for i in "${!names[@]}"; do
     name="${names[$i]}"
     src="${srcs[$i]}"
     target="$DEST/$name"
 
     if [ -e "$target" ] && [ ! -L "$target" ]; then
-      rm -rf "$target"
+      if [ "$FORCE" -eq 1 ]; then
+        rm -rf "$target"
+      else
+        echo "warning: $target exists and is not a symlink (skipping; pass --force to overwrite)" >&2
+        continue
+      fi
     fi
-
     ln -sfn "$src" "$target"
     echo "linked $name -> $src ($DEST)"
   done
