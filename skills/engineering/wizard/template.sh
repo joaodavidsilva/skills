@@ -28,6 +28,8 @@ WRITTEN_ENV=()    # KEYs written to ENV_FILE this run
 WRITTEN_SECRET=() # secret NAMEs set this run
 SKIPPED=()        # things we couldn't do (e.g. gh missing)
 
+_WIZARD_TMP=""
+trap '[[ -n "$_WIZARD_TMP" ]] && rm -f "$_WIZARD_TMP"' EXIT INT TERM
 # _clear wipes the terminal so only the current step is on screen. No-op when
 # output isn't a terminal, so piped logs stay readable.
 _clear() {
@@ -62,10 +64,19 @@ say()  { printf '  %s\n' "$1"; }
 step() { printf '  %s•%s %s\n' "$BLUE" "$RESET" "$1"; }
 note() { printf '  %s%s%s\n' "$DIM" "$1" "$RESET"; }
 warn() { printf '  %s⚠ %s%s\n' "$YELLOW" "$1" "$RESET"; }
+err()  { printf '  %s✗ %s%s\n' "$YELLOW" "$1" "$RESET" >&2; }
+
+_valid_key() {
+  [[ "$1" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || { err "invalid variable name: $1"; return 1; }
+}
 
 # open_url URL opens it in the human's browser, cross-platform incl. WSL.
 open_url() {
   local url="$1"
+  if [[ ! "$url" =~ ^https?:// ]]; then
+    warn "refusing to open non-HTTP(S) URL: $url"
+    return 1
+  fi
   printf '  %s↗ opening%s %s\n' "$GREEN" "$RESET" "$url"
   { if   command -v wslview     >/dev/null 2>&1; then wslview "$url"
     elif command -v explorer.exe >/dev/null 2>&1; then explorer.exe "$url"
@@ -92,6 +103,7 @@ confirm() {
 # _existing KEY: current value of KEY in ENV_FILE, if any, with write_env's single
 # quotes or a plain dotenv double-quoted value undone.
 _existing() {
+  _valid_key "$1" || return 1
   [[ -f "$ENV_FILE" ]] || return 1
   local line value sq="'\\''"; line=$(grep -E "^${1}=" "$ENV_FILE" | tail -n1) || return 1
   value="${line#*=}"
@@ -107,6 +119,7 @@ _existing() {
 # a default on re-runs (Enter keeps it). Visible input (non-secret), edited
 # with Readline. Fails at EOF with no input.
 ask() {
+  _valid_key "$1" || return 1
   local key="$1" prompt="$2" current input s=$'\001' e=$'\002' p rc=0
   current=$(_existing "$key" || true)
   # Readline needs the colour codes wrapped in \001..\002 to place the cursor.
@@ -120,6 +133,7 @@ ask() {
 
 # ask_secret KEY "Prompt" is like ask, but input is hidden.
 ask_secret() {
+  _valid_key "$1" || return 1
   local key="$1" prompt="$2" current input rc=0
   current=$(_existing "$key" || true)
   if [[ -n "$current" ]]; then
@@ -138,13 +152,19 @@ ask_secret() {
 # line) and sets $KEY. Idempotent. Creates ENV_FILE at mode 0600; writes through
 # a symlink and keeps an existing file's mode.
 write_env() {
-  local key="$1" value="$2" tmp sq="'\\''"
+  _valid_key "$1" || return 1
+  local key="$1" value="$2" sq="'\\''"
   [[ -e "$ENV_FILE" ]] || (umask 077 && : > "$ENV_FILE")
-  tmp=$(mktemp)
-  grep -vE "^${key}=" "$ENV_FILE" > "$tmp" || true
-  printf "%s='%s'\n" "$key" "${value//\'/$sq}" >> "$tmp"
-  cat "$tmp" > "$ENV_FILE"
-  rm -f "$tmp"
+  chmod 600 "$ENV_FILE" 2>/dev/null || true
+  if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    git check-ignore -q "$ENV_FILE" 2>/dev/null || warn "$ENV_FILE is not in .gitignore; add it before committing"
+  fi
+  _WIZARD_TMP=$(umask 077 && mktemp)
+  grep -vE "^${key}=" "$ENV_FILE" > "$_WIZARD_TMP" || true
+  printf "%s='%s'\n" "$key" "${value//\'/"$sq"}" >> "$_WIZARD_TMP"
+  cat "$_WIZARD_TMP" > "$ENV_FILE"
+  rm -f "$_WIZARD_TMP"
+  _WIZARD_TMP=""
   printf -v "$key" '%s' "$value"
   WRITTEN_ENV+=("$key")
   printf '  %s✓ wrote%s %s → %s\n' "$GREEN" "$RESET" "$key" "$ENV_FILE"
@@ -169,7 +189,7 @@ set_secret() {
 set_var() {
   local name="$1" value="$2"
   if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
-    if gh variable set "$name" --body "$value" >/dev/null 2>&1; then
+    if printf '%s' "$value" | gh variable set "$name" >/dev/null 2>&1; then
       printf '  %s✓ set%s GitHub variable %s\n' "$GREEN" "$RESET" "$name"
       return
     fi
