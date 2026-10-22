@@ -1,6 +1,6 @@
 ## What it does
 
-`grill-me` takes a **loose idea** and interviews you until you can commit to it. You do not need a worked-out plan to start, because the [session](../references/session.md) exists to produce one. It asks in **rounds**. Each round is the whole **frontier**, which is every question whose prerequisites you have already settled. So it never asks you something that depends on an answer it hasn't heard yet.
+`grill-me` takes a **loose idea** and interviews you until you can commit to it. You do not need a worked-out plan to start, because the [session](../references/session.md) exists to produce one. It asks **one question at a time** from the **frontier**, which is every question whose prerequisites you have already settled. So it never asks you something that depends on an answer it hasn't heard yet.
 
 It is **[stateless](../references/stateless.md)**. It writes no files and leaves no workspace behind. The only result is a clearer version of the idea, in your own head.
 
@@ -39,24 +39,17 @@ Sessions grow too long when you try to talk through an ungrillable question. The
 ## It's working if
 
 - You disagree with something. A session with no pushback from you is a session you didn't need.
-- Questions arrive in a few rounds, not one at a time for a long time, and later rounds clearly build on what you said earlier.
+- Questions arrive one at a time with a recommended answer, and each next question clearly builds on what you said earlier.
 - You end up somewhere you didn't expect, because a question showed you a decision you had been making without noticing.
 - At the end you could defend each choice to someone who wasn't there.
 
 ## Common questions
 
 **How many questions should I expect, and how do I know when it ends?**
-Count rounds, not questions. Forty-six questions across four rounds is an ordinary session. It ends when the frontier is empty: it has visited every branch, and nothing is left as an unstated assumption.
+It ends when the frontier is empty: it has visited every branch of the design tree, and nothing is left as an unstated assumption.
 
 **It asked me two hundred questions. What went wrong?**
 Usually the scope was too large. Ask the agent to break the work into smaller pieces first, then grill each one. Very long sessions also drift into the **[dumb zone](../references/smart-zone.md)**, where the [context window](../references/context-window.md) is full enough that the questions get worse.
-
-**Can I go back to one question at a time?**
-Yes. Add this to your global `CLAUDE.md`:
-
-```
-When grilling, ask one question at a time.
-```
 
 **What if I genuinely don't know the answer?**
 Say so. "I don't know" is a real answer, and a question you can't answer is usually a sign to prototype rather than to guess.

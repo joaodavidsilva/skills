@@ -2,7 +2,7 @@
 
 `grilling` is the interview loop that stress-tests a plan, a decision, or an idea before anyone acts on it. It maps the subject as a **design tree**: every decision branches into the decisions that hang off it, and interviews you branch by branch until no assumption stays unstated.
 
-It does not ask one question at a time, and it does not ask everything at once. Each **round** asks the whole **frontier**: every decision whose prerequisites are already settled, and nothing else. Two questions never share a round if one depends on the other; a question that hinges on an answer still open belongs to a later round. Your answers settle decisions, the frontier moves outward, and the next round asks what that unblocked. Thirteen questions typically land in about three rounds rather than thirteen.
+It asks **one question at a time** from the **frontier**: the set of decisions whose prerequisites are already settled. A question that hinges on an answer still open waits until its prerequisite is resolved. Each answer you give prunes branches that no longer apply, pushes the frontier outward, and unblocks the next questions.
 
 ## When to reach for it
 
@@ -18,17 +18,15 @@ Typing `/grilling` directly gets you the plain interview and nothing else. Where
 | A question that talking cannot settle: how something should look or feel | [prototype](../engineering/prototype.md): build the throwaway version, then come back |
 | A skill of your own that needs an interview | Invoke `/grilling` from it, rather than writing another interview |
 
-## The round, the frontier, and who decides
+## The tree, the frontier, and who decides
 
 The skill rests on three ideas.
 
-The **design tree** is the model of the subject: decisions with decisions hanging off them. The **frontier** is the set of decisions whose prerequisites are all settled: the only questions the agent can ask yet. A **round** is one frontier, asked in full and answered in full.
+The **design tree** is the model of the subject: decisions with decisions hanging off them. The **frontier** is the set of decisions whose prerequisites are all settled: the only questions the agent can ask yet. The agent picks the highest-leverage question on the frontier, asks it, waits for your answer, and recomputes the frontier before asking the next one.
 
-Inside a round, every question has a fixed format: numbered and titled behind a `❓`, then the body, then the agent's recommended answer alone on a `➡️` line. This format lets you answer a round by number ("1 yes, 2 the second option, 3 no, here's why") instead of by quoting questions back. The format has one known problem. The recommendation sometimes argues *against* the question as it was worded, so agreeing with the recommendation means answering "no" to the question. When that happens, answer the recommendation and say so.
+Every question has a fixed format: titled behind a `❓`, then a concise body, then the agent's recommended answer alone on a `➡️` line, worded so "yes" accepts the recommendation. The format has one known problem. The recommendation sometimes argues *against* the question as it was worded, so agreeing with the recommendation means answering "no" to the question. When that happens, answer the recommendation and say so.
 
-The other half of the design is the split between facts and decisions. Facts are the skill's own job. When a frontier question needs something the [environment](../references/environment.md) can settle, the agent dispatches a [sub-agent](../references/subagent.md) to find out rather than asking you. The round does not wait for that research; only the questions that depend on it wait. Decisions are yours, and the agent must wait for them. An agent running `grilling` that answers its own decisions has broken the skill. The session ends when the frontier is empty. The agent then waits for you to confirm a shared understanding before it acts on what you agreed.
-
-The frontier has one limit. The agent chooses it by judgement; it does not compute it from a graph. So it can put two questions in one round and only later find that one answer should have changed the other. The only guard is to tell it. That reopens the affected branch in the next round.
+The other half of the design is the split between facts and decisions. Facts are the skill's own job. When a frontier question needs something the [environment](../references/environment.md) can settle, the agent dispatches a [sub-agent](../references/subagent.md) to find out rather than asking you. It does not block on that research; only the questions that depend on it wait while the agent asks another ready question from the frontier. Decisions are yours, and the agent must wait for them. An agent running `grilling` that answers its own decisions has broken the skill. The session ends when the frontier is empty. The agent then waits for you to confirm a shared understanding before it acts on what you agreed.
 
 ## What lives here and what lives in the wrappers
 
@@ -36,26 +34,20 @@ This page covers the mechanism. The wrapper skills' pages answer the questions p
 
 | Question | Where it is answered |
 | --- | --- |
-| The tree, the frontier, rounds, the question format, facts vs decisions | Here |
+| The tree, the frontier, one question at a time, the question format, facts vs decisions | Here |
 | How long a session should run, what to do with a question you can't answer by talking, how to avoid nodding along | [grill-me](./grill-me.md) |
 | What gets written to `GLOSSARY.md`, what becomes an ADR | [grill-with-docs](../engineering/grill-with-docs.md) |
 
 ## Common questions
 
-**Can I go back to one question at a time?**
-Yes, and a large part of the audience does. Add this to your global `CLAUDE.md`:
+**Can I ask for a whole round of questions at once instead of one at a time?**
+Yes. Add this to your global `CLAUDE.md` (or ask in the prompt):
 
 ```
-When grilling, ask one question at a time.
+When grilling, ask the whole frontier of independent questions in one numbered round.
 ```
 
-Not everyone prefers the round-based default. Users who read slowly, who work in a second language, or who use the sequential format to help them focus report that one question at a time works better for them. The opt-out is a supported setting, not a workaround.
-
-**Where did `/batch-grill-me` go?**
-Into this skill. Round-based questioning shipped briefly as a separate skill, then moved into `grilling` itself, so everything built on the primitive (`grill-me`, `grill-with-docs`, `triage`, `wayfinder`) got it at once. There is no `batch-grill-me` to install, and no separate sequential skill either; the `CLAUDE.md` line above is the way back to one-at-a-time.
-
-**Asking a whole round at once must lose the questions my earlier answers would have raised. Doesn't it?**
-This is the most common objection to rounds, and the frontier answers it. A round only contains questions that do not depend on each other, so no answer in a round can invalidate another question in that round. Your answers still change what comes after them, because the agent works out each next round from scratch. You do lose something, but less than "all questions at once" implies. See the frontier's limit above.
+One question at a time is the default because each answer reshapes the design tree and often prunes questions that would have been asked in the same batch.
 
 **It ran out of questions and started building.**
 The confirmation gate exists for this. The skill is finished when you say the understanding is shared, not when the frontier empties. Weaker and faster [models](../references/model.md) still skip the gate. Users report this most often on lower-effort or non-frontier models, which collapse "interview until shared understanding" into a couple of questions and an outline. If yours does it, the reliable fix is a line in your own `AGENTS.md` or `CLAUDE.md` telling the agent not to implement without permission.
@@ -74,13 +66,12 @@ This is a real bug, still unfixed, and users report it across [harnesses](../ref
 
 ## It's working if
 
-- A round arrives as a numbered list, each question with its recommendation on a separate `➡️` line, and you can answer the whole round by number.
-- Nothing in a round needs another question in the same round answered first.
-- Later rounds ask things the first round could not have asked.
+- Each question arrives one at a time, titled behind a `❓`, with its recommendation on a separate `➡️` line so "yes" accepts it.
+- No question depends on another decision that is still unsettled.
+- Later questions ask things earlier turns could not have asked, and skip branches your answers already ruled out.
 - It goes and looks facts up (reading files, dispatching a sub-agent) rather than asking you something it could have found out.
-- Research running in the background does not stall the round; only the questions that depend on it wait.
+- Research running in the background does not stall the interview; only the questions that depend on it wait.
 - It stops at the end and asks you to confirm the understanding is shared, instead of starting work.
-- Question count stays high while round count stays low.
 
 ## Where it fits
 

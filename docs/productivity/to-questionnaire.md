@@ -58,7 +58,7 @@ The document tells them to say so. It explicitly asks for "I don't know" and par
 No. It writes a Markdown file in the current directory and tells you the path. Delivery is yours: paste it into a [ticket](../references/ticket.md), drop it in a Slack thread, attach it to an email, or open it on a shared screen and work through it live. People have done all four by hand.
 
 **Isn't this just `/grill-me` in batch mode?**
-No. `grill-me` already asks in **rounds**. It asks the whole frontier of open questions at once, then recomputes it from your answers, so it already meets the "give me all the questions at once" need. `to-questionnaire` differs on another axis. It is about whose head the answers are in, not how the questions are delivered. To answer them yourself faster, use `grill-me`. To get them out of someone else, use this.
+No. `to-questionnaire` differs on whose head the answers are in, not just how the questions are delivered. `grill-me` interviews you interactively, one question at a time, reshaping the tree after each answer. To work through decisions yourself, use `grill-me`. To get answers out of someone else who isn't in the session, use this.
 
 **Couldn't I just ask the agent for this without a skill?**
 Yes, and plenty of people did before it existed: `OPEN_QUESTIONS.md` files, spreadsheets sent to clients, a "needs more info" ticket per unanswered question. The skill buys you two things: the interview never drifts onto the subject, and the document comes out in a shape a non-technical recipient can fill in. If you already have a house format that works, you don't need this.
