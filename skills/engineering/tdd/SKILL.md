@@ -13,7 +13,7 @@ When exploring the codebase, read `GLOSSARY.md` (if it exists) so test names and
 
 Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. A good test reads like a specification: "user can checkout with valid cart" tells you exactly what capability exists, and it survives refactors because it doesn't care about internal structure.
 
-See [reference/tests.md](reference/tests.md) for examples and [reference/mocking.md](reference/mocking.md) for mocking guidelines.
+See [reference/TESTS.md](reference/TESTS.md) for examples and [reference/MOCKING.md](reference/MOCKING.md) for mocking guidelines.
 
 ## Seams: where tests go
 

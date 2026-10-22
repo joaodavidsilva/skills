@@ -33,7 +33,7 @@ TS 7 turns the TS 6 deprecations into errors, and `ignoreDeprecations: "6.0"` do
 | `esModuleInterop: false`, `allowSyntheticDefaultImports: false` | omit both (always on) |
 | `import ... assert { type: "json" }` (error from TS 6) | `import ... with { type: "json" }` |
 | `tsc foo.ts` beside a tsconfig (TS5112) | `tsc --ignoreConfig foo.ts`, or a tsconfig `include` |
-| `typescript` imported as a library for tooling | the TS 6 alias recipe in `checks.md` (TS 7 has no programmatic API) |
+| `typescript` imported as a library for tooling | the TS 6 alias recipe in `CHECKS.md` (TS 7 has no programmatic API) |
 
 New defaults in TS 7: `strict` true, `types` `[]`, `rootDir` the tsconfig directory, `noUncheckedSideEffectImports` true, `libReplacement` false. Run the compiler as `tsc` from the `typescript` package; the `tsgo` binary of `@typescript/native-preview` is frozen. Features announced for a later release (`es2026` target and lib, a `type` import attribute, source phase imports) stay unused until the project's compiler ships them.
 

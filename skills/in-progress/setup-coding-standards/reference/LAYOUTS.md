@@ -15,7 +15,7 @@ Read framework versions from the manifest: layout conventions below move with ma
 7. Cross-feature references travel as ids. A feature stores another feature's id and resolves it through that feature's entry or in the composing layer (`app`, routes); it does not import the other feature's entities. Sibling features never import each other. `shared` never imports features; features never import `app`.
 8. Adapters (HTTP handlers, route files, UI components, CLI commands) parse input, call a use case, and render or respond. Business rules live in pure modules (`model/`, `domain/`) that import no framework.
 9. Default exports only where the framework demands them (Next `page.tsx` and `layout.tsx`, Expo route files, React Router route modules).
-10. Size triggers are deltas: a file or function that this change pushes past the repo's limit gets split; an outlier already in the baseline stays out of scope (see `checks.md`, "Measure first").
+10. Size triggers are deltas: a file or function that this change pushes past the repo's limit gets split; an outlier already in the baseline stays out of scope (see `CHECKS.md`, "Measure first").
 11. Extract a shared helper at the third real call site or when it holds one documented piece of knowledge. A shared function that gains a boolean or conditional parameter to serve a new caller is inlined back and split (AHA, Sandi Metz).
 
 Enforced by: rules 3 to 5 by `entry-only`, `no-export-star`, `no-folder-barrels`, `no-cycles`; rule 7 by `layer-direction`; rule 9 by `no-default-export` with overrides; rule 10 by the size checks; rules 1, 2, 6, 8 and 11 are review judgement.

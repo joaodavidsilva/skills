@@ -30,7 +30,7 @@ Training data defaults to older Python 3.8 and 3.9 idioms and deprecated linter 
 
 ## Mechanical checks
 
-Measure the repo's file and function lengths first (see `checks.md` "Measure first"), then set thresholds in `pyproject.toml` from `mean + 2 * sigma` and record existing outliers under `[tool.ruff.lint.per-file-ignores]`.
+Measure the repo's file and function lengths first (see `CHECKS.md` "Measure first"), then set thresholds in `pyproject.toml` from `mean + 2 * sigma` and record existing outliers under `[tool.ruff.lint.per-file-ignores]`.
 
 ### Ruff (`pyproject.toml`, verified against Ruff 0.17.x)
 

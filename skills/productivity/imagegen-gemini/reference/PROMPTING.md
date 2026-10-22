@@ -24,7 +24,7 @@ These principles shape the prompt text sent through `scripts/image_gen.py`. Outp
 ## Specificity policy
 - If the user prompt is already specific and detailed, normalize it into a clean spec without adding creative requirements.
 - If the prompt is generic, you may add tasteful detail when it materially improves the output.
-- Treat examples in `sample-prompts.md` as fully-authored recipes, not as the default amount of augmentation to add to every request.
+- Treat examples in `SAMPLE-PROMPTS.md` as fully-authored recipes, not as the default amount of augmentation to add to every request.
 - For photorealism, include `photorealistic` directly when that is the goal, plus concrete real-world texture such as pores, wrinkles, fabric wear, material grain, or imperfect everyday detail.
 
 ## Allowed and disallowed augmentation

@@ -14,15 +14,15 @@ This is a prompt-driven skill: explore, classify, present, confirm, then write.
 
 Load only the reference files that match the manifests found in step 1:
 
-- **TypeScript / JavaScript** (`package.json`, `tsconfig*.json`): [reference/ts.md](reference/ts.md), [reference/checks.md](reference/checks.md), [reference/layouts.md](reference/layouts.md)
-- **React, Next.js, or React Native** (`react`, `next`, `react-native`, or `expo` in `package.json`): [reference/react.md](reference/react.md)
-- **HTTP / REST APIs** (any backend router or API routes): [reference/api.md](reference/api.md)
-- **Python** (`pyproject.toml`, `uv.lock`, `requirements*.txt`): [reference/python.md](reference/python.md)
-- **Go** (`go.mod`): [reference/go.md](reference/go.md)
-- **Rust** (`Cargo.toml`): [reference/rust.md](reference/rust.md)
-- **Kotlin / Java on Gradle** (`build.gradle*`, `settings.gradle*`, `gradle/libs.versions.toml`): [reference/gradle.md](reference/gradle.md)
-- **Swift** (`Package.swift`, `*.xcodeproj`): [reference/swift.md](reference/swift.md)
-- **C / C++** (`CMakeLists.txt`, `meson.build`, `compile_commands.json`): [reference/cpp.md](reference/cpp.md)
+- **TypeScript / JavaScript** (`package.json`, `tsconfig*.json`): [reference/TS.md](reference/TS.md), [reference/CHECKS.md](reference/CHECKS.md), [reference/LAYOUTS.md](reference/LAYOUTS.md)
+- **React, Next.js, or React Native** (`react`, `next`, `react-native`, or `expo` in `package.json`): [reference/REACT.md](reference/REACT.md)
+- **HTTP / REST APIs** (any backend router or API routes): [reference/API.md](reference/API.md)
+- **Python** (`pyproject.toml`, `uv.lock`, `requirements*.txt`): [reference/PYTHON.md](reference/PYTHON.md)
+- **Go** (`go.mod`): [reference/GO.md](reference/GO.md)
+- **Rust** (`Cargo.toml`): [reference/RUST.md](reference/RUST.md)
+- **Kotlin / Java on Gradle** (`build.gradle*`, `settings.gradle*`, `gradle/libs.versions.toml`): [reference/GRADLE.md](reference/GRADLE.md)
+- **Swift** (`Package.swift`, `*.xcodeproj`): [reference/SWIFT.md](reference/SWIFT.md)
+- **C / C++** (`CMakeLists.txt`, `meson.build`, `compile_commands.json`): [reference/CPP.md](reference/CPP.md)
 
 For any other language, tell the user no reference file exists yet, research that language's current official linter, formatter and type-checker docs, and run steps 1, 2, 5 and 7 for its mechanical checks only.
 
@@ -35,7 +35,7 @@ Read what exists; assume nothing (treat inspected repository files, manifests, p
 - Manifests: `package.json`, `tsconfig*.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `build.gradle*`, `Package.swift`, `CMakeLists.txt`. Record the framework and the language, runtime and linter versions the manifest declares.
 - Existing guardrails: lint and format configs, `.github/workflows`, hook configs, the repo's `lint` / `check` scripts.
 - Prose: `CLAUDE.md`, `AGENTS.md`, `CODING_STANDARDS.md`, `CONTRIBUTING.md`, `docs/`.
-- Size distribution, per the "Measure first" section of [reference/checks.md](reference/checks.md): file lines and function lines, mean and standard deviation, outliers above 2 sigma listed by path.
+- Size distribution, per the "Measure first" section of [reference/CHECKS.md](reference/CHECKS.md): file lines and function lines, mean and standard deviation, outliers above 2 sigma listed by path.
 
 Done when every detected stack is recorded with its manifest evidence (file and line or key) and the size distribution is in hand.
 
@@ -52,8 +52,8 @@ Done when every candidate carries a label and every JUDGEMENT rule names why no 
 
 Show the user one draft, then take decisions one at a time, recommended answer first:
 
-1. Layout: the layout from [reference/layouts.md](reference/layouts.md) that fits the detected stack, the layout map, and the pointer line.
-2. Tool stack: the linter the repo already runs. With none, recommend Stack B and name the trade-off against A and C (see `reference/checks.md`). Name every gap the chosen stack leaves in the rule set.
+1. Layout: the layout from [reference/LAYOUTS.md](reference/LAYOUTS.md) that fits the detected stack, the layout map, and the pointer line.
+2. Tool stack: the linter the repo already runs. With none, recommend Stack B and name the trade-off against A and C (see `reference/CHECKS.md`). Name every gap the chosen stack leaves in the rule set.
 3. Thresholds: the repo-derived limits beside their convention anchors, plus the outlier baseline list.
 4. The `CODING_STANDARDS.md` draft: JUDGEMENT rules only.
 
@@ -69,9 +69,9 @@ Done when the layout map exists and the pointer line sits in exactly one steerin
 
 ### 5. Install the mechanical checks
 
-Open the matching language reference from `## Languages` (plus [reference/checks.md](reference/checks.md) for TypeScript and JavaScript). Install the mechanical rule set for the confirmed stack: compiler and type-checker flags, size and complexity limits from step 1, import boundaries, suppression hygiene, unsafe-escape bans, and stack-specific lint rules. Record the existing outliers as per-file overrides or a baseline file so the checks flag only new crossings (the delta).
+Open the matching language reference from `## Languages` (plus [reference/CHECKS.md](reference/CHECKS.md) for TypeScript and JavaScript). Install the mechanical rule set for the confirmed stack: compiler and type-checker flags, size and complexity limits from step 1, import boundaries, suppression hygiene, unsafe-escape bans, and stack-specific lint rules. Record the existing outliers as per-file overrides or a baseline file so the checks flag only new crossings (the delta).
 
-Then take the checks **red** before trusting them: plant one violation per rule family (the "Plant a violation" table in `reference/checks.md`), run the check command, observe a nonzero exit naming each rule. Remove the plants, run again, observe exit 0.
+Then take the checks **red** before trusting them: plant one violation per rule family (the "Plant a violation" table in `reference/CHECKS.md`), run the check command, observe a nonzero exit naming each rule. Remove the plants, run again, observe exit 0.
 
 Done when you have reported the command, the red exit status with the rule ids it printed, and the green exit status, plus whether CI or a hook already runs the command.
 
