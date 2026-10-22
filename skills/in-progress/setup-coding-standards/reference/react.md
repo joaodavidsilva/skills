@@ -44,6 +44,7 @@ Training data defaults to React 17/18 patterns (`forwardRef`, `useContext`, `use
 ## Mechanical checks (add to `checks.md` when React / RN is present)
 
 - **`eslint-plugin-react-hooks` v7 `recommended` preset** (or Oxlint `react/*` / Biome `correctness/useHookAtTopLevel` + `useExhaustiveDependencies`): enforces `rules-of-hooks`, `exhaustive-deps`, `set-state-in-effect`, `purity`, `refs`, `immutability`, `static-components`.
+- **`dotore check` (when `dotore` is installed on `$PATH`):** native Rust Effect and State dataflow analyzer catching derived state (`no-derived-state`), multi-effect render cascades (`no-chain-state-updates`), effect event handlers (`no-event-handler`), prop-change state adjustments and resets (`no-adjust-state-on-prop-change`, `no-reset-all-state-on-prop-change` with cross-file JSX caller sites), parent callback notifications (`no-pass-live-state-to-parent`, `no-pass-data-to-parent`), manual store subscriptions (`no-external-store-subscription`), mount state initialization (`no-initialize-state`), and effect fetches (`no-fetch-in-effect`). Pair with `dotore fix` for deterministic `Autofix` rewrites and `/dotore` for `Surgical` and `Refactor` findings.
 - **Leaked render ban:** `@eslint-react/no-leaked-conditional-rendering` (ESLint 10) or Biome `suspicious/noLeakedRender`.
 - **Legacy API bans via core `no-restricted-imports`:**
   - React 19+: warn/error on `forwardRef` and `useContext` from `"react"` (instruct to use `ref` prop and `use()`).
