@@ -6,7 +6,7 @@ Most of these skills are **user-invoked**: the agent will never fire them for yo
 
 Act whenever a promoted skill is added, renamed, or has its behaviour changed: create or re-sync its docs page. A rename moves the file too (`docs/<bucket>/<old>.md` → `docs/<bucket>/<new>.md`), because the published URL tracks the name; a skill that moves between `engineering/` and `productivity/` moves its docs file to the matching folder. Skills in `misc/`, `in-progress/`, and `deprecated/` get no page, because none of those buckets is promoted. A skill moving *out* of one of them into `engineering/` or `productivity/` gains a page; one moving the other way loses it. A promoted skill that is removed outright keeps its page as an **archived** page: leave the body as it was and open it with a blockquote notice (`> **Archived.** ...`) naming the version it was removed in and any replacement, so the published URL keeps resolving.
 
-Because these pages are published on `docs/`, **every link is repo-relative**. A link to another skill points at `docs/<bucket>/<skill-name>.md`; a link into the repo points at its full `https://github.com/joaodavidsilva/skills/...` URL. A relative link that works in the repo breaks once published.
+Every link between docs pages is relative to the current file (`./<skill>.md` within the same bucket, `../<bucket>/<skill>.md` across buckets, and `../references/<slug>.md` for dictionary entries). A link into the repo outside `docs/` points at its full `https://github.com/joaodavidsilva/skills/...` URL.
 
 There is no H1. The published page takes its title from the slug.
 
