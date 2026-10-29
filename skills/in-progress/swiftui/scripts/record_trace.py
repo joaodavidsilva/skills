@@ -151,12 +151,15 @@ def _record(cmd: list[str], stop_file: Path | None, output: Path) -> int:
         proc.kill()
         rc = proc.wait()
 
-    if output.exists():
-        print(f"[record] done. trace written: {output}", flush=True)
-    else:
+    if not output.exists():
         print("[record] done but output file not found; did xctrace error?",
               file=sys.stderr)
         return rc or 1
+    if rc != 0:
+        print(f"[record] xctrace exited with code {rc}; the trace at {output} may be unreadable.",
+              file=sys.stderr)
+        return rc
+    print(f"[record] done. trace written: {output}", flush=True)
     return rc
 
 

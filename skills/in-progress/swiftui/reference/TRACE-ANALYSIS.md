@@ -199,6 +199,8 @@ expectation.
 - **25–75%** → mix. Usually computation plus intermittent I/O; show both
   hot symbols and note that main was partially blocked.
 
+These cut-offs are rules of thumb from this toolchain, not Apple-defined values: read coverage next to the `hot_symbols` before concluding.
+
 ### High-severity SwiftUI events → reference routing
 
 When `swiftui.high_severity_events[].description` is one of:

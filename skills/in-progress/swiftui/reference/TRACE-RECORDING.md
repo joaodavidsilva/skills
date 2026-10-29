@@ -110,13 +110,15 @@ the user must plug them in before recording.
 
 ## Picking a template
 
-> **Hard rule: the `SwiftUI` template only populates the SwiftUI lane on a
-> real device (a physical iOS/iPadOS device or the host Mac). On the iOS
-> Simulator it records but the SwiftUI lane comes back empty.** If the
-> chosen UDID falls under the `simulators` kind from `--list-devices`,
-> switch to `Time Profiler`. It still gives you Time Profiler + Hangs +
-> Animation Hitches, which `analyze_trace.py` analyses and correlates
-> normally; only the `swiftui` lane will report `available: false`.
+> **Hard rule: use the `SwiftUI` template only on a real device (a physical
+> iOS/iPadOS device or the host Mac). On the iOS Simulator it fails: xctrace
+> reports "Hitches is not supported on this platform" and the saved trace
+> cannot be exported ("run data is missing"), so `analyze_trace.py` errors
+> out (observed with Xcode 27.1 and an iOS 27 Simulator).** If the chosen
+> UDID falls under the `simulators` kind from `--list-devices`, switch to
+> `Time Profiler`. It records the Time Profiler lane normally; the
+> `hitches`, `swiftui`, and `swiftui-causes` lanes are absent from the trace
+> and carry a "not in trace" note.
 
 Decision flow:
 
@@ -132,7 +134,7 @@ recording: entries under `simulators` take Time Profiler; entries under
 template. Entries under `devices offline` need the user to
 connect/unlock/trust the device before recording.
 
-For ad-hoc hang hunting on any target, `Time Profiler` or
+For ad-hoc hang hunting on a real device, `Time Profiler` or
 `Animation Hitches` alone may be enough.
 
 For an explicitly approved system-wide recording:

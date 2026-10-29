@@ -107,34 +107,38 @@ Keep `@State` private. Use an initializer seed only for intentional one-time own
 
 ## Property Wrappers Inside @Observable Classes
 
-**Critical**: The `@Observable` macro transforms stored properties to add observation tracking. Property wrappers (like `@AppStorage`, `@SceneStorage`, `@Query`) also transform properties with their own storage. These two transformations conflict, causing a compiler error.
+**Critical**: The `@Observable` macro rewrites stored properties to add observation tracking, and property wrappers (`@AppStorage`, `@SceneStorage`, `@Query`) rewrite them with their own storage. Combined, they fail to compile ("Invalid redeclaration of synthesized property").
 
-**Always annotate property-wrapper properties with `@ObservationIgnored` inside `@Observable` classes.**
+`@ObservationIgnored` removes the error but not the problem: these wrappers drive view updates only when installed directly in a `View`. In a model, reads and writes persist while no view refreshes (reported on iOS 18; recheck on newer SDKs).
 
 ```swift
 @Observable
-@MainActor
 final class SettingsModel {
-    // WRONG - compiler error: property wrappers conflict with @Observable
-    // @AppStorage("username") var username = ""
-
-    // CORRECT - @ObservationIgnored prevents the conflict
+    // Compiles, but views never refresh when `username` changes
     @ObservationIgnored @AppStorage("username") var username = ""
-    @ObservationIgnored @AppStorage("isDarkMode") var isDarkMode = false
-
-    // Regular stored properties work fine with @Observable
-    var isLoading = false
 }
 ```
 
-This applies to **any** property wrapper used inside an `@Observable` class, including but not limited to:
-- `@AppStorage`
-- `@SceneStorage`
-- `@Query` (SwiftData)
+Keep `@AppStorage`, `@SceneStorage`, and `@Query` in views. When the model must own UserDefaults-backed state, expose a computed property that reports access and mutation to Observation itself:
 
-**Note**: Since `@ObservationIgnored` disables observation tracking for that property, SwiftUI won't detect changes through the Observation framework. However, property wrappers like `@AppStorage` already notify SwiftUI of changes through their own mechanisms (e.g., UserDefaults KVO), so views still update correctly.
+```swift
+@Observable
+final class SettingsModel {
+    var username: String {
+        get {
+            access(keyPath: \.username)
+            return UserDefaults.standard.string(forKey: "username") ?? ""
+        }
+        set {
+            withMutation(keyPath: \.username) {
+                UserDefaults.standard.set(newValue, forKey: "username")
+            }
+        }
+    }
+}
+```
 
-**Keep `@ObservationIgnored`** on property-wrapper properties in `@Observable` classes; removing it causes a compiler error.
+This observes writes made through the model only; changes written to `UserDefaults` elsewhere do not notify views.
 
 ## Make @Observable Property Types Equatable
 
@@ -483,11 +487,10 @@ SwiftUI can't track changes through nested `ObservableObject` properties. Workar
 5. **Always mark `@State` and `@StateObject` as `private`**
 6. Do not store changing parent-owned inputs as `@State` or `@StateObject`; use private state only for intentional child ownership
 7. With `@Observable`, nested objects work fine; with `ObservableObject`, pass nested objects directly to child views
-8. **Always add `@ObservationIgnored` to property wrappers** (e.g., `@AppStorage`, `@SceneStorage`, `@Query`) inside `@Observable` classes, since they conflict with the macro's property transformation
+8. Keep `@AppStorage`, `@SceneStorage`, and `@Query` in views: inside an `@Observable` class they conflict with the macro, and `@ObservationIgnored` only removes the compile error without notifying views
 9. **Prefer `Equatable` types for frequently-written `@Observable` properties** so the generated setter skips redundant invalidations
 10. Pass value-type views only the fields they read
 11. Isolate side-effect-only dependencies when they would invalidate an expensive parent
 12. Follow `reference/ENVIRONMENT-PATTERNS.md` for custom environment and focused values
 13. **Prefer KeyPath/subscript bindings over closure bindings**; use a computed property, not a marker-enum subscript, for argumentless projections
-14. **Declare a binding you react to as `@Binding`, not a plain `Binding`-typed property**: a plain property isn't tracked, so external changes won't re-evaluate the view (often a Release-only failure)
-15. Do not pass a parent `@Observable` plus an index into a row; pass the element or the fields the row reads
+14. Do not pass a parent `@Observable` plus an index into a row; pass the element or the fields the row reads
