@@ -1,0 +1,47 @@
+## What it does
+
+`swiftui` is the correctness and performance bar for SwiftUI code on iOS and macOS. The [agent](../references/agent.md) applies it when it writes, reviews, or refactors SwiftUI, and again when a `.trace` path shows up or you ask it to profile a session.
+
+It treats every `View` as an _invalidation boundary_: a view should read only the data it needs, so a change re-runs the smallest subtree that depends on it. The skill keeps one reference per topic (state, composition, lists, navigation, animation, charts, macOS, Liquid Glass, SDK 27 APIs) and the agent reads only the references the code touches, so a list fix never loads the animation rules. In a review it reports genuine problems only, each against its rule, and edits nothing until you ask.
+
+## When to reach for it
+
+Type `/swiftui`, or the agent reaches for it automatically when a task fits.
+
+| Your situation | Reach for |
+| --- | --- |
+| Writing or refactoring SwiftUI views, state, lists, or navigation | `swiftui` |
+| Reviewing a screen against the SwiftUI checklist | `swiftui`, as a review |
+| A `.trace` file, or "profile this session" | `swiftui`, Instruments branch |
+| Web UI and motion craft | [interface-polish](./interface-polish.md) |
+
+## Prerequisites
+
+The Instruments branch needs Xcode's `xctrace` on your `PATH` and `python3`. The SwiftUI writing and review branches need nothing in place.
+
+## The Instruments branch
+
+Recording and analysis run through two scripts. `record_trace.py` wraps `xctrace record` and refuses a system-wide recording until you pass an explicit acknowledgement flag. `analyze_trace.py` reads the Time Profiler, Hangs, Animation Hitches, SwiftUI update, and cause-graph lanes, correlates hangs and hitches with main-thread samples, and returns JSON and Markdown the agent can reason over instead of the raw `xctrace` export.
+
+## Common questions
+
+**Can I profile on the iOS Simulator?**
+
+Partly. The `SwiftUI` template fails on the Simulator (xctrace reports that Hitches is not supported there), so the skill falls back to `Time Profiler`. You get the Time Profiler lane, without the hitches, SwiftUI, or cause-graph lanes. Use a real device or the host Mac for the full picture.
+
+**Will it tell me how to structure my app?**
+
+No. It covers correctness and performance, and leaves architecture and code style to the project.
+
+## It's working if
+
+- A review comes back grouped by file, each finding with the line, the rule, and a short before and after, ending in a prioritised summary.
+- It treats iOS 27 APIs as real and checks your deployment target before advising a version-specific change.
+- It flags a soft-deprecated API without rewriting it, unless you asked to migrate.
+- Given a `.trace`, it names the views and symbols behind a hang with numbers, and ties each to a fix.
+
+## Where it fits
+
+A reach-for-it-anytime standalone, model-invoked during SwiftUI work. For the judgement rules a project enforces at review, `setup-coding-standards` points its SwiftUI rules here, and the `update-swiftui-apis` maintenance skill keeps the deprecated-to-modern list current.
+
+**ask-joao** routes across the whole set when you are unsure which skill the situation wants.
