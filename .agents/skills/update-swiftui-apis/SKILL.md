@@ -17,7 +17,7 @@ The Sosumi MCP must be available (`searchAppleDocumentation`, `fetchAppleDocumen
 
 ### 1. Understand current coverage
 
-Read `skills/in-progress/swiftui/reference/LATEST-APIS.md`: the deprecated-to-modern transitions already documented, the version segments in use (iOS 15+ through 27+), and the Quick Lookup Table at the bottom.
+Read `skills/in-progress/swiftui/reference/LATEST-APIS.md`: the deprecated-to-modern transitions already documented, the version segments in use (iOS 15+ up to the newest section), and the Quick Lookup Table at the bottom.
 
 ### 2. Load the scan manifest
 
