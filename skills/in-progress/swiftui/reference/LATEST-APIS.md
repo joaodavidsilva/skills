@@ -26,7 +26,7 @@ These replacements have minimal API shape changes. Most are near-direct swaps; a
 - **`navigationTitle(_:)`** instead of `navigationBarTitle(_:)`
 - **`toolbar { ToolbarItem(...) }`** instead of `navigationBarItems(...)` (structural change)
 - **`ignoresSafeArea(_:edges:)`** instead of `edgesIgnoringSafeArea(_:)`
-- **`preferredColorScheme(_:)`** instead of `colorScheme(_:)`
+- **`preferredColorScheme(_:)`** instead of `colorScheme(_:)` (it sets the scheme for the nearest enclosing presentation, such as a window, sheet, or popover, not only the view it is attached to)
 - **`foregroundStyle(_:)`** instead of `foregroundColor(_:)` (e.g., `.foregroundStyle(.primary)`)
 - **`clipShape(.rect(cornerRadius:))`** instead of `cornerRadius()`
 - **`textInputAutocapitalization(_:)`** instead of `autocapitalization(_:)` (note: `.never` replaces `.none`)
@@ -170,6 +170,7 @@ PasteButton(payloadType: String.self) { strings in
 ### State Management
 
 - **Prefer `@Observable` over `ObservableObject` for new code.** Use `@State` instead of `@StateObject`; use `@Bindable` instead of `@ObservedObject`. See `STATE-MANAGEMENT.md` for full `@Observable` migration patterns.
+- **If `ObservableObject` is unavoidable** (for example a Combine debouncer), add `import Combine` explicitly; SwiftUI no longer re-exports it.
 
 ### Events
 
@@ -235,6 +236,17 @@ Resolve a color in the current environment before accessing Core Graphics:
 let cgColor = color.resolve(in: environment).cgColor
 ```
 
+`Color.cgColor` is soft-deprecated and returns `nil` for dynamic colors, including asset colors, so resolve first.
+
+### Shapes and Images
+
+- **Fill and stroke a shape with two chained modifiers** (`Circle().fill(.red).stroke(.blue, lineWidth: 2)`); the stroke overlay is no longer needed (fixed in iOS 17).
+- **Use the generated symbol asset API when the project enables it:** `Image(.avatar)` instead of `Image("avatar")`.
+
+### Overlay, Background, and Mask
+
+Pass views through the builder closure, not the soft-deprecated view-argument overloads: `.mask { Image(systemName: "star.fill") }`. Style overloads stay correct (`.background(.indigo)`, `.background(.indigo, in: .rect(cornerRadius: 12))`).
+
 ---
 
 ## When Targeting iOS 18+
@@ -246,6 +258,8 @@ Use `toolbarVisibility(_:for:)` instead of `navigationBarHidden(_:)` or the olde
 Use `toolbarBackgroundVisibility(_:for:)` instead of the `toolbarBackground(_:for:)` overload whose first argument is `Visibility`.
 
 On iOS, prefer `.topBarLeading` / `.topBarTrailing` over `.navigationBarLeading` / `.navigationBarTrailing`.
+
+Prefer placements that express purpose (`.cancellationAction`, `.confirmationAction`, `.primaryAction`) over `.topBarLeading` / `.topBarTrailing` when a semantic role fits.
 
 ### Tabs
 
@@ -581,3 +595,6 @@ These APIs are from the beta iOS 27.1 SDK. Gate runtime use with `#available(iOS
 | `ToolbarItem(..., showsByDefault:)` | `defaultCustomization(_:options:)` with `.hidden` | SDK 27 soft-deprecated |
 | `TabViewCustomization` legacy section/sidebar subscripts | Typed `section`/`tab` subscript properties | iOS 18.4+ / macOS 15.4+ |
 | Location/`isTargeted` `dropDestination` overload | `dropDestination(for:isEnabled:action:)` with `DropSession` | iOS/macOS/visionOS 26+ |
+| `.fill` plus `overlay { shape.stroke() }` | Chain `.fill(_:)` and `.stroke(_:)` on the shape | iOS 17+ |
+| `overlay(_ view:)` / `background(_ view:)` / `mask(_ view:)` view-argument overloads | Builder closure, e.g. `.mask { Image(systemName: "star.fill") }` | Soft-deprecated |
+| `Image("avatar")` | `Image(.avatar)` generated symbol | iOS 17+ / Xcode 15+ (when symbol generation is enabled) |

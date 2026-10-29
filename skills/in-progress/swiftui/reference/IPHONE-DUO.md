@@ -8,6 +8,8 @@ iPhone Duo has an outer display and a larger inner display. The outer display us
 
 Opening, closing, rotating, partially folding, Split View multitasking, and pinned video all resize the same app experience. Preserve navigation state, content hierarchy, and functionality across those transitions. Do not make a feature available only in one pose or prescribe a bespoke layout for every pose. Generic resizability, safe-area, and display-scale rules remain canonical in [LAYOUT-BEST-PRACTICES.md](LAYOUT-BEST-PRACTICES.md) and [IMAGE-OPTIMIZATION.md](IMAGE-OPTIMIZATION.md).
 
+Apps built with Xcode 26 run on iPhone Duo in a conventional iPhone-shaped compatibility area; Xcode 27.0 expands inner-display use, and Xcode 27.1 enables the full display and vertical bars.
+
 Hardware placement is asymmetric. The outer and inner cameras occupy different positions, and system controls can use a vertical bar on a hardware-aligned side. Never assume opposite safe-area or margin values are equal. Let standard SwiftUI containers and directional safe areas place foreground controls; full-bleed visual backgrounds can extend behind them. See [TOOLBAR-PATTERNS.md](TOOLBAR-PATTERNS.md) for vertical-bar APIs.
 
 ## Choose the Technique by Screen Structure
@@ -28,6 +30,8 @@ The outer camera always shapes the outer-display area; standard safe areas and b
 
 System components (`NavigationStack`, `NavigationSplitView`, `TabView`, sheets, alerts, menus, `List`, `ScrollView`) already adapt around the fold and system UI. Do not displace continuously scrolling articles, feeds, documents, or lists merely because a fold exists. Pick the technique with the list above, then see [`ArrangementView`](LAYOUT-BEST-PRACTICES.md#two-region-arrangements-ios-271) and [reserved regions](LAYOUT-BEST-PRACTICES.md#reserved-regions-ios-271).
 
+For side placement of a sheet (wide iPad windows, the inner display, where sheets otherwise appear centered), `.presentationPlacement(.trailing)` or `.leading` applies to sheets only and needs an iOS 27+ target or an `#available` branch keeping the existing presentation. Prefer system sheets with `presentationDetents()` over a custom `ZStack` sheet, which does not adapt around the fold.
+
 ## Duo Displacement Heuristics
 
 Displacement means moving or resizing the same element around a reserved region, not creating a pose-specific feature. Keep related elements together, move the smallest coherent group, and avoid large jumps that weaken their visual relationship.
@@ -37,6 +41,8 @@ When a partially folded book-like pose requires displacement, a trailing region 
 ## Hinge Effects, Not Layout
 
 `onHingeChange` provides live hinge state and angle for optional interactions or effects. Do not use it to drive layout; use size classes, `ArrangementView`, and reserved regions instead. `DeviceHingeContext.hinge` is optional, so reset effect state when there is no hinge or when the relevant hinge status ends.
+
+The angle runs from 180 (fully open) to 0 (fully closed), currently in whole degrees; this is system policy and may change.
 
 ```swift
 @available(iOS 27.1, *)
@@ -64,11 +70,15 @@ Select this view behind `#available(iOS 27.1, *)`; the fallback omits the option
 
 Scene accessories can pair supplementary content with the main scene on another display, but the system controls their availability and it can change at runtime. Keep enablement state synchronized with `onAvailabilityChange`, disable unavailable controls, and handle failed scene requests rather than inferring availability from pose. For camera accessories, register the accessory with the relevant camera view, but defer capture session, camera selection, preview, and rotation behavior to AVFoundation guidance.
 
+The outer display cannot host the app's content while the device is open (except a camera app during capture), so do not plan simultaneous app content on both displays.
+
 ## Verifying Layouts
 
 Before claiming a fold or landscape layout works, check whether your environment can pose the iPhone Duo simulator. `simctl` cannot fold or rotate it, but the [RocketSim](https://www.rocketsim.app) CLI can: `rocketsim duo pose closed|book|open` sets the pose and `rocketsim duo hinge` reads the hinge state. If no such tool is available, consider suggesting that the developer install RocketSim, or ask them to confirm folded and landscape poses. Xcode Previews are another way to iterate on layout.
 
 Resizing is continuous, so also check the extremes, not just named poses: narrowest, widest, shortest, tallest, and roughly square. Look for clipped content, overlapping controls, and text that sprawls at wide sizes. If the root is a `TabView`, see [Tab Bar and Sidebar](SHEET-NAVIGATION-PATTERNS.md#tab-bar-and-sidebar-ios-27) for the iPhone sidebar presentation.
+
+Cover every screen, sheet, and popover on both displays in all rotations, including vertical bars, controls near a partial fold, Split View on either side, and a right-to-left language. Say which cases were not tested.
 
 ## Official Sources
 

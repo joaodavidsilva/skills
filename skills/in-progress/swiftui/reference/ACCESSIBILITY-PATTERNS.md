@@ -14,6 +14,8 @@
 
 Prefer `Button` over `onTapGesture` for tappable elements. `Button` provides VoiceOver support, focus handling, and proper traits for free.
 
+Reserve `onTapGesture` for cases that need tap location or tap count. When it is unavoidable, add `.accessibilityAddTraits(.isButton)` so VoiceOver announces it as a button. Keep tap targets at least 44x44 points.
+
 ## Dynamic Type and @ScaledMetric
 
 System text styles scale with Dynamic Type automatically. Prefer built-in styles like `.largeTitle`, `.title`, `.title2`, `.title3`, `.headline`, `.subheadline`, `.body`, `.callout`, `.footnote`, `.caption`, and `.caption2` when they fit your UI:
@@ -77,6 +79,21 @@ struct StatusRow: View {
 }
 ```
 
+### Reading the text size
+
+Read `@Environment(\.dynamicTypeSize)` instead of the soft-deprecated `sizeCategory` / `ContentSizeCategory`. `DynamicTypeSize.isAccessibilitySize` selects a layout for the largest sizes:
+
+```swift
+@Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+var body: some View {
+    let layout = dynamicTypeSize.isAccessibilitySize ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
+    layout { icon; title }
+}
+```
+
+On iOS 26+, `.font(.body.scaled(by: 1.2))` adjusts a text style's size while still following Dynamic Type. Use `.bold()` rather than `.fontWeight(.bold)` so the system picks the weight for the context, and treat `.caption2` (and, with care, `.caption`) as very small text.
+
 ## Accessibility Traits
 
 Use `accessibilityAddTraits` and `accessibilityRemoveTraits` for state-driven traits:
@@ -111,6 +128,22 @@ For non-asset images, such as SF Symbols, hide decorative content with `accessib
 Image(systemName: "sparkles")
     .accessibilityHidden(true)
 ```
+
+## Labels, Menus, and Voice Control
+
+Buttons and menus with an image need a text title, because VoiceOver reads the title. Keep the visual icon-only with `.labelStyle(.iconOnly)` when needed:
+
+```swift
+Button("Add", systemImage: "plus", action: add)
+Menu("Options", systemImage: "ellipsis.circle") { /* ... */ }
+    .labelStyle(.iconOnly)
+```
+
+For labels that change often or are long, add `accessibilityInputLabels(["Apple"])` so Voice Control users can say a stable name (for example a button labeled "AAPL $271.68").
+
+## Motion and Color Settings
+
+When `@Environment(\.accessibilityReduceMotion)` is true, replace large motion animations with opacity changes. When color is the only differentiator, read `@Environment(\.accessibilityDifferentiateWithoutColor)` and add icons, patterns, or strokes.
 
 ## Element Grouping
 
@@ -205,6 +238,7 @@ HStack {
 ## Summary Checklist
 
 - [ ] Use `Button` instead of `onTapGesture` for tappable elements
+- [ ] Image-based buttons and menus carry a text title; Reduce Motion and Differentiate Without Color are honored
 - [ ] Use built-in text styles or Dynamic Type-aware custom fonts for text
 - [ ] Use `@ScaledMetric` for custom values that should scale with Dynamic Type
 - [ ] Mark purely decorative images as decorative or hidden from accessibility

@@ -400,6 +400,10 @@ In the new design, toolbar icons use **monochrome rendering** by default. The mo
 
 Partial-height sheets use a Liquid Glass background by default. If you previously used `presentationBackground(_:)` with a custom background, consider removing it to let the new material shine. Sheets can morph out of the glass controls that present them using `navigationZoomTransition`.
 
+### Concentric Shapes
+
+On iOS 26+, use `ConcentricRectangle()` for shapes near a screen or sheet edge so their corners follow the container (a fixed radius cannot match displays whose corners differ). Shapes far from the boundary can keep `.rect(cornerRadius:)`.
+
 ### Scroll Edge Effects
 
 An automatic scroll edge effect blurs and fades content under system toolbars to keep controls legible. Remove any custom background-darkening effects behind bar items, as they will interfere.

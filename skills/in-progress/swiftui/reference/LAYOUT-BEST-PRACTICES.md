@@ -111,6 +111,10 @@ At a representable boundary, use `context.environment.horizontalSizeClass` or `c
 
 Classify an idiom check before replacing it. Use a size class only when the underlying question is available width or height. A genuine platform, device-idiom, or product-capability decision is not equivalent to a size-class decision, and SwiftUI exposes no user-interface-idiom environment value. Preserve that distinction rather than inventing a size-class mapping or encouraging a global idiom read for ordinary layout.
 
+Size classes are optional, so test `== .regular` when choosing an expanded layout; `!= .compact` treats `nil` as spacious. A forced override such as `.environment(\.verticalSizeClass, .regular)` stops descendants from responding to real window changes, so review it. Screens that assume everything fits (account setup, purchase, introductions) need scrolling or a `ViewThatFits` fallback: iPhone Duo's outer display is wide and short, so a layout sized for a tall phone can push bottom actions out of reach.
+
+Folding resizes the current scene without relaunching and without a `scenePhase` change, so it needs no save/restore flow. With two windows open, closing the device keeps the most recently used window active and backgrounds the other.
+
 ## Adaptive Safe Areas
 
 Make layout decisions from the size SwiftUI proposes to the view. Flag code that subtracts a `GeometryProxy`'s safe-area insets from its size, or reapplies those same insets as padding inside the reporting view: `GeometryProxy.size` already describes the offered content region, so that double-counts space SwiftUI reserved. Reading insets for diagnostics or passing geometry to a container that has a different proposal is not itself a bug; the problem is applying the same inset twice.
@@ -181,6 +185,8 @@ An arrangement supplies layout, not navigation infrastructure. Keep it inside a 
 
 Apple favors small adjustments over rearrangement. Switching between an arrangement and a different layout rebuilds the regions and drops state such as playback or slider position, so consider keeping one arranged branch on the flat inner display (chosen by size classes) and varying only the split axis, with state that must survive owned above the branch. Use accessibility sort priorities when the arranged visual order differs from the logical order.
 
+Overlay arrangements layer the primary above the secondary, then separate them across a partial fold. When the allowed split cannot fit (for example the outer display in landscape), only the primary remains, so give essential secondary content another access route; `layoutPriority()` decides which content survives.
+
 Tuning modifiers (iOS 27.1+): `splitArrangementLayoutRatio`, `splitArrangementLayoutSize`, `splitArrangementFixedLayoutSize`, and `overlayArrangementEdge`; read `@Environment(\.splitArrangementAxis)` and `@Environment(\.overlayArrangementZIndex)` for the current axis and z-index.
 
 ## Reserved Regions (iOS 27.1+)
@@ -200,6 +206,8 @@ GeometryReader { proxy in
 ```
 
 A `.division` region separates the view's bounds into usable areas; use it to move or resize a coherent element into one area rather than spanning the divider. An `.occlusion` region covers a smaller frame within the bounds; keep important visible or interactive content out of that frame. Each `ReservedRegion` also exposes `margins` and `isActive`.
+
+Touches are suppressed inside active camera regions, so keep controls out of them.
 
 Apple's documentation disagrees on whether a default query includes inactive regions, so do not rely on it: filter on `isActive` before displacing content, and pass `options: .includeInactive` when a decision needs to know a region exists while inactive:
 

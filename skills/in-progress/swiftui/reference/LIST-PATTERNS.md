@@ -280,6 +280,8 @@ List {
 }
 ```
 
+Inside a `searchable` hierarchy, `ContentUnavailableView.search` without arguments reads the query from the enclosing search field, so passing `text:` is only needed outside one.
+
 For non-search empty states, use a custom instance:
 
 ```swift

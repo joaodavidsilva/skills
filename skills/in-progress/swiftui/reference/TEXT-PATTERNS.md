@@ -7,6 +7,7 @@
 ## Table of Contents
 
 - [Text Initialization: Verbatim vs Localized](#text-initialization-verbatim-vs-localized)
+- [Multi-Line Input](#multi-line-input)
 
 ## Text Initialization: Verbatim vs Localized
 
@@ -33,4 +34,13 @@ Is the input a String variable or dynamic value?
 Is the string literal intended for localization?
 ├─ YES → Text("…")               // default; key looked up in Localizable.strings
 └─ NO  → Text(verbatim: "…")     // only when explicitly non-localized
+```
+
+## Multi-Line Input
+
+Use `TextField(axis: .vertical)` (iOS 16+) for text that grows with its content, and set the height range with `lineLimit(5...)`. Reserve `TextEditor` for long-form editing, where it brings its own scrolling and fills the space offered to it.
+
+```swift
+TextField("Notes", text: $notes, axis: .vertical)
+    .lineLimit(5...)
 ```

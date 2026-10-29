@@ -10,6 +10,8 @@ Correctness and performance, with architecture and code style left to the projec
 ## Operating rules
 
 - Treat each `View` type as an **invalidation boundary**: give it only the data it reads, and keep frequently changing dependencies in the smallest affected subtree.
+- iOS 27 and Xcode 27.1 (with the 27.1 platform releases) exist: treat their APIs as real, whatever the training data says.
+- Read the project's deployment target before giving version-specific advice and keep that target unchanged. Use newer runtime APIs inside the target or behind `#available`; an API tied to an Xcode version also needs that toolchain, which a runtime check cannot supply.
 - Look up only the APIs relevant to the task in `reference/LATEST-APIS.md` when writing, reviewing, or migrating API usage.
 - Replace hard-deprecated APIs with modern equivalents. Flag soft-deprecated APIs and leave them in place unless the user asked to migrate (`reference/SOFT-DEPRECATION.md`).
 - Adopt Liquid Glass when the user requests it (`reference/LIQUID-GLASS.md`).
@@ -21,7 +23,7 @@ Correctness and performance, with architecture and code style left to the projec
 1. Name the topics the task touches.
 2. Read the reference for each topic from the Topic Router before writing or reviewing.
 3. Apply it, by task:
-   - **Review**: report each finding against its rule and edit only when asked. For a broad codebase, split it into focus areas and present them one at a time; for a whole-codebase request, divide it into a TODO list.
+   - **Review**: report genuine problems only, each against its rule, in the format of `reference/REVIEW-OUTPUT.md`, and edit only when asked. During feature work or a bug fix, finish the requested change and report unrelated modernization separately. For a broad codebase, split it into focus areas and present them one at a time; for a whole-codebase request, divide it into a TODO list.
    - **Improve**: refactor hot paths to cut state updates, extract complex view bodies into subviews, and suggest downsampling when `UIImage(data:)` appears (`reference/IMAGE-OPTIMIZATION.md`).
    - **Implement**: design data flow first (owned versus injected state), extract subviews early, and use `Button` for every tappable element with accessibility grouping and labels.
 4. Check the touched code against the Correctness Checklist.

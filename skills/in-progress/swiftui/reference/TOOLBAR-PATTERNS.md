@@ -157,6 +157,8 @@ content
 
 `.topBarPinnedTrailing` keeps a `ToolbarItem` at the trailing edge and prevents it from moving into overflow. It is available on iOS 27+ and visionOS 27+ only.
 
+Without priorities, overflow starts at the trailing end regardless of importance. Give frequent actions and status items `.high` and expendable items `.low`. A menu devoted to one task (such as filtering) may stay a submenu next to `ToolbarOverflowMenu`; give it a descriptive SF Symbol rather than an ellipsis and `visibilityPriority(.high)` if it should stay in the bar. A custom ellipsis `Menu` becomes a nested submenu of the system overflow menu, while `ToolbarOverflowMenu` contributes its actions directly.
+
 For deployment targets below SDK 27, prefer one availability check around the toolbar content when using these APIs:
 
 ```swift
@@ -210,6 +212,15 @@ On iOS 27+, `ToolbarPlacement.statusBar` can be passed to `toolbarVisibility(_:f
         }
     }
 }
+```
+
+Related controls such as previous and next belong in one `ToolbarItemGroup` rather than separate items divided by fixed spacers (any supported version). The group adapts its spacing and, where supported, takes one visibility priority for the whole set.
+
+On Xcode 27.2+ and iOS 26.4+, toggle a toolbar item with `.hidden(_:)` instead of conditionally creating it. Do not recommend this for Xcode 27.1 toolchains.
+
+```swift
+ToolbarItem { Button("Export", systemImage: "square.and.arrow.up", action: export) }
+    .hidden(!canExport)
 ```
 
 For broader Liquid Glass styling, see [LIQUID-GLASS.md](LIQUID-GLASS.md). For macOS window and toolbar concerns, keep platform-specific guidance in the macOS references.

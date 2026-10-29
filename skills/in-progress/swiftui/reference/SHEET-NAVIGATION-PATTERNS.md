@@ -115,6 +115,8 @@ struct ArticlesView: View {
 }
 ```
 
+When the sheet view takes the item as its only initializer parameter, pass the initializer: `.sheet(item: $item, content: SomeView.init)`.
+
 **Why**: A single `@State` property and one `.sheet(item:)` modifier replaces N boolean properties and N sheet modifiers, improving readability and preventing only-one-sheet-at-a-time conflicts.
 
 ## Item-Driven Alerts and Confirmation Dialogs (SDK 27)
@@ -138,6 +140,8 @@ var body: some View {
         }
 }
 ```
+
+Attach `confirmationDialog` to its triggering control so Liquid Glass animates from the right source. The exception is a button inside `ToolbarOverflowMenu`: the system owns that menu, so a dialog attached there never appears even though the button's action runs. Attach it to a view outside the menu and drive presentation with state. An alert whose only button is a dismiss-only "OK" can omit the actions closure: `.alert("Saved", isPresented: $isShowing) { }`.
 
 Prefer the item overload for an action tied to an optional value instead of synchronizing a separate Boolean or pairing `isPresented` with `presenting:`. Do not use the older `Alert`-returning `alert(item:)`. These overloads require the SDK 27 toolchain but back-deploy to iOS 15, macOS 12, tvOS 15, watchOS 8, and visionOS 1; no runtime availability gate is needed at those deployment targets.
 
@@ -170,6 +174,8 @@ enum Route: Hashable {
     case settings
 }
 ```
+
+Use `NavigationStack` or `NavigationSplitView`, never the deprecated `NavigationView`. Do not mix `navigationDestination(for:)` with `NavigationLink(destination:)` in one hierarchy. Register each data type once per stack; separate stacks (for example in different tabs) can each register the same type.
 
 ### Programmatic Navigation
 
@@ -302,6 +308,21 @@ struct RootTabs: View {
 ```
 
 The system decides between tab bar and sidebar from the space available, and people cannot toggle it. Read `@Environment(\.isTabViewSidebarAvailable)` inside the tab content to learn whether a sidebar is (or can become) visible; it returns `false` outside a sidebar-capable `TabView`'s content. Use it rather than inspecting size classes for this question. When no sidebar is available, make sure content that lives behind nested tabs or sections stays reachable some other way. Keep a plain `TabView` fallback for earlier systems.
+
+### Tab Selection
+
+Bind `TabView(selection:)` to an enum whose cases tag each `Tab`, rather than an `Int` or `String`. Typos and reordered tabs then fail at compile time instead of selecting nothing.
+
+```swift
+enum AppTab { case home, favorites }
+
+@State private var selection: AppTab = .home
+
+TabView(selection: $selection) {
+    Tab("Home", systemImage: "house", value: .home) { HomeView() }
+    Tab("Favorites", systemImage: "star", value: .favorites) { FavoritesView() }
+}
+```
 
 ## Inspector
 

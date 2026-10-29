@@ -35,6 +35,8 @@ Both opaque keys (`"start_workout"`) and natural-language strings (`"Start Worko
 
 Most projects localize through String Catalogs (`.xcstrings`). Each build syncs new keys from code into the catalog, but the catalog file must already exist, because Xcode doesn't create one automatically. If a project already uses `.strings` / `.stringsdict`, add new strings there rather than migrating. Route groups of strings to a specific catalog with `tableName:`.
 
+When generated string symbols are enabled for `Localizable.xcstrings`, add each new string as a key with `extractionState` set to `"manual"` and use the symbol: `Text(.libraryEmpty)`. Provide translations for every language the project supports.
+
 ```swift
 Text("Explore", tableName: "Navigation",
      comment: "Tab bar item title for the Explore screen.")
@@ -76,6 +78,8 @@ Text(category.name)
 
 When a view or model exposes user-facing text, type the property as `LocalizedStringKey` or `LocalizedStringResource` rather than `String`. Every SwiftUI view that takes localized text accepts both, so deferring resolution costs nothing at the display site and preserves locale/bundle context.
 
+Before iOS 26, `LabeledContent` and the plain `TextField(_:text:)` do not accept a `LocalizedStringResource` title; give them a `Text` label built from the resource. The `TextField` forms with `prompt:`, `axis:`, or `value:format:` accept one from iOS 16.
+
 ## LocalizedStringResource for Non-View Types
 
 When a non-view type carries user-facing text (a model object, a tip, a queued notification), use `LocalizedStringResource` instead of `String`. It defers resolution to display time, so it honors the locale active when the value actually renders, not when it was created.
@@ -105,6 +109,8 @@ Text(String(localized: "Created by")) + Text(" ") + Text(authorName)
 Text("Error: \(statusMessage)")
 Text("Created by \(authorName)")
 ```
+
+For counts, let grammar agreement pick the plural form: `Text("^[\(count) person](inflect: true)")` inflects the noun for the active language where the system supports it, with no stringsdict entry for the simple case.
 
 ## Casing
 
@@ -156,7 +162,9 @@ ViewThatFits {
 
 ## Reading the Current Locale
 
-Use `@Environment(\.locale)` for locale-dependent logic in views, not `Locale.current`: the environment respects preview overrides and per-view injection.
+Use `@Environment(\.locale)` for locale-dependent logic in views, not `Locale.current`: the environment respects preview overrides and per-view injection. The same applies to `@Environment(\.calendar)` and `@Environment(\.timeZone)` versus their `.current` counterparts.
+
+When filtering a list from user-typed text, use `localizedStandardContains(_:)` instead of `contains(_:)`: it matches case-insensitively and ignores diacritics for the user's locale.
 
 ## String(localized:) Outside SwiftUI Views
 

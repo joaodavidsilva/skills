@@ -75,6 +75,11 @@ struct MyView: View {
 
 **Note**: You may want to mark `@Observable` classes with `@MainActor` to ensure thread safety with SwiftUI. When your project or package uses Default Actor Isolation set to `MainActor`, the explicit attribute is redundant and can be omitted.
 
+### Other `@State` uses
+
+- A view can hold a non-observable class instance that is expensive to recreate, such as a `CIContext`, in `@State`. This uses `@State` as a persistent cache: the instance survives view updates, with no change tracking.
+- Keep window-specific UI state (active tab, displayed record, navigation path) in scene-root `@State` or `@SceneStorage`. In apps with multiple scenes, `@AppStorage`, singletons, and shared observable models couple separate windows, and iPad (and iPhone Duo's inner display) can host two app windows that must navigate independently.
+
 ## SDK 27 `@State` Macro
 
 SDK 27 migrates `@State` from a property wrapper to a macro. When an initializer intentionally seeds view-owned state, drop the declaration's initial value and assign it once in `init`:
@@ -251,6 +256,10 @@ var isPlaying: Bool {
 }
 Toggle("Play", isOn: $model.isPlaying)
 ```
+
+### Numeric TextField
+
+Bind a `TextField` to a numeric value and use its `format` initializer: `TextField("Score", value: $score, format: .number)`. Add `.keyboardType(.numberPad)` (integers) or `.keyboardType(.decimalPad)` (floating-point) as well; the modifier alone does not make the field numeric.
 
 ## @FocusState
 

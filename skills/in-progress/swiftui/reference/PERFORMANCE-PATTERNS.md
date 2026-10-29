@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Performance Optimization](#performance-optimization)
+- [Deeper Restructuring for Diagnosed Problems](#deeper-restructuring-for-diagnosed-problems)
 - [Anti-Patterns](#anti-patterns)
 - [Summary Checklist](#summary-checklist)
 
@@ -325,6 +326,15 @@ Closures that may run off the main thread:
 
 **When performance issues arise**, suggest the user profile with Instruments (SwiftUI template) to identify specific bottlenecks.
 
+
+## Deeper Restructuring for Diagnosed Problems
+
+Use these only for an established problem such as excessive view updates, or an explicitly requested deep review. They add structure and complexity. Reading several properties from one `@Observable` object is not itself a reason to split a view: Observation tracks properties individually.
+
+- When a view needs up to three fields of a struct, pass them individually (`TrackTitle(title: track.title)`) so unrelated changes to the struct do not update it. With four or more fields, pass the whole struct. This does not apply to observable objects.
+- Avoid passing a very large value (nested collections, dozens of fields) through many view layers: each parent update compares the whole value. Pass a smaller value holding that view's inputs, or the observable object that owns the data. Do not turn a struct into a class just to avoid comparison.
+- If many independent views read the same small portion of a large observable model and still update excessively, extract that portion into a smaller `@Observable` object and pass it directly. Do not do this merely because the parent model has many properties.
+
 ## Anti-Patterns
 
 ### 1. Creating Objects in Body
@@ -349,6 +359,8 @@ var body: some View {
 }
 ```
 
+Prefer `Text` with a format style over stored formatters or C-style formatting: `Text(Date.now, format: .dateTime.day().month().year())`, `Text(100, format: .currency(code: "USD"))`, `Text(value, format: .number.precision(.fractionLength(2)))` instead of `String(format: "%.2f", value)`.
+
 ### 2. Heavy Computation in Body
 
 **Keep view body simple and pure.** Avoid side effects, dispatching, or complex logic.
@@ -371,6 +383,8 @@ var body: some View {
 ```
 
 Move sorting, filtering, and formatting into models or computed properties. The `body` should be a pure structural representation of state.
+
+Keep view initializers trivial. Work that can wait until the view is shown belongs in a `.task` modifier. Derive transformed data from the source of truth with `let`; cache it in `@State` only when you also own the invalidation logic, otherwise the UI goes stale.
 
 ### 3. Unnecessary State
 

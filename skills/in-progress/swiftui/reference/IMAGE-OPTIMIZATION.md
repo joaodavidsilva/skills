@@ -6,6 +6,7 @@
 - [SDK 27 Caching and Request Control](#sdk-27-caching-and-request-control)
 - [Image Decoding and Downsampling (Optional Optimization)](#image-decoding-and-downsampling-optional-optimization)
 - [UIImage Loading and Memory](#uiimage-loading-and-memory)
+- [Rendering a View to an Image](#rendering-a-view-to-an-image)
 - [SF Symbols](#sf-symbols)
 - [Summary Checklist](#summary-checklist)
 
@@ -238,6 +239,16 @@ struct ImageCache {
         }
     }
 }
+```
+
+## Rendering a View to an Image
+
+Use `ImageRenderer` (iOS 16+) to turn a SwiftUI view into an image for sharing or export. It is `@MainActor`, and the view needs an explicit size when it has no intrinsic one. Prefer it over wrapping a `UIHostingController` in `UIGraphicsImageRenderer`.
+
+```swift
+let renderer = ImageRenderer(content: ReceiptView(order: order))
+renderer.scale = displayScale   // from @Environment(\.displayScale)
+let image = renderer.uiImage
 ```
 
 ## SF Symbols
