@@ -46,6 +46,9 @@ only_rules:
   - force_try
   - discouraged_optional_boolean
 
+  # SwiftUI
+  - private_swiftui_state
+
   # Suppression hygiene
   - blanket_disable_command
   - superfluous_disable_command
@@ -80,6 +83,7 @@ nesting:
 force_unwrapping: error
 force_cast: error
 force_try: error
+private_swiftui_state: error
 blanket_disable_command: error
 superfluous_disable_command: error
 
@@ -98,6 +102,7 @@ excluded:
 |---|---|---|
 | Force unwrap | `let x: Int? = nil; _ = x!` in a non-test `.swift` file | `force_unwrapping` |
 | Blanket suppression | `// swiftlint:disable force_cast` at top of file with no `:enable` | `blanket_disable_command` |
+| SwiftUI state | `struct Counter: View { @State var count = 0 ... }` | `private_swiftui_state` |
 | Size / complexity | a 65-line function body | `function_body_length` |
 | Concurrency safety | mutating a non-isolated `var` from a `@Sendable` closure in Swift 6 mode | Swift compiler concurrency error |
 
@@ -111,6 +116,6 @@ Basis: Apple "Organizing your code with local packages" documentation and SwiftP
 
 ## Judgement seeds for `CODING_STANDARDS.md`
 
-- SwiftUI `View` bodies stay declarative and under ~60 lines; extract subviews as dedicated `struct` types (not computed properties or helper methods returning `some View` when they hold state or nontrivial branches) and keep side effects in `@Observable` models or services.
+- SwiftUI `View` bodies stay under ~60 lines; extract subviews into dedicated `View` types and keep side effects in `@Observable` models or services. For view structure, state, lists, navigation, animation, and deprecated-API rules, call the Skill tool with `swiftui`; reviewers and implementers both use it, and this file does not restate them.
 - Model loading/loaded/error screen state as an explicit `enum` rather than separate `isLoading: Bool`, `error: Error?`, and `data: T?` properties that permit impossible combinations.
-- Never invent Apple framework APIs from memory when targeting recent OS releases (such as iOS 26 or iOS 27); verify symbol availability against the SDK or Apple developer documentation first.
+- Never invent Apple framework APIs from memory when targeting recent OS releases (such as iOS 26 or iOS 27); verify symbol availability against the SDK or Apple developer documentation first (the Sosumi MCP, or `sosumi fetch <path>` when that CLI is on `$PATH`, returns a documentation page as Markdown).
