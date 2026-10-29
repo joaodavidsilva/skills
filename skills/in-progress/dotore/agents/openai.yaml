@@ -1,5 +1,0 @@
-interface:
-  display_name: "Dotore"
-  short_description: "Diagnose and fix React effect and state cascades"
-policy:
-  allow_implicit_invocation: false
