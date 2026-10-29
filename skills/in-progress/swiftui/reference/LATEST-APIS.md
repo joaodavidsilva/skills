@@ -562,6 +562,7 @@ These APIs are from the beta iOS 27.1 SDK. Gate runtime use with `#available(iOS
 | `Section(header:content:)` | `Section(content:header:)` | Future-deprecated |
 | `Section(footer:content:)` | `Section(content:footer:)` | Future-deprecated |
 | `Section(header:footer:content:)` | `Section(content:header:footer:)` | Future-deprecated |
+| `AnimatableModifier` | Conform the modifier to `Animatable` directly | Long-standing soft deprecation |
 | Manual `EnvironmentKey` | `@Entry` macro | Back-deploys (Xcode 16+) |
 | `NavigationView` | `NavigationStack` / `NavigationSplitView` | iOS 16+ |
 | `accentColor(_:)` | `tint(_:)` | iOS 16+ |
@@ -579,7 +580,6 @@ These APIs are from the beta iOS 27.1 SDK. Gate runtime use with `#available(iOS
 | Custom toolbar background hacks | `scrollEdgeEffectStyle(_:for:)` | iOS 26+ |
 | `CarouselTabViewStyle` (watchOS) | `VerticalTabViewStyle` | SDK 27 soft-deprecated |
 | `ControlActiveState` / `controlActiveState` (macOS) | `appearsActive` | SDK 27 soft-deprecated |
-| `AnimatableModifier` | Conform the modifier to `Animatable` directly | Deprecated (Apple docs) |
 | `FileDocument`, `ReferenceFileDocument`, and legacy `DocumentGroup` initializers | `Document` (`ReadableDocument` / `WritableDocument`) and closure-based `DocumentGroup` | SDK 27 soft-deprecated; replacement requires aligned 27 releases |
 | `TabView(selection:content:)` legacy builder | `TabContentBuilder`-based `TabView` initializers | SDK 27 soft-deprecated |
 | `listRowPlatterColor(_:)` (watchOS) | `listItemTint(_:)` | SDK 27 soft-deprecated |
