@@ -68,16 +68,17 @@ When you (the agent) run non-interactively, e.g. via
 
 ```bash
 dir=$(mktemp -d)
+echo "stop-file: $dir/stop"   # later tool calls may not share $dir; reuse this printed path literally
 
 # Start recording (background)
 python3 scripts/record_trace.py \
   --attach Helm --stop-file "$dir/stop" \
-  --output "$dir/session.trace"
+  --output "$dir/session.trace" &
 
 # ...user does their thing...
 
-# Stop cleanly (from another shell or tool call, same $dir)
-touch "$dir/stop"
+# Stop cleanly (from another shell or tool call, with the printed path)
+touch /path/printed/above/stop
 ```
 
 The script polls every 0.5s for the stop-file, sends SIGINT to xctrace
