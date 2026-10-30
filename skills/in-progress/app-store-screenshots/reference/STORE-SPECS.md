@@ -6,6 +6,10 @@ A dated cache of the store rules the editor enforces. Read 2026-10-30 from the p
 - Apple creative assets: https://developer.apple.com/help/app-store-connect/reference/app-information/creative-assets-specifications
 - Apple localizations: https://developer.apple.com/help/app-store-connect/reference/app-information/app-store-localizations
 - Google Play: https://support.google.com/googleplay/android-developer/answer/9866151
+- Apple app information: https://developer.apple.com/help/app-store-connect/reference/app-information/app-information
+- Apple platform version information: https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information
+- Google Play listing fields: https://support.google.com/googleplay/android-developer/answer/9859152
+- Google Play release notes: https://support.google.com/googleplay/android-developer/answer/9859348
 
 **Store-ready** means all of: the format is allowed, the pixel size is in the preset list, no alpha channel, the count is inside the limit.
 
@@ -78,3 +82,22 @@ Highly recommended (a lint warning, never a block):
 Default presets: Android phone 1080 x 1920, Android tablet landscape 1920 x 1080 and portrait 1080 x 1920, feature graphic 1024 x 500.
 
 **Do not reuse an iPhone export for Google Play.** 1290 x 2796 and 1320 x 2868 are taller than 2:1, which breaks the Play ratio rule. Each store target is its own deck with its own layout.
+
+## Listing text
+
+The text fields beside the screenshots, for the optional listing step ([LISTING.md](LISTING.md)). Read 2026-10-30.
+
+| Store | Field | Limit | Notes |
+| --- | --- | --- | --- |
+| Apple | Name | 2 to 30 characters | Editable until the app is submitted for review |
+| Apple | Subtitle | 30 characters | Shown under the name |
+| Apple | Promotional text | 170 characters | Shown above the description; editable without a new version |
+| Apple | Description | 4000 characters | Plain text, line breaks allowed, no HTML |
+| Apple | Keywords | 100 **bytes** | Each keyword longer than two characters; the name and company name are already searchable, so repeating them wastes space; other apps' or companies' names are refused |
+| Apple | What's New | 4000 characters | Required from the second version on |
+| Google Play | App name | 30 characters | One localized name per language |
+| Google Play | Short description | 80 characters | The first text on the detail page |
+| Google Play | Full description | 4000 characters | |
+| Google Play | Release notes | 500 Unicode characters per language | Not for promotion or calls to action |
+
+Play counts full-width and half-width characters alike. Apple's keyword limit is in bytes, so an accented or non-Latin keyword costs more than one byte per character: measure it with `printf %s "<text>" | wc -c`. Play warns that repetitive or irrelevant keywords in the name or descriptions can lead to suspension.

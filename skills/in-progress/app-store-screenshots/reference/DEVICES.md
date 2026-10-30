@@ -80,3 +80,20 @@ Accepted sizes (`APP_DESKTOP`, 16:10 landscape only) and the 2880×1800 canvas l
 - **The Mac window is contained** like the TV and CarPlay frames, and its content area below the title bar is exactly 16:10, so a full-screen 16:10 capture fills it without cropping. Other aspects are cover-cropped from the bottom (the top of the window stays visible).
 - **Screenshots:** a full-screen capture (⌘⇧3) at a 16:10 resolution is the cleanest source. Notched MacBook Pros capture at ~1.54:1, which loses a few percent off the bottom (the Dock). A single-window capture (⌘⇧4, then Space) already has its own title bar, so the frame would draw a second one: crop the window's title bar off first, or use a full-screen capture.
 - **Layouts:** the starter deck is `hero` → `split-landscape` → `device-top` (inverted) → `two-devices` → `no-device`. Because the window is contained, `hero` and `device-bottom` look almost the same; prefer `split-landscape` or `two-devices` (two overlapping windows) for variety.
+
+## Upload destinations
+
+Where each export folder goes. The user uploads; this skill never does. Set names are the ones in [`STORE-SPECS.md`](./STORE-SPECS.md); the consoles rename fields, so confirm against what the console shows.
+
+| Export folder | Goes into |
+|---|---|
+| `ios/iphone/<WxH>/<locale>/` | App Store Connect, the version's screenshots for that localization, iPhone set. One set at the highest size is enough: App Store Connect scales it down |
+| `ios/ipad/…` | The iPad 13" set (needed when the app supports iPad) |
+| `ios/duo-outer…`, `ios/duo-inner…` | The iPhone Duo outer and inner display sets, each orientation at its own size |
+| `ios/carplay/…` | The iPhone set, in landscape (there is no CarPlay slot) |
+| `ios/tvos/…`, `ios/watchos/…`, `macos/mac/…` | The Apple TV, Apple Watch and Mac sets |
+| `ios/creative-*/…` | The optional creative assets for the product page header and search results |
+| `android/android/…`, `android/android-7/…`, `android/android-10/…` | Play Console, Store presence > Store listings, the phone, 7-inch tablet and 10-inch tablet screenshots |
+| `android/feature-graphic/1024x500/…` | Play Console, Store listings, the feature graphic (required to publish) |
+
+Each locale folder is a separate visit: switch the console's language to that locale, then upload the matching folder.

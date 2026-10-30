@@ -64,7 +64,7 @@ Ask for what the working directory cannot answer. Wait for the answers.
 1. **Screenshots.** Do they have device captures? Yes: ask where (PNG files of real captures). No, and the app is iOS + SwiftUI: load [reference/CAPTURE-IOS.md](reference/CAPTURE-IOS.md) and run its capture steps first; its output lands in the layout Step 2 expects. No, and not iOS + SwiftUI: the user captures them from the simulator or device.
 2. **App icon**: where is the PNG.
 3. **App name.**
-4. **Features**, in priority order. What is the #1 thing the app does?
+4. **Features**, in priority order. What is the #1 thing the app does? Note where the app's own text says why each one matters (README, onboarding): those lines seed the headlines.
 5. **Style direction.** Either (a) one of the 18 named deep-spec styles in `style-prompts/` (index: [reference/STYLES.md](reference/STYLES.md)), or (b) their own vibe in words plus reference apps, which becomes a custom palette. The toolbar theme picker also ships `clean-light`, `dark-bold`, `warm-editorial`, `ocean-fresh`, `bloom-roast`, and one preset per named style (same id as the style slug).
 
 **Optional**
@@ -76,9 +76,11 @@ Ask for what the working directory cannot answer. Wait for the answers.
 10. App Store creative assets: default to one universal 5244 x 2950 asset; offer separate header and search assets only for different compositions. Ask for a short brand line per asset, never a reused screenshot headline.
 11. Play feature graphic (1024 x 500).
 12. Locales (en, de, es, pt, ja, ar, he, ...).
-13. Number of slides: Apple allows 10, Google Play 8.
+13. Number of slides: Apple allows 10, Google Play 8. The count follows the distinct benefits; a short strong deck beats a padded one.
 14. Brand colors and font beyond the built-in presets.
-15. Anything else.
+15. Store listing text (name, subtitle, keywords, descriptions, release notes): yes loads [reference/LISTING.md](reference/LISTING.md) at Step 7.
+16. Generated backdrops, an extra beside the built-in scenes: yes loads [reference/BACKDROPS.md](reference/BACKDROPS.md) at Step 3.
+17. Anything else.
 
 **Done when:** items 1 to 5 have answers and every optional item is answered or declined.
 
@@ -125,7 +127,11 @@ Before drafting any headline, load [reference/COPY-IDEAS.md](reference/COPY-IDEA
 
 Before choosing layouts, accents, or a cross-screen moment, load [reference/DESIGN-PRINCIPLES.md](reference/DESIGN-PRINCIPLES.md).
 
-**Done when:** every slide has a headline the user accepted, no two adjacent slides share a layout, and the cross-screen decision (one moment, or a stated reason for none) is made.
+A headline promises only what its capture shows: a quantity it names ("five modes") has to be visible on that screen, or the headline changes.
+
+Generated backdrops (Step 1, item 16): once headlines and layouts are settled, load [reference/BACKDROPS.md](reference/BACKDROPS.md) and run it.
+
+**Done when:** every slide has a headline the user accepted, every quantity a headline names is visible on its capture, no two adjacent slides share a layout, and the cross-screen decision (one moment, or a stated reason for none) is made.
 
 ### Step 4: Localize
 
@@ -133,11 +139,13 @@ Confirm the language list even when the user did not mention it: "Should screens
 
 Set `locales` and `locale` in `app-store-screenshots.json`. The editor hides the locale menu at one locale, stores headlines and labels per locale, and falls back to `en` at preview time. A slide's screenshot is one string; `{locale}` inside the path is replaced with the active locale at render and export (`/screenshots/apple/iphone/{locale}/01.png`).
 
+Before writing any non-English copy, load [reference/LOCALES.md](reference/LOCALES.md) and apply each locale's entry: form of address, capitalisation, and what the market must not borrow from its neighbour.
+
 - Rewrite copy for each market; never translate word for word.
 - Recheck line breaks per locale: German, French, and Portuguese often need shorter claims.
 - RTL (`ar`, `he`, `fa`, `ur`): canvas text takes its direction from its content (`dir="auto"`); layouts, devices, and overlays are not mirrored, so the user verifies each slide.
 
-**Done when:** `locales` lists the confirmed languages and every slide has copy in each, or the missing ones are reported.
+**Done when:** `locales` lists the confirmed languages, every slide has copy in each (a text without one would export English), and each locale's copy was read against its `LOCALES.md` entry, or the missing ones are reported.
 
 ### Step 5: Export
 
@@ -153,11 +161,13 @@ Load [reference/DEVICES.md](reference/DEVICES.md) for the deck you are exporting
 - One idea per slide.
 - The hero communicates the main benefit in one second.
 - Readable at thumbnail size and arm's length.
+- Every quantity a headline names is visible on its capture.
 
 **Visual**
 - No two adjacent slides share a layout; landscape tablet slides use `split-landscape`, never two devices side by side.
 - Apple TV, CarPlay, and Mac decks lead with `split-landscape` or `hero`; Watch headlines fit the 422 px canvas without wrapping mid-phrase.
 - One `inverted: true` slide when the deck is long enough.
+- No capture shows a paywall, subscription or purchase screen, a development artefact (bundler refresh bar, debug menu, error state), or an interface language other than its locale's.
 - Decks of 5+ slides have one cross-screen moment, or a clear reason to stay isolated; cross-screen moments stay between adjacent screens and never split text, required info, faces, or critical UI.
 
 **Export**
@@ -166,10 +176,17 @@ Load [reference/DEVICES.md](reference/DEVICES.md) for the deck you are exporting
 - The feature graphic exports at 1024 x 500 with no device frame.
 - Duo: exactly the four sizes in `DEVICES.md`, no "doesn't match" or placeholder warning, every Folded + open slide has a capture from the other display, inner landscape headlines fit one line in every locale. Tell the user to check the sets in App Store Connect's iPhone Duo preview before submitting.
 - Creative assets keep copy and focal art inside the safe-area guide, and a cleared label or headline exports empty.
+- The export advice toasts (**Check before uploading**, **Check text readability**) are resolved, or each finding is reported to the user with its reason. Both are advice: the export is never blocked.
 
 **Done when:** every line passes, or each failure is reported to the user with its fix.
 
-### Step 7: Hand off
+### Step 7: Listing text (optional)
+
+Only when the user chose it in Step 1 (item 15): load [reference/LISTING.md](reference/LISTING.md) and run it. Otherwise go to Step 8.
+
+**Done when:** `LISTING.md`'s own done-when holds, or the step was skipped.
+
+### Step 8: Hand off
 
 Start the dev server, then tell the user, in this order:
 
@@ -178,9 +195,10 @@ Start the dev server, then tell the user, in this order:
 3. Which platforms have starter decks seeded.
 4. Screenshots that did not match the expected names, so they can rename them or use the in-editor drop target.
 5. The **Export bundle** button, for when the layouts are right.
-6. An invitation to ask for any change to copy, layout, or palette.
+6. Where each exported folder goes in the console ([reference/DEVICES.md](reference/DEVICES.md#upload-destinations)). The user uploads; this skill uploads nothing.
+7. An invitation to ask for any change to copy, layout, or palette.
 
-**Done when:** all six points were delivered.
+**Done when:** all seven points were delivered.
 
 ## Common mistakes
 
