@@ -66,5 +66,6 @@ Ask for `/break-ui` on the component anyway, or run `/break-ui data only <compon
 - [interface-polish](./interface-polish.md) tunes optical alignment, border radii, shadows, animations, and interaction feel, whereas `break-ui` feeds hostile data to see what overflows, squishes, or clips.
 - [prototype](./prototype.md) builds throwaway UI variations to settle what a screen should look like before production code exists.
 - [tdd](./tdd.md) locks down behavioral contracts test-first at agreed seams, while `break-ui` exposes visual and data-shape breaks across the rendered surface.
+- [to-tickets](./to-tickets.md) tracks the breaks as tickets when there are more of them than one session should fix. You start it yourself, in the same session, with the report as its input.
 
 For which skill fits your situation across the whole set, **ask-joao** is the router.

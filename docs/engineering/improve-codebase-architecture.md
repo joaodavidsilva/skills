@@ -110,4 +110,4 @@ The skill does not ship a good answer. People often ask for a `TYPESCRIPT.md` wi
 - [grilling](../productivity/grilling.md) walks the decision tree after you choose a candidate.
 - [domain-modeling](./domain-modeling.md) keeps `GLOSSARY.md` and the ADRs current as you make the decision.
 
-Its output is an idea, which goes back into the main build flow at [grill-with-docs](./grill-with-docs.md) or [to-spec](./to-spec.md). Its counterpart at the end of the main flow is [retro](./retro.md). This skill improves the code the agent works in, and `retro` improves the environment around it (checks, standards, steering files) after a build. For which skill fits a situation, **ask-joao** is the router over the whole set.
+Its output is a decision, which goes into the main build flow at [to-spec](./to-spec.md) in the same session, then [to-tickets](./to-tickets.md). Its counterpart at the end of the main flow is [retro](./retro.md). This skill improves the code the agent works in, and `retro` improves the environment around it (checks, standards, steering files) after a build. For which skill fits a situation, **ask-joao** is the router over the whole set.

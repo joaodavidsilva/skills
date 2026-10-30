@@ -78,7 +78,7 @@ If browser tooling is available, screenshot both states at each width and compar
 
 Present the findings in the format below, leave the toggle running, and stop. The user flips the toggle, looks, and decides.
 
-**Done when:** the report is presented with Part 1 (What broke), Part 2 (Decisions for you), Part 3 (What held up), and the toggle location, and execution stops for the user's decision.
+**Done when:** the report is presented with Part 1 (What broke), Part 2 (Decisions for you), Part 3 (What held up), the toggle location, and the fix-or-track choice, and execution stops for the user's decision.
 
 ### Phase 6: Fix on request
 
@@ -111,7 +111,7 @@ Breaks with more than one right answer: truncate vs wrap for a field, what an em
 
 List the worst cases the component already handles. This shows the test was real and tells the user what not to touch.
 
-Close with where the toggle is (URL or file path), the states it has, and: "Say `fix all` or `fix 1, 3` and I'll apply them."
+Close with where the toggle is (URL or file path), the states it has, and the choice: "Say `fix all` or `fix 1, 3` and I'll apply them." When there are more breaks than one session should fix, or the user wants them tracked, tell them to run `/to-tickets` in this same session instead, with the report as its input. `/to-tickets` is user-invoked, so this skill never calls it.
 
 ## Invocation Variants
 
