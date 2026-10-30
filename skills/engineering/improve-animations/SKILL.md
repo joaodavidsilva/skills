@@ -113,6 +113,10 @@ Finish by creating or updating `plans/README.md`: recommended execution order, d
 
 **Done when:** every selected item has a self-contained plan in `plans/NNN-short-slug.md` following [reference/PLAN-TEMPLATE.md](reference/PLAN-TEMPLATE.md) with exact target values from `interface-polish` and a commit stamp, and `plans/README.md` lists all plans with status, execution order, and dependencies.
 
+### Hand off
+
+The plans are ready to run with `execute <plan>`. To take them through the main flow instead, tell the user to run `/to-tickets` with `plans/README.md` as its argument, or `/to-spec` first when the motion work needs design decisions. Each ticket then points at its plan file, which already carries the exact values, so tickets stay thin and never copy file paths or code. `/to-spec` and `/to-tickets` are user-invoked, so this skill never calls them.
+
 ## Invocation Variants
 
 | Invocation | Behavior |

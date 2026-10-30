@@ -15,6 +15,7 @@ Reach for it when an app's transitions feel sluggish, inconsistent, or abrupt an
 | Existing animations feel slow, bouncy, uninterruptible, or inconsistent across the app | `/improve-animations` (runs `audit` mode by default) |
 | The interface feels flat or abrupt and you want to find high-leverage places to add motion | `/improve-animations opportunities` |
 | You already have a plan in `plans/` and want an isolated [subagent](../references/subagent.md) to implement and review it | `/improve-animations execute <plan>` |
+| You want the plans as tracked [tickets](../references/ticket.md) with blocking edges, built through the main flow | `/improve-animations`, then [to-tickets](./to-tickets.md) on `plans/README.md` |
 | You are building or polishing a single component right now and want its motion tuned inline | [interface-polish](./interface-polish.md) |
 | You are building native gestures, layout transitions, or haptics in Expo / React Native | [animate-expo](./animate-expo.md) |
 | You want to survey a codebase for shallow modules and architectural deepening rather than UI motion | [improve-codebase-architecture](./improve-codebase-architecture.md) |
@@ -77,5 +78,6 @@ Run `/improve-animations reconcile`. Because each plan carries the git commit ha
 - [interface-polish](./interface-polish.md) owns the curves, duration budgets, 4-question gate, and review bar that `improve-animations` pulls into every audit and plan.
 - [animate-expo](./animate-expo.md) handles native Expo and React Native motion (`react-native-reanimated`, `react-native-gesture-handler`, layout animations, and haptics) when you are building for native mobile rather than CSS or web motion libraries.
 - [improve-codebase-architecture](./improve-codebase-architecture.md) runs the same read-only survey-then-choose pattern for module boundaries and architectural depth instead of UI motion.
+- [to-tickets](./to-tickets.md) and [to-spec](./to-spec.md) take the plans into the main flow when you would rather track them on your issue tracker than run `execute <plan>`. You start them yourself, passing `plans/README.md`.
 
 When you are unsure which skill fits your situation across the whole set, **ask-joao** routes you.
