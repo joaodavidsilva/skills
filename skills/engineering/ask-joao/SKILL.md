@@ -57,6 +57,8 @@ A starting situation that generates work, then merges onto the main flow.
 
   When the map clears, **it hands off, it doesn't build**: merge onto the main flow at **`/to-spec`**, which collapses the map's linked decisions into a buildable plan, then `/to-tickets` and `/implement` as usual. Looping the map straight into `/implement` skips that collapse and throws the linked detail away, so go straight to `/implement` only when the effort turned out genuinely small.
 
+- **Vulnerabilities to find and fix** → **`/security-audit`** (beta). It audits the codebase, verifies every finding independently, and leaves a report plus a tracker-safe `REMEDIATION.md`. It plans no fixes itself. When you want them, merge onto the main flow at **`/to-tickets`** with the `REMEDIATION.md` path, or at **`/to-spec`** first when the fixes need design decisions, then `/implement` or `/implement-spec` as usual. Check the tracker is private before publishing: the brief describes unfixed vulnerabilities. Like the rest of the flow it's user-invoked: you type it, the agent won't reach for it.
+
 ## Codebase health
 
 Not feature work, just upkeep.
