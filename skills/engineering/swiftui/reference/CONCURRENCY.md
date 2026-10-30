@@ -87,8 +87,12 @@ Prefer changes that preserve behavior while satisfying data-race safety:
 
 ```swift
 Task { @concurrent in
-    let data = try await fetchData()
-    await MainActor.run { self.updateUI(with: data) }
+    do {
+        let data = try await fetchData()
+        await MainActor.run { self.updateUI(with: data) }
+    } catch {
+        await MainActor.run { self.show(error) }
+    }
 }
 ```
 

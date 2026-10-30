@@ -43,7 +43,7 @@ A `.trace` path in the request, or a request to record, profile, or capture a se
 | View composition | `reference/VIEW-STRUCTURE.md` |
 | View modifiers and identity | `reference/MODIFIER-PATTERNS.md` |
 | Performance | `reference/PERFORMANCE-PATTERNS.md` |
-| Swift concurrency: tasks, actors, `@MainActor`, `Sendable`, data races, concurrency diagnostics, Swift 6+ migration (entry point; routes to the `CONCURRENCY-*` files) | `reference/CONCURRENCY.md` |
+| Swift concurrency: actors, `@MainActor`, `Sendable`, data races, Swift 6+ migration (entry point; routes to the `CONCURRENCY-*` files) | `reference/CONCURRENCY.md` |
 | Lists and ForEach | `reference/LIST-PATTERNS.md` |
 | Resizable layout, safe areas, two-column reflow, foldable grids, arrangements, and reserved regions | `reference/LAYOUT-BEST-PRACTICES.md` |
 | iPhone Duo, foldable, or large-display screens (read first to choose the technique) | `reference/IPHONE-DUO.md` |
@@ -70,7 +70,7 @@ A `.trace` path in the request, or a request to record, profile, or capture a se
 | Deprecated API lookup | `reference/LATEST-APIS.md` |
 | Handling soft-deprecated APIs | `reference/SOFT-DEPRECATION.md` |
 | Previews | `reference/PREVIEWS.md` |
-| Swift Testing: `@Test`, `#expect`/`#require`, traits and tags, parameterized tests, async and parallel tests, XCTest migration (entry point; routes to the `TESTING-*` files) | `reference/TESTING.md` |
+| Swift Testing: `#expect`, traits and tags, parameterized tests, XCTest migration (entry point; routes to the `TESTING-*` files) | `reference/TESTING.md` |
 
 ## Correctness Checklist
 
