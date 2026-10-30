@@ -1,6 +1,6 @@
 ---
 name: swiftui
-description: "SwiftUI correctness and performance when writing, reviewing, or refactoring SwiftUI code for iOS or macOS, and Swift concurrency safety (actors, `@MainActor`, `Sendable`, data races, Swift 6+ migration). Also when a `.trace` path appears or the user asks to record or profile a session with Instruments."
+description: "SwiftUI correctness and performance when writing, reviewing, or refactoring SwiftUI code for iOS or macOS, Swift concurrency safety (actors, `@MainActor`, `Sendable`, data races, Swift 6+ migration), and Swift Testing (`#expect`, traits and tags, parameterized tests, XCTest migration). Also when a `.trace` path appears or the user asks to record or profile a session with Instruments."
 ---
 
 # SwiftUI
@@ -70,6 +70,7 @@ A `.trace` path in the request, or a request to record, profile, or capture a se
 | Deprecated API lookup | `reference/LATEST-APIS.md` |
 | Handling soft-deprecated APIs | `reference/SOFT-DEPRECATION.md` |
 | Previews | `reference/PREVIEWS.md` |
+| Swift Testing: `@Test`, `#expect`/`#require`, traits and tags, parameterized tests, async and parallel tests, XCTest migration (entry point; routes to the `TESTING-*` files) | `reference/TESTING.md` |
 
 ## Correctness Checklist
 
@@ -94,3 +95,4 @@ Hard rules, so a violation is always a bug:
 - [ ] `@MainActor` on a type or member is justified by UI-owned state
 - [ ] `@preconcurrency`, `@unchecked Sendable`, and `nonisolated(unsafe)` carry a documented safety invariant
 - [ ] No semaphores or ad hoc locks in async contexts
+- [ ] `import Testing` appears in test targets only

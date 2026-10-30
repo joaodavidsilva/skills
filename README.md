@@ -151,7 +151,7 @@ Skills I use daily for code work.
 - **[animation-vocabulary](./skills/engineering/animation-vocabulary/SKILL.md)**: Reverse-lookup a motion effect's exact term from a visual or feel description when you ask "what's it called when...".
 - **[pr](./skills/engineering/pr/SKILL.md)**: The shape a pull request body should take: a summary as the smallest visual that makes the change clear, before/after evidence that it works, and a merge-danger call (one-way or two-way door, plus blast radius).
 - **[wizard](./skills/engineering/wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
-- **[swiftui](./skills/engineering/swiftui/SKILL.md)**: SwiftUI correctness and performance (state, composition, lists, navigation, animation, Liquid Glass, SDK 27 APIs), Swift concurrency safety and Swift 6+ migration, plus Instruments trace recording and analysis.
+- **[swiftui](./skills/engineering/swiftui/SKILL.md)**: SwiftUI correctness and performance (state, composition, lists, navigation, animation, Liquid Glass, SDK 27 APIs), Swift concurrency safety and Swift 6+ migration, Swift Testing and XCTest migration, plus Instruments trace recording and analysis.
 
 ### Productivity
 

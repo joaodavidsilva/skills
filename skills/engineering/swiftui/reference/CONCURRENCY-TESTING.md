@@ -9,6 +9,7 @@ Use this when:
 Skip this file if:
 
 - You mainly need production ownership guidance. Use `CONCURRENCY-ACTORS.md`, `CONCURRENCY-TASKS.md`, or `CONCURRENCY-MEMORY.md`.
+- You mainly need general Swift Testing structure, traits, parameterization, or XCTest migration. Use `TESTING.md`.
 
 Jump to:
 

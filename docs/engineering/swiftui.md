@@ -1,6 +1,6 @@
 ## What it does
 
-`swiftui` is the correctness and performance bar for SwiftUI code on iOS and macOS, including Swift concurrency safety and Swift 6+ migration. The [agent](../references/agent.md) applies it when it writes, reviews, or refactors SwiftUI, when it meets a concurrency diagnostic, and again when a `.trace` path shows up or you ask it to profile a session.
+`swiftui` is the correctness and performance bar for SwiftUI code on iOS and macOS, including Swift concurrency safety, Swift 6+ migration, and Swift Testing. The [agent](../references/agent.md) applies it when it writes, reviews, or refactors SwiftUI, when it meets a concurrency diagnostic, when it writes or migrates Swift tests, and again when a `.trace` path shows up or you ask it to profile a session.
 
 It treats every `View` as an _invalidation boundary_: a view should read only the data it needs, so a change re-runs the smallest subtree that depends on it. The skill keeps one reference per topic (state, composition, lists, navigation, animation, charts, macOS, Liquid Glass, SDK 27 APIs) and the agent reads only the references the code touches, so a list fix never loads the animation rules. In a review it reports genuine problems only, each against its rule, and edits nothing until you ask.
 
@@ -14,6 +14,7 @@ Type `/swiftui`, or the agent reaches for it automatically when a task fits.
 | Reviewing a screen against the SwiftUI checklist | `swiftui`, as a review |
 | A `.trace` file, or "profile this session" | `swiftui`, Instruments branch |
 | An actor, `@MainActor`, `Sendable`, or data-race diagnostic, or a Swift 6+ migration | `swiftui`, concurrency branch |
+| Writing Swift tests, parameterizing or tagging them, or moving an XCTest suite over | `swiftui`, testing branch |
 | Web UI and motion craft | [interface-polish](./interface-polish.md) |
 
 ## Prerequisites
@@ -27,6 +28,10 @@ Recording and analysis run through two scripts. `record_trace.py` wraps `xctrace
 ## The concurrency branch
 
 The branch starts from the project's build settings (language mode, strict concurrency, default isolation) and the exact diagnostic, then names the _isolation boundary_ the code crosses before proposing a fix. It prefers the smallest safe change: `@MainActor` only for UI-owned state, structured concurrency over unstructured tasks, and an `@unchecked Sendable` or `@preconcurrency` escape hatch only with a written safety invariant. For an unstructured `Task` it picks the entry isolation from the task's _synchronous prefix_, the code before its first `await`. Migration proceeds one diagnostic category at a time, with a rebuild and test run between steps.
+
+## The testing branch
+
+The branch writes Swift unit and integration tests with Swift Testing and leaves UI automation (`XCUIApplication`), performance metrics (`XCTMetric`), and Objective-C-only tests on XCTest. Tests are parallel-safe by default, so shared state gets fixed before `.serialized` is considered. Repeated tests that differ only in input become one parameterized test, and traits and tags carry behavior and filtering instead of test names. Migration is incremental: assertions first, then suites, then parameterization and traits.
 
 ## Common questions
 
@@ -44,6 +49,7 @@ No. It covers correctness and performance, and leaves architecture and code styl
 - It treats iOS 27 APIs as real and checks your deployment target before advising a version-specific change.
 - It flags a soft-deprecated API without rewriting it, unless you asked to migrate.
 - Given a concurrency diagnostic, it quotes the diagnostic, names the isolation boundary, and changes the smallest thing that satisfies it.
+- Given a suite of near-duplicate test methods, it proposes one parameterized test, and keeps a UI or performance test on XCTest.
 - Given a `.trace`, it names the views and symbols behind a hang with numbers, and ties each to a fix.
 
 ## Where it fits
