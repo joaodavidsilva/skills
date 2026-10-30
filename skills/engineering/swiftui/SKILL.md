@@ -1,6 +1,6 @@
 ---
 name: swiftui
-description: "SwiftUI correctness and performance when writing, reviewing, or refactoring SwiftUI code for iOS or macOS. Also when a `.trace` path appears or the user asks to record or profile a session with Instruments."
+description: "SwiftUI correctness and performance when writing, reviewing, or refactoring SwiftUI code for iOS or macOS, and Swift concurrency safety (actors, `@MainActor`, `Sendable`, data races, Swift 6+ migration). Also when a `.trace` path appears or the user asks to record or profile a session with Instruments."
 ---
 
 # SwiftUI
@@ -43,6 +43,7 @@ A `.trace` path in the request, or a request to record, profile, or capture a se
 | View composition | `reference/VIEW-STRUCTURE.md` |
 | View modifiers and identity | `reference/MODIFIER-PATTERNS.md` |
 | Performance | `reference/PERFORMANCE-PATTERNS.md` |
+| Swift concurrency: tasks, actors, `@MainActor`, `Sendable`, data races, concurrency diagnostics, Swift 6+ migration (entry point; routes to the `CONCURRENCY-*` files) | `reference/CONCURRENCY.md` |
 | Lists and ForEach | `reference/LIST-PATTERNS.md` |
 | Resizable layout, safe areas, two-column reflow, foldable grids, arrangements, and reserved regions | `reference/LAYOUT-BEST-PRACTICES.md` |
 | iPhone Duo, foldable, or large-display screens (read first to choose the technique) | `reference/IPHONE-DUO.md` |
@@ -90,3 +91,6 @@ Hard rules, so a violation is always a bug:
 - [ ] Version-specific APIs are gated with `#available` and have sensible fallbacks
 - [ ] `import Charts` present in files using chart types
 - [ ] Previews use self-contained mock data, with no dependency on live services or the network
+- [ ] `@MainActor` on a type or member is justified by UI-owned state
+- [ ] `@preconcurrency`, `@unchecked Sendable`, and `nonisolated(unsafe)` carry a documented safety invariant
+- [ ] No semaphores or ad hoc locks in async contexts

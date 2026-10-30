@@ -1,3 +1,3 @@
 interface:
   display_name: "SwiftUI"
-  short_description: "Expert SwiftUI guidance (state, composition, performance, SDK 27, Liquid Glass) plus Instruments trace recording and analysis."
+  short_description: "Expert SwiftUI guidance (state, composition, performance, SDK 27, Liquid Glass), Swift concurrency safety and Swift 6+ migration, plus Instruments trace recording and analysis."
