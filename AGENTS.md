@@ -22,6 +22,8 @@ To (re)link every skill outside `deprecated/` and `misc/` into the local harness
 
 Run `scripts/check-repo.sh` after editing skills, docs, or READMEs. No em-dashes anywhere in this repo's prose: rewrite the clause with a comma, colon, period, parentheses, or a conjunction, never a blind character substitution.
 
+Judgement rules for editing skills, references, and skill scripts, which `code-review` applies to diffs here, live in [.agents/authoring-rules.md](./.agents/authoring-rules.md).
+
 ## Agent skills
 
 ### Triage labels
