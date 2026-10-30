@@ -16,9 +16,12 @@ import {
 import { detectPlatform, nid } from "@/lib/defaults";
 import { imageElementKey, isBuiltInElementId, isImageElementId, isTextElementId, textElementKey } from "@/lib/elements";
 import { renderSlide } from "@/lib/export-render";
+import { cutText, describeReadability, measureContrast, needsContrastCheck, probeText, type ReadabilityFinding } from "@/lib/legibility";
+import { sceneOf } from "@/lib/scene";
 import { exportAssetPaths } from "@/lib/export-assets";
 import { DUO_COMPANION, duoGeometry, frameAssetPaths, isDuoDevice, setFrameAssets, type FrameFile, type MeasuredFrame } from "@/lib/frame-assets";
 import { didFail, preloadImages } from "@/lib/image-cache";
+import { preflightFindings } from "@/lib/preflight";
 import { resolveScreenshot, writeLocalized } from "@/lib/locale";
 import { useProject } from "@/lib/storage";
 import type {
@@ -519,6 +522,16 @@ export function ScreenshotEditor() {
       });
     }
 
+    // Store-readiness advice (copy rules, locale fallbacks, deck length). It
+    // never blocks: the export below always runs.
+    const advice = preflightFindings(state);
+    if (advice.length > 0) {
+      toast.warning("Check before uploading", {
+        description: <span className="whitespace-pre-line">{advice.map((finding) => finding.message).join("\n")}</span>,
+        duration: 15000,
+      });
+    }
+
     // Make sure custom fonts are loaded before snapshot so typography in PNG
     // matches what's on screen.
     if (typeof document !== "undefined" && document.fonts && document.fonts.ready) {
@@ -552,6 +565,10 @@ export function ScreenshotEditor() {
     let failed = 0;
     const errors: string[] = [];
     const incomplete: string[] = [];
+    // Text cut by the slide edge, or hard to read against what is behind it.
+    // Advice only: it never changes a pixel of the export.
+    const readability: { screen: string; finding: ReadabilityFinding }[] = [];
+    const backdrop = sceneOf(state.scene).backdrop;
 
     // Render each slide once per locale at canvas resolution, then scale that
     // one render to every export size. The sizes are all scalings of the same
@@ -585,8 +602,9 @@ export function ScreenshotEditor() {
         };
         let pngs: Promise<Uint8Array[]>;
         try {
-          const rendered = await captureSlide(el, cW, cH);
+          const { rendered, readability: found } = await captureSlide(el, cW, cH, needsContrastCheck(slide, backdrop));
           if (rendered.missingImages > 0) incomplete.push(label);
+          found.forEach((finding) => readability.push({ screen: label, finding }));
           pngs = Promise.all(sizes.map((size) => rendered.toPng(size.w, size.h)));
         } catch (e) {
           fail(e);
@@ -639,6 +657,13 @@ export function ScreenshotEditor() {
       });
     }
 
+    if (readability.length > 0) {
+      toast.warning("Check text readability", {
+        description: <span className="whitespace-pre-line">{describeReadability(readability).join("\n")}</span>,
+        duration: 15000,
+      });
+    }
+
     const summary = `${locales.length} locale${locales.length === 1 ? "" : "s"} × ${sizes.length} size${sizes.length === 1 ? "" : "s"}`;
     if (failed === 0) {
       toast.success(`Exported ${okCount} PNGs (${summary})`);
@@ -653,7 +678,7 @@ export function ScreenshotEditor() {
     }
   }
 
-  async function captureSlide(el: HTMLElement, sourceW: number, sourceH: number) {
+  async function captureSlide(el: HTMLElement, sourceW: number, sourceH: number, checkContrast = false) {
     // html-to-image needs the node at (0,0) and untransformed. Each export size
     // is a scaled draw of this one render, so aspect ratios that differ by a few
     // pixels are cover-scaled rather than leaving transparent gutters.
@@ -672,7 +697,8 @@ export function ScreenshotEditor() {
     el.style.transformOrigin = "top left";
     el.style.zIndex = "-1";
     try {
-      return await renderSlide(el, sourceW, sourceH);
+      const readability = await inspectReadability(el, sourceW, sourceH, checkContrast);
+      return { rendered: await renderSlide(el, sourceW, sourceH), readability };
     } finally {
       el.style.left = prev.left || "-99999px";
       el.style.top = prev.top || "0px";
@@ -681,6 +707,27 @@ export function ScreenshotEditor() {
       el.style.transformOrigin = prev.transformOrigin;
       el.style.zIndex = prev.zIndex;
     }
+  }
+
+  // Reads the slide the way export is about to render it. Best effort: a failed
+  // measurement is logged and skipped, never an export failure.
+  async function inspectReadability(el: HTMLElement, sourceW: number, sourceH: number, checkContrast: boolean) {
+    const found: ReadabilityFinding[] = [];
+    try {
+      const box = el.getBoundingClientRect();
+      found.push(...cutText(probeText(el)));
+      if (checkContrast) {
+        found.push(
+          ...(await measureContrast(el, async () => {
+            const hidden = await renderSlide(el, sourceW, sourceH);
+            return { pixels: hidden.pixels(), scale: sourceW / (box.width || sourceW) };
+          })),
+        );
+      }
+    } catch (e) {
+      console.warn("Readability check skipped", e);
+    }
+    return found;
   }
 
   // ---------- Render ----------

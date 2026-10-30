@@ -57,6 +57,7 @@ CI uploads `.e2e/` on success and failure, and runs dev and production with Chro
 | `tests/editor.e2e.ts` | Platform tabs, every device deck, screen CRUD and reorder, layouts, locales, themes and fonts, undo, persistence |
 | `tests/scene-style-lab.e2e.ts` | Style Lab, Scene Playground, magnifier |
 | `tests/targets.e2e.ts` | iPhone Duo decks, App Store creatives, exact-size opaque RGB PNG exports, legacy v2 upgrade, cleared-copy export |
+| `tests/preflight.e2e.ts` | Export advice: English fallback, store-rejected copy, text cut off, low contrast, and a clean deck staying silent |
 | `tests/regression.e2e.ts` | Runs the three `tests/harness/` groups against the disposable server |
 | `tests/harness/api-bug-bash.cjs` | Project, upload, font, and asset routes: validation, same-origin guard, revision conflicts, size limits, migration |
 | `tests/harness/ui-bug-bash.cjs` | Interactions: reorder, canvas drag and rotate, responsive widths, theme and font menus |

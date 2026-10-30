@@ -38,6 +38,8 @@ export type RenderedSlide = {
   toPng: (w: number, h: number) => Promise<Uint8Array>;
   /** Visible images that never appeared in the render. 0 when all is well. */
   missingImages: number;
+  /** The settled slide's pixels at render resolution, for measuring what was composed. */
+  pixels: () => ImageData;
 };
 
 const nextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
@@ -199,6 +201,7 @@ export async function renderSlide(
 
   return {
     missingImages,
+    pixels: () => ctx.getImageData(0, 0, width, height),
     toPng: (w, h) => {
       if (w === width && h === height) return encodeCanvasPng(canvas);
       const { canvas: out, ctx: octx } = createContext(w, h);

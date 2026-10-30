@@ -60,6 +60,13 @@ Each screen is rendered once per locale at canvas resolution (`src/lib/export-re
 
 CarPlay has no App Store Connect slot of its own: the CarPlay deck is a head-unit frame on a landscape iPhone canvas and exports landscape iPhone sizes for upload into the iPhone slot.
 
+### Export advice
+
+Export never blocks on advice and never changes a pixel: the PNGs are identical with or without it. It adds up to two warning toasts, each naming the locale and screen.
+
+- **Check before uploading** (`src/lib/preflight.ts`, read from the project alone): a locale with no copy for a text, which would export the English text; a headline identical to English; more screens than the store takes (10 Apple, 8 Google Play); copy that reads as a superlative, ranking, award, price, URL, call to action or the other platform's store; a capture named like a paywall or purchase screen. The patterns are English and advice only: reword, or ignore a false match.
+- **Check text readability** (`src/lib/legibility.ts`, measured on the render): text cut off by the slide edge or by its own box, and text whose colour falls below 4.5:1 (3:1 for labels) against what was composed behind it. Contrast is measured from a second render with the text hidden, taking the worst stretch along each line, so it only runs for screens with image overlays or a backdrop other than Gradient or Solid; plain decks export exactly as fast as before.
+
 ### iPhone Duo
 
 The iOS device menu has **iPhone Duo outer** and **iPhone Duo inner**; the **Orientation** menu switches each between portrait and landscape. App Store Connect lists exactly one size per display and orientation, and each export is that size only:

@@ -237,6 +237,7 @@ function EditableText({
   multiline = false,
   placeholder,
   onFocus,
+  kind,
 }: {
   value: string;
   editable?: boolean;
@@ -245,6 +246,8 @@ function EditableText({
   multiline?: boolean;
   placeholder?: string;
   onFocus?: () => void;
+  /** What the text is, so export checks can find it on the rendered slide. */
+  kind?: "label" | "headline" | "text";
 }) {
   const ref = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
@@ -276,6 +279,7 @@ function EditableText({
       contentEditable={editable ? "plaintext-only" : false}
       suppressContentEditableWarning
       data-placeholder={editable ? placeholder : undefined}
+      data-text-kind={kind}
       onInput={handleInput}
       onFocus={() => onFocus?.()}
       onBlur={(e) => {
@@ -349,6 +353,7 @@ function Caption({
     // "start" rather than "left" so a left-set caption hugs the right edge in RTL.
     <div style={{ textAlign: align === "left" ? "start" : align, position: "relative", width: "100%" }}>
       <EditableText
+        kind="label"
         value={pickText(slide.label, locale)}
         editable={editable}
         onChange={edit?.onLabelChange}
@@ -367,6 +372,7 @@ function Caption({
         }}
       />
       <EditableText
+        kind="headline"
         value={pickText(slide.headline, locale)}
         editable={editable}
         multiline
@@ -1226,6 +1232,7 @@ function FeatureGraphicCanvas({
         <div>
           <div style={{ fontSize: cW * 0.06 * appNameScale, fontWeight: 800, lineHeight: 1.05 }}>{appName || "App"}</div>
           <EditableText
+            kind="headline"
             value={pickText(slide.headline, locale)}
             editable={editable}
             multiline
@@ -1479,6 +1486,7 @@ function SlideElements({
           }}
         >
           <EditableText
+            kind="text"
             value={pickText(textElement.text, locale)}
             editable={editable}
             multiline

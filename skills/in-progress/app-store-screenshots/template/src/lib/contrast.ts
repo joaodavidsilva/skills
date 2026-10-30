@@ -19,14 +19,25 @@ function parseHex(hex: string): [number, number, number] | null {
   return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
 }
 
-export function relativeLuminance(hex: string): number | null {
-  const rgb = parseHex(hex);
-  if (!rgb) return null;
-  const [r, g, b] = rgb.map((v) => {
+/** WCAG 2 relative luminance of an sRGB colour given as 0-255 channels. */
+export function luminanceOfRgb(r: number, g: number, b: number): number {
+  const [lr, lg, lb] = [r, g, b].map((v) => {
     const c = v / 255;
     return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
   });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return 0.2126 * lr + 0.7152 * lg + 0.0722 * lb;
+}
+
+export function relativeLuminance(hex: string): number | null {
+  const rgb = parseHex(hex);
+  if (!rgb) return null;
+  return luminanceOfRgb(rgb[0], rgb[1], rgb[2]);
+}
+
+/** Contrast ratio between two relative luminances (1 to 21). */
+export function contrastOfLuminance(a: number, b: number): number {
+  const [hi, lo] = a > b ? [a, b] : [b, a];
+  return (hi + 0.05) / (lo + 0.05);
 }
 
 export function contrastRatio(a: string, b: string): number {
