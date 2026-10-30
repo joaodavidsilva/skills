@@ -1,5 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { Readable } from "node:stream";
+import { getBackdropStatus, postBackdrop } from "./routes/backdrop.ts";
 import { getFrameFile, getFrames } from "./routes/frames.ts";
 import { getProject, postProject } from "./routes/project.ts";
 import { postUpload } from "./routes/upload.ts";
@@ -20,6 +21,8 @@ const ROUTES: Route[] = [
   { method: "GET", pattern: /^\/api\/frames$/, handler: getFrames },
   { method: "POST", pattern: /^\/api\/upload$/, handler: postUpload },
   { method: "POST", pattern: /^\/api\/upload-font$/, handler: postUploadFont },
+  { method: "GET", pattern: /^\/api\/backdrop$/, handler: () => getBackdropStatus() },
+  { method: "POST", pattern: /^\/api\/backdrop$/, handler: postBackdrop },
   { method: "GET", pattern: /^\/frames\/(?<filename>[^/]+)$/, handler: getFrameFile },
   {
     method: "GET",

@@ -32,7 +32,7 @@ These commands write the supplied server's project file and uploads. `bun run te
 
 ## Isolation and artifacts
 
-The runner starts `e2e-army/server.cjs` on port 4312. It copies the app into a unique temporary directory, symlinks only `node_modules`, and starts Vite there:
+The runner starts `e2e-army/server.cjs` on port 4312, plus a fake image API (`e2e-army/fake-gemini.cjs`) one port up. It copies the app into a unique temporary directory, symlinks only `node_modules`, and starts Vite there:
 
 - **Dev mode** runs `vite` in the copy.
 - **Production mode** (`SCREENSHOTS_E2E_PRODUCTION=1`) copies the built `dist/` and runs `vite preview`. Run `bun run build` first.
@@ -58,6 +58,7 @@ CI uploads `.e2e/` on success and failure, and runs dev and production with Chro
 | `tests/scene-style-lab.e2e.ts` | Style Lab, Scene Playground, magnifier |
 | `tests/targets.e2e.ts` | iPhone Duo decks, App Store creatives, exact-size opaque RGB PNG exports, legacy v2 upgrade, cleared-copy export |
 | `tests/preflight.e2e.ts` | Export advice: English fallback, store-rejected copy, text cut off, low contrast, and a clean deck staying silent |
+| `tests/backdrop.e2e.ts` | The optional AI backdrop: route guard and validation, a generated image stored and served, only the text prompt sent, upstream failures, and the inspector flow (one screen, all screens, remove, no key). Runs against a local fake of the image API, so it never spends money |
 | `tests/regression.e2e.ts` | Runs the three `tests/harness/` groups against the disposable server |
 | `tests/harness/api-bug-bash.cjs` | Project, upload, font, and asset routes: validation, same-origin guard, revision conflicts, size limits, migration |
 | `tests/harness/ui-bug-bash.cjs` | Interactions: reorder, canvas drag and rotate, responsive widths, theme and font menus |

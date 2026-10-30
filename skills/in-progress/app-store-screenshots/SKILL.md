@@ -79,7 +79,7 @@ Ask for what the working directory cannot answer. Wait for the answers.
 13. Number of slides: Apple allows 10, Google Play 8. The count follows the distinct benefits; a short strong deck beats a padded one.
 14. Brand colors and font beyond the built-in presets.
 15. Store listing text (name, subtitle, keywords, descriptions, release notes): yes loads [reference/LISTING.md](reference/LISTING.md) at Step 7.
-16. Generated backdrops, an extra beside the built-in scenes: yes loads [reference/BACKDROPS.md](reference/BACKDROPS.md) at Step 3.
+16. Generated backdrops, a paid extra built into the editor beside the built-in scenes: yes loads [reference/BACKDROPS.md](reference/BACKDROPS.md) at Step 3, and needs `GEMINI_API_KEY` in the shell that starts the editor.
 17. Anything else.
 
 **Done when:** items 1 to 5 have answers and every optional item is answered or declined.

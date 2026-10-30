@@ -74,6 +74,7 @@ import type {
   Theme,
 } from "@/lib/types";
 import { BackgroundControls } from "./background-controls";
+import { BackdropControls } from "./backdrop-controls";
 import { ScreenshotPicker } from "./screenshot-picker";
 import { CalloutControls } from "./callout-controls";
 import { DUO_FIT_TOLERANCE, captureFits } from "./device-frames";
@@ -91,6 +92,8 @@ type Props = {
   onChange: (patch: Partial<Slide>) => void;
   /** Patch computed from the slide's latest state (safe after async work). */
   onUpdate: (update: (slide: Slide) => Partial<Slide>) => void;
+  /** Same patch applied to every screen of the deck. */
+  onUpdateAll: (update: (slide: Slide) => Partial<Slide>) => void;
   onSelectElement: (id: ElementId | null) => void;
 };
 
@@ -112,6 +115,7 @@ export function Inspector({
   selectedElementId,
   onChange,
   onUpdate,
+  onUpdateAll,
   onSelectElement,
 }: Props) {
   const isFeatureGraphic = device === "feature-graphic" || slide.layout === "feature-graphic";
@@ -274,6 +278,18 @@ export function Inspector({
             onChange={onChange}
             onUpdate={onUpdate}
             onSelectElement={onSelectElement}
+          />
+        )}
+
+        {/* Last, so the headline stays the first text field in the inspector. */}
+        {!isFeatureGraphic && (
+          <BackdropControls
+            slide={slide}
+            device={device}
+            orientation={orientation}
+            theme={theme}
+            onUpdate={onUpdate}
+            onUpdateAll={onUpdateAll}
           />
         )}
 

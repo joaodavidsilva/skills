@@ -29,6 +29,7 @@ Vite uses port 5173 and picks the next free port if it is taken. Open the URL pr
 - **Screen controls**: drag-to-reorder screens, click-to-edit text, screenshot drop targets, per-screen layout switcher, dark/light toggle.
 - **Style Lab and Scene Playground**: compare complete looks for a deck and restyle every screen's backdrop, depth and headline at once. See [Style Lab](#style-lab) and [Scene Playground](#scene-playground).
 - **Image overlays, fonts, backgrounds and undo**: PNG/JPG overlay elements, a live screenshot font menu (with font import), per-screen custom backgrounds, and toolbar Undo/Redo. See [Editor controls](#editor-controls).
+- **AI backdrop (optional)**: an inspector section that paints an image behind a screen with Google's image models, when `GEMINI_API_KEY` is set. Off by default; the built-in scenes stay the default and stay deterministic. See [AI backdrop](#ai-backdrop-optional).
 - **Device frames** (`src/components/editor/device-frames.tsx`): iPhone (PNG mockup), iPhone Duo outer and inner displays (a drawn frame), iPad, Apple TV, Apple Watch, CarPlay head unit, Mac window, Android phone, Android tablet (portrait + landscape), feature graphic. Apple's own bezels in `public/frames/` (bundled) replace the built-in iPhone, iPad, Apple Watch, Apple TV, Mac and iPhone Duo frames (see Real bezels).
 - **Auto-save (git-trackable)**: every change is persisted within ~600ms to **`app-store-screenshots.json`** at the project root (via `/api/project`, served by the Vite plugin in `server/`) **and** mirrored to `localStorage` as an instant-paint cache. Commit `app-store-screenshots.json` and you can `git clone` to another machine and resume exactly where you left off.
 - **Multi-device decks**: iOS (iPhone, iPad, iPhone Duo outer/inner in portrait and landscape, Apple TV, Apple Watch, CarPlay, App Store creative assets), Mac, and Android decks live side by side; switching the platform tab keeps each tab's last device.
@@ -173,6 +174,16 @@ Looks come from seeded generators in `src/lib/style-lab.ts`, so the same shuffle
 
 **Surprise me** rolls a new backdrop and depth; the reset arrow returns to the classic look. A project without `scene` renders exactly as before.
 
+### AI backdrop (optional)
+
+Export a Gemini API key in the shell that starts the editor (`GEMINI_API_KEY`, or `GOOGLE_API_KEY`), and restart the editor if it was already running. Without a key the inspector's **AI backdrop** section only explains this and offers nothing to spend.
+
+1. Open **AI backdrop** under Background, describe the look, pick a model and a size, and click **Generate backdrop**.
+2. Confirm the dialog. Each generation is one paid request to Google with your key. Only your description and the theme colours are sent, never a screenshot or the project file. The dialog can be silenced for the rest of the tab.
+3. The result is stored like an upload (`public/screenshots/uploaded/<hash>.jpg`, around 1 to 3 MB at 2K) and added to the screen as an image element named `backdrop`, covering the canvas under the devices and text. **Use on all screens** copies it to every screen of the deck, **Generate another** replaces it, **Remove** deletes it. It is a normal image element, so you can also move, resize or fade it in the Elements card.
+
+The image ratio is the supported one closest to the canvas (9:16 for phones), scaled uniformly and cropped, never stretched. Because the file is stored, exports stay reproducible: regenerating is a choice, not something a re-export does. Text readability is checked on export (see [Export advice](#export-advice)); a backdrop that swallows a headline shows up there. An inverted screen expects a light backdrop, so check those after **Use on all screens**. The feature graphic takes no overlays and has no backdrop section.
+
 ### Magnifier
 
 In the inspector, **Magnifier → Add** places a loupe over the device. Click or drag on the thumbnail (or use arrow keys) to aim it; the ring shows how much of the screenshot the lens covers. **Zoom** is relative to how large the screenshot appears on the device (1.5–5×), and the lens can be a circle or rounded square. Drag, resize, rotate and restack it like any element. It's saved per screen as `callout` plus `transforms.callout`, and is unavailable on no-device layouts and the feature graphic.
@@ -212,6 +223,8 @@ The API is a Vite plugin in `server/` (`plugin.ts`), active in both `vite` (dev)
 - `POST /api/project` accepts project JSON (64 MiB request limit). Send the last `ETag` as `If-Match` to reject stale writes with HTTP 412; success returns a new `ETag`. Scripts that omit `If-Match` intentionally keep unconditional replacement behavior. Unknown schema versions, unknown device decks, duplicate IDs, and malformed element data are rejected with HTTP 400.
 - `POST /api/upload` accepts `{ dataUrl }` for PNG/JPEG (8 MiB decoded file, 12 MiB request, 64 megapixels). It decodes the image before storing the original bytes. Rejected files keep the previous selection; unavailable endpoints can still fall back to inline images.
 - `POST /api/upload-font` accepts `{ data }` containing base64 font bytes (16 MiB decoded file, 23 MiB request). Server validation checks the font container; the editor's browser additionally validates font decoding.
+- `GET /api/backdrop` returns `{ ok, available, models, sizes }`. `available` is whether the server process has an image-API key; the key is never returned.
+- `POST /api/backdrop` accepts `{ prompt, aspectRatio, size, model }` (64 KiB request, prompt up to 2000 characters, values from `src/lib/backdrop-options.ts`), makes one request to the image API, stores the returned image as an upload and answers `{ ok, path, width, height, model, bytes }`. It spends money, so it has the same same-origin and JSON-only guard as the other writes, allows two requests in flight, and never retries. `GEMINI_API_BASE_URL` points it at another host (the e2e suite uses a local fake); do not set it otherwise.
 
 Uploads are written atomically. Project and upload requests time out after 15 seconds in the editor; image preloads after 10 seconds. Export also stops with a retryable error if font loading takes longer than 15 seconds. Failed preloads can be retried on export, and failed or stalled PNG workers finish through the inline encoder.
 

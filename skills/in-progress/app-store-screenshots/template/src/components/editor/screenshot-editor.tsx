@@ -187,6 +187,19 @@ export function ScreenshotEditor() {
     [setState, state.device],
   );
 
+  const updateAllSlides = React.useCallback(
+    (update: (slide: Slide) => Partial<Slide>) => {
+      setState((prev) => ({
+        ...prev,
+        slidesByDevice: {
+          ...prev.slidesByDevice,
+          [state.device]: (prev.slidesByDevice[state.device] || []).map((s) => ({ ...s, ...update(s) })),
+        },
+      }), { coalesce: false });
+    },
+    [setState, state.device],
+  );
+
   const reorderSlides = React.useCallback(
     (next: Slide[]) => {
       setState((prev) => ({
@@ -865,6 +878,7 @@ export function ScreenshotEditor() {
               }
               onChange={(patch) => patchSlide(activeSlide.id, patch)}
               onUpdate={(update) => updateSlide(activeSlide.id, update)}
+              onUpdateAll={updateAllSlides}
               onSelectElement={(elementId) =>
                 setSelectedElement(
                   elementId ? { slideId: activeSlide.id, elementId } : null,

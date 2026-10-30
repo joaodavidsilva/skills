@@ -1,14 +1,8 @@
-import { createHash } from "node:crypto";
-import { promises as fs } from "node:fs";
-import path from "node:path";
 import sharp from "sharp";
 import { rejectCrossSiteWrite, sniffImageType } from "../request-guard.ts";
 import { decodeBase64, readJsonBody } from "../request-body.ts";
-import { writeAsset } from "../write-asset.ts";
+import { storeImage } from "../store-image.ts";
 import type { RouteContext } from "../router.ts";
-
-const UPLOAD_DIR_REL = path.join("public", "screenshots", "uploaded");
-const PUBLIC_PREFIX = "/screenshots/uploaded";
 
 const MIME_EXT: Record<string, string> = {
   "image/png": "png",
@@ -67,15 +61,8 @@ export async function postUpload(req: Request, { root }: RouteContext) {
     return Response.json({ ok: false, error: "Image is corrupt or exceeds 64 megapixels" }, { status: 400 });
   }
 
-  const hash = createHash("sha1").update(parsed.bytes).digest("hex").slice(0, 16);
-  const filename = `${hash}.${ext}`;
-  const absDir = path.join(root, UPLOAD_DIR_REL);
-  const absFile = path.join(absDir, filename);
-
   try {
-    await fs.mkdir(absDir, { recursive: true });
-    await writeAsset(absFile, parsed.bytes);
-    return Response.json({ ok: true, path: `${PUBLIC_PREFIX}/${filename}` });
+    return Response.json({ ok: true, path: await storeImage(root, parsed.bytes, ext as "png" | "jpg") });
   } catch (e) {
     return Response.json(
       { ok: false, error: e instanceof Error ? e.message : String(e) },
