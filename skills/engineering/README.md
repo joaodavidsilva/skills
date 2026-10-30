@@ -19,6 +19,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[retro](./retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
 - **[break-ui](./break-ui/SKILL.md)**: Stress-test a UI component with realistic worst-case data behind a dev-only toggle and report what breaks.
 - **[improve-animations](./improve-animations/SKILL.md)**: Audit a codebase's animations or hunt for motion opportunities, then write self-contained implementation plans.
+- **[security-audit](./security-audit/SKILL.md)**: Audit a codebase for vulnerabilities with independently verified findings and a report, then leave a tracker-safe brief for `/to-tickets` or `/to-spec`.
 
 ## Model-invoked
 
