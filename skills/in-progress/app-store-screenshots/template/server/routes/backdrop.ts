@@ -20,7 +20,8 @@ import type { RouteContext } from "../router.ts";
 const DEFAULT_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
 const UPSTREAM_TIMEOUT_MS = 170_000;
 const MAX_UPSTREAM_BYTES = 64 * 1024 * 1024;
-const MAX_IN_FLIGHT = 2;
+const MAX_IN_FLIGHT = 3;
+const MAX_DRAFT_BYTES = 7 * 1024 * 1024;
 let inFlight = 0;
 
 const apiKey = () => (process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "").trim();
@@ -38,7 +39,7 @@ export function getBackdropStatus() {
   });
 }
 
-type Body = { prompt?: unknown; aspectRatio?: unknown; size?: unknown; model?: unknown };
+type Body = { prompt?: unknown; aspectRatio?: unknown; size?: unknown; model?: unknown; draft?: unknown };
 
 /** Text of Google's error body, bounded; the API does not echo the key. */
 async function upstreamError(response: Response) {
@@ -91,7 +92,7 @@ export async function postBackdrop(req: Request, { root }: RouteContext) {
   const model = BACKDROP_MODELS.find((candidate) => candidate.id === modelId);
   if (!model) return fail(400, `model must be one of ${BACKDROP_MODELS.map((m) => m.id).join(", ")}`);
 
-  if (inFlight >= MAX_IN_FLIGHT) return fail(429, "Two backdrops are already being generated. Wait for one to finish.");
+  if (inFlight >= MAX_IN_FLIGHT) return fail(429, "Three backdrops are already being generated. Wait for one to finish.");
   inFlight += 1;
   try {
     let response: Response;
@@ -122,16 +123,24 @@ export async function postBackdrop(req: Request, { root }: RouteContext) {
     const image = extractImage(result);
     if (typeof image === "string") return fail(502, image);
 
-    // Store what arrived. PNG and JPEG are what the asset route serves; convert
-    // anything else (the API may return WebP) rather than store a file it cannot.
+    // PNG and JPEG are what the asset route serves and the upload route accepts;
+    // convert anything else (the API may return WebP) rather than keep a file neither can.
     let bytes = image;
-    const ext: "png" | "jpg" = sniffImageType(bytes) === "image/png" ? "png" : "jpg";
     try {
       if (!sniffImageType(bytes)) bytes = await sharp(bytes, { limitInputPixels: 64 * 1024 * 1024 }).jpeg({ quality: 92 }).toBuffer();
       const meta = await sharp(bytes, { limitInputPixels: 64 * 1024 * 1024, failOn: "warning" }).metadata();
       if (!meta.width || !meta.height) throw new Error("no dimensions");
       if (bytes.byteLength > 24 * 1024 * 1024) return fail(502, "The generated image is larger than 24 MB. Try a smaller size.");
-      const path = await storeImage(root, bytes, ext);
+      const type = sniffImageType(bytes) === "image/png" ? "png" : "jpg";
+      if (body.draft === true) {
+        // For review in the browser, stored only if the user keeps it, through the
+        // upload route (8 MiB). A 4K image can be larger: re-encode it to fit.
+        if (bytes.byteLength > MAX_DRAFT_BYTES) bytes = await sharp(bytes, { limitInputPixels: 64 * 1024 * 1024 }).jpeg({ quality: 85 }).toBuffer();
+        if (bytes.byteLength > MAX_DRAFT_BYTES) return fail(502, "The generated image is too large to keep. Try a smaller size.");
+        const mime = sniffImageType(bytes) ?? "image/jpeg";
+        return Response.json({ ok: true, dataUrl: `data:${mime};base64,${bytes.toString("base64")}`, width: meta.width, height: meta.height, model: model.id, bytes: bytes.byteLength });
+      }
+      const path = await storeImage(root, bytes, type);
       return Response.json({ ok: true, path, width: meta.width, height: meta.height, model: model.id, bytes: bytes.byteLength });
     } catch {
       return fail(502, "The model returned an image that could not be read");

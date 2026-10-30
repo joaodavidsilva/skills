@@ -8,15 +8,26 @@ import sharp from 'sharp';
 // (e2e-army/fake-gemini.cjs), so nothing here spends money or needs a key.
 
 type ImageElementState = { id: string; src: string; fit?: string; transform: { x: number; y: number; width: number; height: number; zIndex?: number } };
-type SlideState = { id: string; layout: string; screenshot: string; label: Record<string, string>; headline: Record<string, string>; imageElements?: ImageElementState[] };
+type SlideState = { id: string; layout: string; screenshot: string; inverted?: boolean; label: Record<string, string>; headline: Record<string, string>; imageElements?: ImageElementState[] };
 type ProjectState = { slidesByDevice: { iphone: SlideState[] } } & Record<string, unknown>;
 type FakeState = { calls: number; last: { key: string; body: { model: string; response_format: unknown; input: { type: string; text: string }[] } } | null };
 
-const slide = (id: string): SlideState => ({ id, layout: 'device-bottom', screenshot: '', label: { en: 'FEATURE' }, headline: { en: id } });
-const project = (): ProjectState => ({
+const slide = (id: string, extra: Partial<SlideState> = {}): SlideState => ({ id, layout: 'device-bottom', screenshot: '', label: { en: 'FEATURE' }, headline: { en: id }, ...extra });
+const project = (screenshot = ''): ProjectState => ({
   schemaVersion: 3, appName: 'Backdrop Army', themeId: 'dark-bold', connectedCanvas: false, locales: ['en'], locale: 'en',
-  device: 'iphone', orientation: 'portrait', slidesByDevice: { iphone: [slide('One'), slide('Two')] },
+  device: 'iphone', orientation: 'portrait',
+  slidesByDevice: { iphone: [slide('One', { screenshot }), slide('Two'), slide('Three', { inverted: true })] },
 });
+
+/** A dark screenshot with an amber block, stored through the real upload route. */
+async function uploadScreenshot() {
+  const png = await sharp({ create: { width: 200, height: 400, channels: 3, background: '#101820' } })
+    .composite([{ input: await sharp({ create: { width: 200, height: 120, channels: 3, background: '#E8A33D' } }).png().toBuffer(), top: 140, left: 0 }])
+    .png().toBuffer();
+  const response = await fetch(api('/api/upload'), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ dataUrl: `data:image/png;base64,${png.toString('base64')}` }) });
+  const result: { path: string } = await response.json();
+  return result.path;
+}
 
 async function mock(browser: Browser, initial: ProjectState) {
   const store = { state: initial };
@@ -94,6 +105,20 @@ test('a generated backdrop is stored, served, and only the text prompt is sent',
   await expect(last?.body.input).toEqual([{ type: 'text', text: valid.prompt }]);
 });
 
+test('a draft is returned for review and nothing is stored until it is kept', async () => {
+  await setMode('ok');
+  const before = (await fakeState()).calls;
+  const response = await request({ ...valid, draft: true });
+  await expect(response.status).toBe(200);
+  const result: { path?: string; dataUrl: string; width: number; height: number } = await response.json();
+  await expect(result.path).toBeUndefined();
+  await expect(result.dataUrl).toMatch(/^data:image\/(png|jpeg);base64,/);
+  const decoded = Buffer.from(result.dataUrl.split(',')[1], 'base64');
+  const meta = await sharp(decoded).metadata();
+  await expect([meta.width, meta.height]).toEqual([result.width, result.height]);
+  await expect((await fakeState()).calls).toBe(before + 1);
+});
+
 test('a failing image API is reported and leaves the next request working', async () => {
   await setMode('quota');
   const quota = await request(valid);
@@ -109,35 +134,79 @@ test('a failing image API is reported and leaves the next request working', asyn
   await expect((await request(valid)).status).toBe(200);
 });
 
-test('the inspector paints a backdrop for one screen, then all, then removes it', { timeout: 120_000 }, async ({ app, browser, screen }) => {
+test('the inspector paints a backdrop in the screenshot colours, then all screens but inverted ones, then removes it', { timeout: 120_000 }, async ({ app, browser, screen }) => {
   await setMode('ok');
-  const store = await mock(browser, project());
+  const store = await mock(browser, project(await uploadScreenshot()));
   await app.open('/');
   await expect(screen.getByRole('textbox', 'Headline')).toHaveValue('One');
   await screen.getByText(/^AI backdrop/).tap();
-  await screen.getByRole('textbox', 'Backdrop description').fill('Warm amber light on charcoal');
+  await screen.getByRole('textbox', 'Backdrop description').fill('a touch of cream');
   const before = (await fakeState()).calls;
   await screen.getByRole('button', 'Generate backdrop').tap();
   await expect(screen.getByText('Generate a backdrop?', { exact: true })).toBeVisible();
   await expect((await fakeState()).calls).toBe(before); // nothing is sent until confirmed
   await screen.getByRole('button', 'Generate', { exact: true }).tap();
-  await expect(screen.getByRole('button', 'Generate another')).toBeVisible();
+  await expect(screen.getByRole('button', 'Generate again')).toBeVisible();
 
   await eventually(() => expect(backdropOf(store.state, 0)).toBeTruthy());
   await expect(backdropOf(store.state, 0)).toMatchObject({ fit: 'cover', transform: { x: 0, y: 0, width: 1320, height: 2868, zIndex: 1 } });
   await expect(backdropOf(store.state, 1)).toBeUndefined();
   const sent = (await fakeState()).last?.body;
   await expect(sent?.response_format).toMatchObject({ aspect_ratio: '9:16' });
-  await expect(sent?.input[0].text).toContain('Warm amber light on charcoal');
-  await expect(sent?.input[0].text).toContain('wordless');
+  const prompt = sent?.input[0].text ?? '';
+  await expect(prompt).toContain('topographic'); // the default style
+  await expect(prompt).toContain('Also: a touch of cream.');
+  await expect(prompt).toContain('#101820'); // the screenshot's own base colour
+  await expect(prompt).toContain('#E8A33D'); // and its accent, not the theme's purple
+  await expect(prompt).not.toContain('#8B5CF6');
 
   await screen.getByRole('button', 'Use on all screens').tap();
   await eventually(() => expect(backdropOf(store.state, 1)).toBeTruthy());
   await expect(backdropOf(store.state, 1)?.src).toBe(backdropOf(store.state, 0)?.src);
+  await expect(backdropOf(store.state, 2)).toBeUndefined(); // inverted: expects a light backdrop
 
   await screen.getByRole('button', 'Remove').tap();
   await eventually(() => expect(backdropOf(store.state, 0)).toBeUndefined());
   await expect(backdropOf(store.state, 1)).toBeTruthy();
+});
+
+test('three options are painted for review and only the picked one is stored', { timeout: 120_000 }, async ({ app, browser, screen }) => {
+  await setMode('ok');
+  const store = await mock(browser, project());
+  await app.open('/');
+  await expect(screen.getByRole('textbox', 'Headline')).toHaveValue('One');
+  await screen.getByText(/^AI backdrop/).tap();
+  await screen.getByRole('combobox', 'Backdrop style').tap();
+  await screen.getByRole('option', 'Frosted glass').tap();
+  await screen.getByRole('combobox', 'Options to paint').tap();
+  await screen.getByRole('option', '3 options').tap();
+  const before = (await fakeState()).calls;
+  await screen.getByRole('button', 'Generate 3 options').tap();
+  await expect(screen.getByText('Generate 3 backdrops?', { exact: true })).toBeVisible();
+  await screen.getByRole('button', 'Generate', { exact: true }).tap();
+  await expect(screen.getByRole('button', 'Use option 3')).toBeVisible();
+  await expect((await fakeState()).calls).toBe(before + 3);
+  await expect((await fakeState()).last?.body.input[0].text).toContain('glass');
+  await expect(backdropOf(store.state, 0)).toBeUndefined(); // reviewing stores nothing
+
+  await screen.getByRole('button', 'Use option 2').tap();
+  await eventually(() => expect(backdropOf(store.state, 0)).toBeTruthy());
+  await expect(screen.getByRole('button', 'Use option 1')).toHaveCount(0);
+});
+
+test('an inverted screen is painted on the theme\'s light base, not the dark screen in front of it', { timeout: 120_000 }, async ({ app, browser, screen }) => {
+  await setMode('ok');
+  await mock(browser, project(await uploadScreenshot()));
+  await app.open('/');
+  await expect(screen.getByRole('textbox', 'Headline')).toHaveValue('One');
+  await screen.getByText(/^Screen 3 ·/).tap();
+  await expect(screen.getByRole('textbox', 'Headline')).toHaveValue('Three');
+  await screen.getByText(/^AI backdrop/).tap();
+  await screen.getByRole('button', 'Generate backdrop').tap();
+  await screen.getByRole('button', 'Generate', { exact: true }).tap();
+  await expect(screen.getByRole('button', 'Generate again')).toBeVisible();
+  const prompt = (await fakeState()).last?.body.input[0].text ?? '';
+  await expect(prompt).toContain('#F8FAFC'); // Dark Bold's light alternate
 });
 
 test('without a key the section explains how to enable it instead of offering to spend', async ({ app, browser, screen }) => {

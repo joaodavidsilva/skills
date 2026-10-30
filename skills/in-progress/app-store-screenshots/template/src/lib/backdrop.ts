@@ -5,6 +5,7 @@ import {
   type BackdropModelId,
   type BackdropSize,
 } from "./backdrop-options";
+import type { ImagePalette } from "./palette";
 import type { ImageElement, Slide, Theme } from "./types";
 
 // Generated backdrops: one image behind a slide's devices and text, made on
@@ -27,21 +28,82 @@ export function nearestAspectRatio(w: number, h: number): BackdropAspect {
   return best;
 }
 
+/**
+ * Art directions. Each names a concrete subject, a material and a finish: a
+ * model asked for "soft gradients and gentle shapes" paints a blurry blob, and
+ * one asked for "thin topographic lines" or "frosted glass spheres" paints
+ * something a designer would keep. `{base}` and `{accent}` are filled from the
+ * palette; the editor never leaves a colour to the model's taste.
+ */
+export const BACKDROP_STYLES = [
+  {
+    id: "topo",
+    label: "Topographic lines",
+    direction: "Thin {accent} topographic contour lines flowing in gentle waves across a {base} background, precise vector linework, high-end editorial graphic design, generous empty space.",
+  },
+  {
+    id: "glass",
+    label: "Frosted glass",
+    direction: "Clean studio render of a few frosted translucent {accent} glass spheres and rounded slabs catching soft light on a {base} surface, sharp highlights, shallow depth of field, modern and minimal.",
+  },
+  {
+    id: "clay",
+    label: "Soft clay shapes",
+    direction: "Soft matte clay 3D shapes (pebbles, arches and rings) in {accent}, cream and a deeper shade of {accent} resting on a {base} floor, soft studio shadows, playful but refined.",
+  },
+  {
+    id: "shapes",
+    label: "Bold geometric (loud)",
+    direction: "Bold flat geometric composition: large overlapping circles and arcs in {accent} and two nearby shades on a {base} ground, crisp edges, Swiss poster style, lots of negative space.",
+  },
+  {
+    id: "riso",
+    label: "Risograph glow",
+    direction: "A {base} surface with a smooth gradient up to a {accent} glow rising from the bottom edge, visible film grain and halftone dots, risograph print feel, tasteful.",
+  },
+  {
+    id: "paper",
+    label: "Layered paper (loud)",
+    direction: "Layered paper-cut waves in {accent} and shades of {base}, soft shadows between the layers, crafted and tactile, clean edges.",
+  },
+  {
+    id: "custom",
+    label: "Describe it myself",
+    direction: "A backdrop in {base} and {accent}.",
+  },
+] as const;
+
+export type BackdropStyleId = (typeof BACKDROP_STYLES)[number]["id"];
+export const DEFAULT_BACKDROP_STYLE: BackdropStyleId = "topo";
+
 // Where the headline and the device sit, so the art keeps that band calm.
 // Stated as the target to reach, not as things to avoid.
 function compositionCue(layout: Slide["layout"]): string {
   switch (layout) {
     case "device-top":
-      return "Keep the bottom third calm and low in detail, because a headline sits there; the upper two thirds can carry more light and texture, because a phone covers them.";
+      return "Keep the bottom third calm and uncluttered, because a headline sits there; put the interest in the upper two thirds, because a phone covers part of it.";
     case "no-device":
-      return "Keep the central band calm and low in detail, because a large headline sits there; the edges can carry more light and texture.";
+      return "Keep the central band calm and uncluttered, because a large headline sits there; put the interest at the edges.";
     case "split-landscape":
-      return "Keep the left half calm and low in detail, because a headline sits there; the right half can carry more light and texture, because a device covers it.";
+      return "Keep the left half calm and uncluttered, because a headline sits there; put the interest in the right half, because a device covers part of it.";
     case "feature-graphic":
-      return "Keep the whole image calm and low in detail.";
+      return "Keep the whole image calm and uncluttered.";
     default:
-      return "Keep the top third calm and low in detail, because a headline sits there; the lower two thirds can carry more light and texture, because a phone covers them.";
+      return "Keep the top third calm and uncluttered, because a headline sits there; put the interest in the lower two thirds, because a phone covers part of it.";
   }
+}
+
+/**
+ * The palette a backdrop is painted in. The accent is the screenshot's own when
+ * known, else the theme's. The base is the screenshot's too, except on an
+ * inverted screen: its text is dark, so it keeps the theme's light base rather
+ * than inherit the dark colour of the screen sitting in front of it.
+ */
+export function backdropPalette(theme: Theme, slide: Pick<Slide, "inverted">, fromScreenshot: ImagePalette | null): { base: string; accent: string } {
+  return {
+    base: slide.inverted ? theme.bgAlt : fromScreenshot?.base ?? theme.bg,
+    accent: fromScreenshot?.accent ?? theme.accent,
+  };
 }
 
 /**
@@ -49,17 +111,24 @@ function compositionCue(layout: Slide["layout"]): string {
  * screenshot, no project file. The model paints the backdrop alone; the editor
  * composes the real capture, the frame and the headline on top.
  */
-export function backdropPrompt(input: { idea: string; theme: Theme; slide: Slide }): string {
-  const { idea, theme, slide } = input;
-  const base = slide.inverted ? theme.bgAlt : theme.bg;
+export function backdropPrompt(input: {
+  style: BackdropStyleId;
+  idea: string;
+  palette: { base: string; accent: string };
+  slide: Pick<Slide, "layout">;
+}): string {
+  const { style, idea, palette, slide } = input;
+  const direction = (BACKDROP_STYLES.find((option) => option.id === style) ?? BACKDROP_STYLES[0]).direction
+    .replaceAll("{base}", palette.base)
+    .replaceAll("{accent}", palette.accent);
   return [
-    "A backdrop image for an app store screenshot: a wordless, interface-free abstract scene made of light, colour and soft shapes.",
-    `Look and mood: ${idea.trim() || "calm, refined and modern"}.`,
-    `Palette: base colour ${base} with ${theme.accent} as the accent.`,
+    direction,
+    idea.trim() ? `Also: ${idea.trim()}.` : "",
     compositionCue(slide.layout),
-    "Prefer broad gradients and large soft shapes over fine texture, so the image stays clean when enlarged.",
-    "Nothing in the image is a letter, a number, a logo, a phone, a screen, a hand or a person.",
-  ].join("\n");
+    "The image is only a backdrop for an app store screenshot: no text, no letters, no numbers, no logos, no phones, no screens, no hands, no people.",
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 export const findBackdrop = (slide: Slide): ImageElement | undefined =>
@@ -95,31 +164,45 @@ let status: Promise<BackdropStatus> | null = null;
 export function backdropStatus(): Promise<BackdropStatus> {
   status ??= fetch("/api/backdrop", { signal: AbortSignal.timeout(5000) })
     .then(async (response) => {
-      const json = (await response.json()) as BackdropStatus & { ok?: boolean };
+      const json: BackdropStatus & { ok?: boolean } = await response.json();
       return response.ok && json.ok ? json : { available: false, models: [], sizes: [] };
     })
     .catch(() => ({ available: false, models: [], sizes: [] }));
   return status;
 }
 
-export type GeneratedBackdrop = { path: string; width: number; height: number; model: string };
+/** One painted option: held in memory as a data URL until the user keeps it. */
+export type BackdropOption = { dataUrl: string; width: number; height: number; model: string };
 
-/** One paid image request. Throws with the server's own message on failure. */
+/** One paid image request, returned for review and not yet stored. Throws with the server's own message. */
 export async function generateBackdrop(request: {
   prompt: string;
   aspectRatio: BackdropAspect;
   size: BackdropSize;
   model: BackdropModelId;
   signal?: AbortSignal;
-}): Promise<GeneratedBackdrop> {
+}): Promise<BackdropOption> {
   const { signal, ...body } = request;
   const response = await fetch("/api/backdrop", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ ...body, draft: true }),
     signal: signal ?? AbortSignal.timeout(190_000),
   });
-  const json = (await response.json().catch(() => null)) as (GeneratedBackdrop & { ok?: boolean; error?: string }) | null;
+  const json: (BackdropOption & { ok?: boolean; error?: string }) | null = await response.json().catch(() => null);
   if (!response.ok || !json?.ok) throw new Error(json?.error || `Backdrop request failed (${response.status})`);
   return json;
+}
+
+/** Stores a kept option like any upload and returns the path the project keeps. */
+export async function keepBackdrop(option: BackdropOption): Promise<string> {
+  const response = await fetch("/api/upload", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ dataUrl: option.dataUrl }),
+    signal: AbortSignal.timeout(30_000),
+  });
+  const json: { ok?: boolean; path?: string; error?: string } | null = await response.json().catch(() => null);
+  if (!response.ok || !json?.ok || !json.path) throw new Error(json?.error || `Couldn't store the backdrop (${response.status})`);
+  return json.path;
 }

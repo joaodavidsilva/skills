@@ -288,6 +288,7 @@ export function Inspector({
             device={device}
             orientation={orientation}
             theme={theme}
+            locale={locale}
             onUpdate={onUpdate}
             onUpdateAll={onUpdateAll}
           />
