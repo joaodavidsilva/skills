@@ -18,6 +18,7 @@ import {
   CANVAS,
   CARPLAY_RATIO,
   CREATIVE_SPECS,
+  ANDROID_RATIO,
   centredCrop,
   frameFitW,
   isCreative,
@@ -81,7 +82,7 @@ function getFrameAspect(device: Device, orientation: Orientation) {
   if (isCreative(device)) return MK_RATIO;
   switch (device) {
     case "iphone":      return MK_RATIO;
-    case "android":     return 9 / 19.5;
+    case "android":     return ANDROID_RATIO;
     case "ipad":        return IPAD_RATIO;
     case "tvos":        return TV_RATIO;
     case "watchos":     return WATCH_RATIO;
@@ -151,7 +152,7 @@ export function getFrameForDevice(device: Device, orientation: Orientation): {
     case "mac":
       return { Comp: MacWindow, widthFn: macW, smallWidthFn: (cW, cH) => macW(cW, cH, 0.46) };
     case "android":
-      return { Comp: AndroidPhone, widthFn: phoneW, smallWidthFn: phoneWSmall };
+      return { Comp: AndroidPhone, widthFn: frameFitW(ANDROID_RATIO, 0.72, 0.84), smallWidthFn: frameFitW(ANDROID_RATIO, 0.72, 0.66) };
     case "android-7":
     case "android-10":
       if (orientation === "landscape") {
