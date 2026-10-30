@@ -18,7 +18,7 @@ The template is the product. Its `README.md` lists what the editor does: connect
 2. **Confirm before installing or writing.** Name the target directory and package manager, then wait for a yes before copying the template or installing dependencies. The editor owns its directory: when the working directory holds another app (its own `package.json`, for example an Expo or Next app), scaffold into a subdirectory the user names (suggest `marketing/screenshots`) and leave the app's files untouched. Ask again before overwriting an existing `package.json` inside the target.
 3. **Use only installed tools.** Verify binaries with `<tool> --version`; when one is missing, stop and ask the user to install it.
 4. **Take sizes from the live store pages.** `STORE-SPECS.md` is a dated cache. A size no primary source states is asked for, never guessed.
-5. **Apple bezels serve Apple decks only.** Android decks keep the built-in frames.
+5. **Each deck holds captures from its own platform.** An iPhone capture never goes inside an Android frame (or the reverse): a platform with no captures gets no deck, and the user is told which captures are missing. Apple bezels serve Apple decks only; Android decks keep the built-in frames.
 6. **Legacy decks stay isolated** until the user opts into connected crops.
 7. **Upload and submit nothing** to a store for the user.
 8. **User instructions override these defaults.**
@@ -162,7 +162,7 @@ Load [reference/DEVICES.md](reference/DEVICES.md) for the deck you are exporting
 
 **Export**
 - No clipped text or assets after scaling; no transparent gutters or blank edge pixels; cross-screen elements split cleanly.
-- Screenshots sit correctly inside every device frame; filenames sort (zero-padded prefixes).
+- Screenshots sit correctly inside every device frame, and each frame holds its own platform's capture (an Android deck shows the Android status bar and navigation, never a Dynamic Island); filenames sort (zero-padded prefixes).
 - The feature graphic exports at 1024 x 500 with no device frame.
 - Duo: exactly the four sizes in `DEVICES.md`, no "doesn't match" or placeholder warning, every Folded + open slide has a capture from the other display, inner landscape headlines fit one line in every locale. Tell the user to check the sets in App Store Connect's iPhone Duo preview before submitting.
 - Creative assets keep copy and focal art inside the safe-area guide, and a cleared label or headline exports empty.
