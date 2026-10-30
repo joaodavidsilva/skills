@@ -1,0 +1,16 @@
+node_modules
+dist
+.DS_Store
+*.tsbuildinfo
+.env*.local
+
+# Uploaded screenshots belong to the generated project: commit them alongside
+# app-store-screenshots.json so decks remain reproducible after cloning.
+
+# Fonts imported from the editor toolbar are user assets too (and font licences
+# often forbid redistributing them), so keep them out of the template as well.
+public/fonts/imported/*
+!public/fonts/imported/.gitkeep
+
+# Tester Army output
+.e2e/
