@@ -1,0 +1,5 @@
+interface:
+  display_name: "App Store Screenshots"
+  short_description: "Capture iOS screens, then edit and export store-ready App Store and Google Play screenshots"
+policy:
+  allow_implicit_invocation: false
