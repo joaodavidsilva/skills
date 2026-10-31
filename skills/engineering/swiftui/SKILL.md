@@ -1,6 +1,6 @@
 ---
 name: swiftui
-description: "SwiftUI correctness and performance when writing, reviewing, or refactoring SwiftUI code for iOS or macOS, Swift concurrency safety (actors, `@MainActor`, `Sendable`, data races, Swift 6+ migration), and Swift Testing (`#expect`, traits and tags, parameterized tests, XCTest migration). Also when a `.trace` path appears or the user asks to record or profile a session with Instruments."
+description: "SwiftUI correctness and performance when writing, reviewing, or refactoring SwiftUI code for iOS or macOS, Swift concurrency safety (actors, `@MainActor`, `Sendable`, Swift 6+ migration), Swift Testing and XCTest migration, and Xcode build-time optimization (benchmarks, compile hotspots, settings, SwiftPM). Also when a `.trace` path appears or the user asks to record or profile a session with Instruments."
 ---
 
 # SwiftUI
@@ -42,7 +42,7 @@ A `.trace` path in the request, or a request to record, profile, or capture a se
 | Environment and `@Entry` | `reference/ENVIRONMENT-PATTERNS.md` |
 | View composition | `reference/VIEW-STRUCTURE.md` |
 | View modifiers and identity | `reference/MODIFIER-PATTERNS.md` |
-| Performance | `reference/PERFORMANCE-PATTERNS.md` |
+| Runtime performance | `reference/PERFORMANCE-PATTERNS.md` |
 | Swift concurrency: actors, `@MainActor`, `Sendable`, data races, Swift 6+ migration (entry point; routes to the `CONCURRENCY-*` files) | `reference/CONCURRENCY.md` |
 | Lists and ForEach | `reference/LIST-PATTERNS.md` |
 | Resizable layout, safe areas, two-column reflow, foldable grids, arrangements, and reserved regions | `reference/LAYOUT-BEST-PRACTICES.md` |
@@ -71,6 +71,7 @@ A `.trace` path in the request, or a request to record, profile, or capture a se
 | Handling soft-deprecated APIs | `reference/SOFT-DEPRECATION.md` |
 | Previews | `reference/PREVIEWS.md` |
 | Swift Testing: `#expect`, traits and tags, parameterized tests, XCTest migration (entry point; routes to the `TESTING-*` files) | `reference/TESTING.md` |
+| Xcode build time: benchmarking, compile hotspots, build settings, SwiftPM overhead (entry point; routes to the `BUILD-*` files) | `reference/BUILD-OPTIMIZATION.md` |
 
 ## Correctness Checklist
 
