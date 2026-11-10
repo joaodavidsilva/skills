@@ -28,7 +28,7 @@
       <text x="64" y="168">/to-spec</text>
       <text x="64" y="220">/to-tickets</text>
       <text x="64" y="272">/implement</text>
-      <text x="64" y="324">/retro</text>
+      <text x="64" y="324" font-size="16">/improve-environment</text>
     </g>
     <rect x="64" y="342" width="14" height="6" fill="#7CE0B0"/>
   </g>
