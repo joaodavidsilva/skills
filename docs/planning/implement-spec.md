@@ -1,6 +1,6 @@
 ## What it does
 
-`implement-spec` takes a [spec](../references/spec.md) and its [tickets](../references/ticket.md) and lands the whole thing in one run. The orchestrating [agent](../references/agent.md) hands each ticket to an implementer [subagent](../references/subagent.md) working in its own git worktree, merges each finished branch into a single **integration branch**, runs [code-review](./code-review.md) over the result, and resolves the tickets.
+`implement-spec` takes a [spec](../references/spec.md) and its [tickets](../references/ticket.md) and lands the whole thing in one run. The orchestrating [agent](../references/agent.md) hands each ticket to an implementer [subagent](../references/subagent.md) working in its own git worktree, merges each finished branch into a single **integration branch**, runs [code-review](../quality/code-review.md) over the result, and resolves the tickets.
 
 It reads the tickets as a **task graph**, not a list. Blocking edges decide what can start, so at any moment there is a **frontier** of tickets whose blockers have all landed, and every ticket on the frontier runs at once. That is the difference from working the tickets one by one. The graph's shape sets the pace, not the tickets' order on the tracker.
 
@@ -26,8 +26,8 @@ You invoke this by typing `/implement-spec`, and the agent won't reach for it on
 Everything lands on one branch. Each implementer:
 
 1. confirms its worktree is based on the integration branch before it starts,
-2. builds its ticket with [tdd](./tdd.md), red-green one slice at a time,
-3. commits its work, with the message written by [commit](./commit.md),
+2. builds its ticket with [tdd](../quality/tdd.md), red-green one slice at a time,
+3. commits its work, with the message written by [commit](../quality/commit.md),
 4. merges the integration branch tip into its own branch before reporting done, so landing it is a fast-forward.
 
 The tracker decides whether a pull request exists at all. If your tracker closes work through PRs, or you ask for one, the skill opens a draft PR after the first merge and marks it ready at the end. Otherwise the run stops on the integration branch with every ticket resolved the way your tracker closes work, which works fully offline against a local markdown tracker.
@@ -81,7 +81,7 @@ A worktree holds only what git tracks. Tests that read gitignored fixtures, loca
 `implement-spec` is the build step of the main chain, as the parallel alternative to running [implement](./implement.md) once per ticket:
 
 ```txt
-grill-with-docs → to-spec → to-tickets → implement-spec → retro
+grill-with-docs → to-spec → to-tickets → implement-spec → improve-environment
 ```
 
-Its neighbours are [to-tickets](./to-tickets.md), which declares the blocking edges it reads as a task graph, and [code-review](./code-review.md), which it runs over the integration branch before closing out. **ask-joao** is the router over the whole set when you are not sure which flow you are in.
+Its neighbours are [to-tickets](./to-tickets.md), which declares the blocking edges it reads as a task graph, and [code-review](../quality/code-review.md), which it runs over the integration branch before closing out. **ask-joao** is the router over the whole set when you are not sure which flow you are in.
