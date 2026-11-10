@@ -15,10 +15,10 @@ Several skills are close to it. Pick by the problem you have:
 | The problem | The skill |
 |---|---|
 | The shape of one module: its interface, its seam, its depth | `codebase-design` |
-| The *words of the domain*: "account" means three things, two people mean different things by "cancellation" | [domain-modeling](./domain-modeling.md) |
-| You don't yet know *which* module to redesign | [improve-codebase-architecture](./improve-codebase-architecture.md) (the survey that finds candidates) |
-| You want the design argued with, not just named | [grilling](../productivity/grilling.md) |
-| There's a concrete behaviour to build and you want tests that survive a refactor | [tdd](./tdd.md) |
+| The *words of the domain*: "account" means three things, two people mean different things by "cancellation" | [domain-modeling](../planning/domain-modeling.md) |
+| You don't yet know *which* module to redesign | [improve-codebase-architecture](../quality/improve-codebase-architecture.md) (the survey that finds candidates) |
+| You want the design argued with, not just named | [grilling](grilling.md) |
+| There's a concrete behaviour to build and you want tests that survive a refactor | [tdd](../quality/tdd.md) |
 
 ## The vocabulary
 
@@ -43,7 +43,7 @@ The skill does *not* define depth as the ratio of implementation lines to interf
 - **The interface is the test surface.** Callers and tests cross the same seam. If you want to test *past* the interface, the module is the wrong shape.
 - **One adapter means a hypothetical seam. Two adapters means a real one.** Don't cut a seam until something varies across it. A single-adapter seam is just indirection.
 
-Two supporting files go further, and the skill reads them on demand rather than up front. [DEEPENING.md](../../skills/engineering/codebase-design/reference/DEEPENING.md) classifies a candidate's dependencies into four categories (in-process, local-substitutable, remote-but-owned, true-external), because the category decides how you test the deepened module across its seam. [DESIGN-IT-TWICE.md](../../skills/engineering/codebase-design/reference/DESIGN-IT-TWICE.md) starts parallel [sub-agents](../references/subagent.md) to produce three or more radically different interfaces for the same module, then compares them on depth, locality and seam placement.
+Two supporting files go further, and the skill reads them on demand rather than up front. [DEEPENING.md](../../skills/thinking/codebase-design/reference/DEEPENING.md) classifies a candidate's dependencies into four categories (in-process, local-substitutable, remote-but-owned, true-external), because the category decides how you test the deepened module across its seam. [DESIGN-IT-TWICE.md](../../skills/thinking/codebase-design/reference/DESIGN-IT-TWICE.md) starts parallel [sub-agents](../references/subagent.md) to produce three or more radically different interfaces for the same module, then compares them on depth, locality and seam placement.
 
 ## Common questions
 
@@ -85,4 +85,4 @@ People have proposed those. One proposal adds Parnas's module secrets and Page-J
 
 ## Where it fits
 
-`codebase-design` is a **reach-for-it-anytime standalone**, and the vocabulary layer underneath the engineering skills rather than a step in any chain. Its closest neighbour is [domain-modeling](./domain-modeling.md), the parallel reference for the *problem domain*'s words rather than the module's shape. The two are usually wanted together, since naming a deep module well needs both. [improve-codebase-architecture](./improve-codebase-architecture.md) is the other: it surveys a codebase for deepening candidates and writes every one of them in this glossary, so it finds the module and you design it in this skill's words. When you're unsure which skill or flow fits, **ask-joao** routes you.
+`codebase-design` is a **reach-for-it-anytime standalone**, and the vocabulary layer underneath the engineering skills rather than a step in any chain. Its closest neighbour is [domain-modeling](../planning/domain-modeling.md), the parallel reference for the *problem domain*'s words rather than the module's shape. The two are usually wanted together, since naming a deep module well needs both. [improve-codebase-architecture](../quality/improve-codebase-architecture.md) is the other: it surveys a codebase for deepening candidates and writes every one of them in this glossary, so it finds the module and you design it in this skill's words. When you're unsure which skill or flow fits, **ask-joao** routes you.
