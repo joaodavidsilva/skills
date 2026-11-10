@@ -4,7 +4,7 @@ Judgement rules enforced during `code-review` of edits to skills, references, an
 
 ## Skills (`skills/**/SKILL.md`, `reference/*.md`, `.agents/*.md`)
 
-**Rule:** Write each step and reference following `skills/productivity/writing-for-agents/SKILL.md`, and review the diff against it.
+**Rule:** Write each step and reference following `skills/setup/writing-for-agents/SKILL.md`, and review the diff against it.
 
 **Why:** That skill owns the writing rules. A second copy here would drift from it.
 
