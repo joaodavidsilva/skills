@@ -182,6 +182,7 @@ UI, motion, and visual craft.
 
 - **[interface-polish](./skills/design/interface-polish/SKILL.md)**: Tune the small details that make an interface feel better: animation, typography, surfaces, hover states, hit areas, icons, and optical alignment.
 - **[animate-expo](./skills/design/animate-expo/SKILL.md)**: Build React Native and Expo animations, gestures, sheets, screen transitions, and haptics on the UI thread with Reanimated 4, Gesture Handler, Expo Router, and `expo-haptics`.
+- **[gestures](./skills/design/gestures/SKILL.md)**: Build web drag, swipe, and sheet interactions that track the finger 1:1, release on a velocity-seeded spring, and stay interruptible.
 - **[animation-vocabulary](./skills/design/animation-vocabulary/SKILL.md)**: Reverse-lookup a motion effect's exact term from a visual or feel description when you ask "what's it called when...".
 - **[swiftui](./skills/design/swiftui/SKILL.md)**: SwiftUI correctness and performance (state, composition, lists, navigation, animation, Liquid Glass, SDK 27 APIs), Swift concurrency safety and Swift 6+ migration, Swift Testing and XCTest migration, Xcode build-time optimization, plus Instruments trace recording and analysis.
 - **[beautify-readme](./skills/design/beautify-readme/SKILL.md)**: Redesign a repository's README or create standalone README visual assets (pure SVG heroes, diagrams, section headers, hybrid cutouts, opt-in GIF motion).
