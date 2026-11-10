@@ -4,13 +4,13 @@ Skills are organized into bucket folders under `skills/`:
 - `productivity/`: daily non-code workflow tools
 - `in-progress/`: beta: public on purpose, feedback wanted
 
-Every skill in `engineering/` or `productivity/` (the **promoted** buckets) must have a reference in the top-level `README.md`. Skills in `in-progress/` must not appear there.
+Every bucket except `in-progress/` is **promoted**, and every skill in a promoted bucket must have a reference in the top-level `README.md`. Skills in `in-progress/` must not appear there.
 
 Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
 
 Each bucket folder has a `README.md` that lists every skill in the bucket with a one-line description, with the skill name linked to its `SKILL.md`. The promoted buckets' `README.md`s and the top-level `README.md` group entries into **User-invoked** and **Model-invoked**; the `in-progress/` `README.md` uses a flat list.
 
-Skills in `engineering/` and `productivity/` also have a human-facing docs page at `docs/<bucket>/<skill-name>.md`; `in-progress/` gets no docs page. When you add, rename, remove, or change the behaviour of a skill in `engineering/` or `productivity/`, create, archive, or re-sync its docs page following [.agents/writing-docs.md](./.agents/writing-docs.md).
+Skills in a promoted bucket also have a human-facing docs page at `docs/<bucket>/<skill-name>.md`; `in-progress/` gets no docs page. When you add, rename, remove, or change the behaviour of a skill in a promoted bucket, create, archive, or re-sync its docs page following [.agents/writing-docs.md](./.agents/writing-docs.md).
 
 Every `SKILL.md` is either user-invoked (`disable-model-invocation: true` plus `policy.allow_implicit_invocation: false` in `agents/openai.yaml`, reachable only by the human) or model-invoked (model- or user-reachable). See [.agents/invocation.md](./.agents/invocation.md).
 

@@ -75,7 +75,7 @@ for bucket in sorted(os.listdir("skills")):
         if f"./{name}/SKILL.md" not in b_readme:
             fail(f"{b_readme_path}: missing link ./{name}/SKILL.md")
         doc_path = f"docs/{bucket}/{name}.md"
-        if bucket in ("engineering", "productivity"):
+        if bucket != "in-progress":
             if f"./skills/{bucket}/{name}/SKILL.md" not in top_readme:
                 fail(f"README.md: missing promoted skill ./skills/{bucket}/{name}/SKILL.md")
             if not os.path.exists(doc_path):
@@ -83,9 +83,8 @@ for bucket in sorted(os.listdir("skills")):
         else:
             if f"/{name}/SKILL.md" in top_readme:
                 fail(f"README.md: non-promoted skill {bucket}/{name} must not appear in top-level README.md")
-            for db in ("engineering", "productivity", "in-progress"):
-                if os.path.exists(f"docs/{db}/{name}.md"):
-                    fail(f"docs/{db}/{name}.md: non-promoted skill {bucket}/{name} must not have a docs page")
+            for doc in glob.glob(f"docs/*/{name}.md"):
+                fail(f"{doc}: non-promoted skill {bucket}/{name} must not have a docs page")
 
 # 5. Case-exact relative markdown links & no stale upstream URLs
 def exists_case_exact(path):
