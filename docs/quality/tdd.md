@@ -2,7 +2,7 @@
 
 `tdd` builds a feature or fixes a bug test-first: one failing test, then just enough code to pass it, then the next behaviour. It carries the standards that make that loop produce tests worth keeping: what a good test is, where tests go, what mocks are for, and the three anti-patterns that make a suite worthless.
 
-It writes no test at a seam you have not agreed to first. Before any test exists, it names the public boundaries it intends to test at and stops for your confirmation. Testing effort is finite, and this step spends it on the critical paths instead of on every edge case. `tdd` is also a **reference**, not a driver. It contains the rules of the loop, and something else (you, or [implement](./implement.md)) runs the [session](../references/session.md) that applies them.
+It writes no test at a seam you have not agreed to first. Before any test exists, it names the public boundaries it intends to test at and stops for your confirmation. Testing effort is finite, and this step spends it on the critical paths instead of on every edge case. `tdd` is also a **reference**, not a driver. It contains the rules of the loop, and something else (you, or [implement](../planning/implement.md)) runs the [session](../references/session.md) that applies them.
 
 ## When to reach for it
 
@@ -13,16 +13,16 @@ Reach for it when there is a concrete behaviour to build, with an input and an o
 | Your situation | Where to go |
 | --- | --- |
 | A behaviour with defined inputs and outputs (business logic, a request/response contract, a transformation, validation) | `tdd` |
-| The behaviour isn't pinned down yet | [to-spec](./to-spec.md), which also agrees the test seams before any code is written |
-| The question is really the shape of the interface, not the tests | [codebase-design](./codebase-design.md) |
-| You have a [spec](../references/spec.md) or [tickets](../references/ticket.md) and want the whole build run for you | [implement](./implement.md), which drives `tdd` per ticket |
+| The behaviour isn't pinned down yet | [to-spec](../planning/to-spec.md), which also agrees the test seams before any code is written |
+| The question is really the shape of the interface, not the tests | [codebase-design](../thinking/codebase-design.md) |
+| You have a [spec](../references/spec.md) or [tickets](../references/ticket.md) and want the whole build run for you | [implement](../planning/implement.md), which drives `tdd` per ticket |
 | Config, wiring, glue, type annotations, straight CRUD delegation | Nothing here fits well; see the open gap below |
 
 That last row is a real gap. The skill decides *where* the seams go, but nothing in it decides *whether* a change is worth the loop at all. If you run it on a change with no independent source of truth to assert against, you get a test that restates the implementation. That is the tautological anti-pattern the skill warns about, reached from the other direction. It is an open issue. Until it closes, you make that call yourself, or write the rule into your `CLAUDE.md`.
 
 ## Prerequisites
 
-[codebase-design](./codebase-design.md) needs to be installed. `tdd` used to carry its own deep-module and interface-design notes; v1.0 deleted them in favour of the shared skill, and `tdd` now uses its interface-design vocabulary. Nothing else; the skill is [stateless](../references/stateless.md) and writes no files of its own.
+[codebase-design](../thinking/codebase-design.md) needs to be installed. `tdd` used to carry its own deep-module and interface-design notes; v1.0 deleted them in favour of the shared skill, and `tdd` now uses its interface-design vocabulary. Nothing else; the skill is [stateless](../references/stateless.md) and writes no files of its own.
 
 ## The loop, and the seam it runs at
 
@@ -32,7 +32,7 @@ The skill rests on three terms.
 
 **Vertical slice.** Write one test at one seam, then the minimal implementation, then repeat. The first cycle is a **tracer bullet** that proves a single path end to end. The opposite is horizontal slicing: all the tests first, then all the code. Tests written in bulk verify *imagined* behaviour. They check the shape of things rather than what a user does, and they commit you to a test structure before you understand the implementation.
 
-**Pre-agreed seam.** A seam is the public boundary you observe behaviour at without reaching inside. The rule has no exceptions. No test goes at an unconfirmed seam. In the full chain the seams are agreed earlier, during [to-spec](./to-spec.md): "`/tdd` is told to only work at pre-agreed test seams, `/code-review` checks that only agreed-upon test seams were used." Invoked on its own, `tdd` asks you directly.
+**Pre-agreed seam.** A seam is the public boundary you observe behaviour at without reaching inside. The rule has no exceptions. No test goes at an unconfirmed seam. In the full chain the seams are agreed earlier, during [to-spec](../planning/to-spec.md): "`/tdd` is told to only work at pre-agreed test seams, `/code-review` checks that only agreed-upon test seams were used." Invoked on its own, `tdd` asks you directly.
 
 The three anti-patterns it is written to prevent:
 
@@ -68,7 +68,7 @@ No. `/tdd` documents the methodology; `/implement` is a simple work→feedback�
 
 **Where did the deep-modules and interface-design guidance go?**
 
-Into [codebase-design](./codebase-design.md) in v1.0, generalised so several skills share one vocabulary. `refactoring.md` left at the same time; refactoring is now [code-review](./code-review.md)'s job, and that skill carries the Fowler smell baseline.
+Into [codebase-design](../thinking/codebase-design.md) in v1.0, generalised so several skills share one vocabulary. `refactoring.md` left at the same time; refactoring is now [code-review](./code-review.md)'s job, and that skill carries the Fowler smell baseline.
 
 **Does it know about my other tickets?**
 
@@ -88,7 +88,7 @@ No. Run against one ticket, it can propose work that belongs to a sibling ticket
 `tdd` runs inside the build step of the main chain; it is not a step of its own:
 
 ```txt
-grill-with-docs → to-spec → to-tickets → implement → code-review → retro
+grill-with-docs → to-spec → to-tickets → implement → code-review → improve-environment
 ```
 
-[to-spec](./to-spec.md) agrees the test seams up front, [implement](./implement.md) drives `tdd` per ticket, and [code-review](./code-review.md) checks afterwards that only the agreed seams were used, and owns the refactoring `tdd` no longer does. Its other neighbour is [codebase-design](./codebase-design.md), the shared source of the seam and deep-module vocabulary that `tdd` uses. You can also reach for it on its own, whenever there is a concrete behaviour to build and no full spec in play. When you are unsure which skill fits your situation, **ask-joao** routes you.
+[to-spec](../planning/to-spec.md) agrees the test seams up front, [implement](../planning/implement.md) drives `tdd` per ticket, and [code-review](./code-review.md) checks afterwards that only the agreed seams were used, and owns the refactoring `tdd` no longer does. Its other neighbour is [codebase-design](../thinking/codebase-design.md), the shared source of the seam and deep-module vocabulary that `tdd` uses. You can also reach for it on its own, whenever there is a concrete behaviour to build and no full spec in play. When you are unsure which skill fits your situation, **ask-joao** routes you.
