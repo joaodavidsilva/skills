@@ -15,7 +15,7 @@ Reach for it when you can picture or feel an animation ("that iOS scroll where i
 | You can describe how an effect looks or feels, and need its name | `animation-vocabulary` |
 | Polishing or reviewing UI details, easing curves, and surface rules | [interface-polish](./interface-polish.md) |
 | Building gestures, sheets, transitions, or haptics in Expo / React Native | [animate-expo](./animate-expo.md) |
-| Building throwaway UI variations to see how a screen or state model feels | [prototype](./prototype.md) |
+| Building throwaway UI variations to see how a screen or state model feels | [prototype](../thinking/prototype.md) |
 
 ## Sensation to exact term, with disambiguation
 
@@ -54,6 +54,6 @@ The skill never invents terminology outside its glossary. When no single entry m
 
 - [interface-polish](./interface-polish.md) turns those named concepts (`Origin-aware animation`, `Stagger`, `Tabular numbers`, `Ease-out`) into concrete CSS and component rules.
 - [animate-expo](./animate-expo.md) implements the mobile and gesture equivalents (`Rubber-banding`, `Velocity`, `Interruptible animation`) on the UI runtime in Expo and React Native.
-- [prototype](./prototype.md) builds throwaway UI variants when you need to see several motion or layout directions side by side before committing.
+- [prototype](../thinking/prototype.md) builds throwaway UI variants when you need to see several motion or layout directions side by side before committing.
 
 **ask-joao** routes across the whole set when you are unsure which skill the situation wants.
