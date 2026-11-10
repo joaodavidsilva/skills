@@ -14,8 +14,8 @@ Reach for it when a component or screen looks done against clean demo data and y
 | --- | --- |
 | A component looks finished on happy-path fixtures and needs stress-testing with hostile but realistic data | `break-ui` |
 | A screen works with real data, but the spacing, alignment, shadows, or hit areas feel off | [interface-polish](./interface-polish.md) |
-| You are still deciding what the screen should look like or how its state model should work | [prototype](./prototype.md) |
-| You are building a behavioral feature with defined inputs and outputs test-first | [tdd](./tdd.md) |
+| You are still deciding what the screen should look like or how its state model should work | [prototype](../thinking/prototype.md) |
+| You are building a behavioral feature with defined inputs and outputs test-first | [tdd](../quality/tdd.md) |
 
 ## Schema-backed worst cases and the dev-only toggle
 
@@ -64,8 +64,8 @@ Ask for `/break-ui` on the component anyway, or run `/break-ui data only <compon
 `break-ui` is a **reach-for-it-anytime standalone** that you run once a component renders and before you call it done. Its neighbours cover the surrounding UI and testing work:
 
 - [interface-polish](./interface-polish.md) tunes optical alignment, border radii, shadows, animations, and interaction feel, whereas `break-ui` feeds hostile data to see what overflows, squishes, or clips.
-- [prototype](./prototype.md) builds throwaway UI variations to settle what a screen should look like before production code exists.
-- [tdd](./tdd.md) locks down behavioral contracts test-first at agreed seams, while `break-ui` exposes visual and data-shape breaks across the rendered surface.
-- [to-tickets](./to-tickets.md) tracks the breaks as tickets when there are more of them than one session should fix. You start it yourself, in the same session, with the report as its input.
+- [prototype](../thinking/prototype.md) builds throwaway UI variations to settle what a screen should look like before production code exists.
+- [tdd](../quality/tdd.md) locks down behavioral contracts test-first at agreed seams, while `break-ui` exposes visual and data-shape breaks across the rendered surface.
+- [to-tickets](../planning/to-tickets.md) tracks the breaks as tickets when there are more of them than one session should fix. You start it yourself, in the same session, with the report as its input.
 
 For which skill fits your situation across the whole set, **ask-joao** is the router.
