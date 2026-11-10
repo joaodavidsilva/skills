@@ -15,8 +15,8 @@ Reach for it when the *words* are the problem:
 | Two people mean different things by "cancellation" | `domain-modeling`: pick the canonical term, list the other under `_Avoid_` |
 | "Account" is doing three jobs in three files | `domain-modeling`: split it into Customer and User |
 | You just made a hard-to-reverse architectural choice | `domain-modeling`: it offers an ADR, if the choice clears the bar |
-| The module's *shape* is the problem: where the seam goes, how deep the interface is | [codebase-design](./codebase-design.md) |
-| You want the whole plan interrogated before you build | [grill-with-docs](./grill-with-docs.md), which drives this skill underneath |
+| The module's *shape* is the problem: where the seam goes, how deep the interface is | [codebase-design](../thinking/codebase-design.md) |
+| You want the whole plan interrogated before you build | [grill-with-docs](../thinking/grill-with-docs.md), which drives this skill underneath |
 | You want a term looked up, not changed | Nothing. Read `GLOSSARY.md`. It is a file. |
 
 ## Prerequisites
@@ -83,4 +83,4 @@ No, and there is no plan for a skill that does. A domain language you do not und
 
 ## Where it fits
 
-`domain-modeling` is a **model-invoked reference** that runs *underneath* other skills more often than it runs on its own. [grill-with-docs](./grill-with-docs.md) drives it through a grilling session, [wayfinder](./wayfinder.md) loads it while charting a map, [triage](./triage.md) uses it to keep [tickets](../references/ticket.md) in the project's own words, and [improve-codebase-architecture](./improve-codebase-architecture.md) calls it as decisions settle. Its closest sibling is [codebase-design](./codebase-design.md). Together they are the vocabulary layer under everything else, this one for the *domain*, that one for the module's *shape*. It is also reachable directly, when you want the discipline without committing to the steps of whatever skill would normally load it. When you are unsure which skill fits, **ask-joao** routes you.
+`domain-modeling` is a **model-invoked reference** that runs *underneath* other skills more often than it runs on its own. [grill-with-docs](../thinking/grill-with-docs.md) drives it through a grilling session, [wayfinder](./wayfinder.md) loads it while charting a map, [triage](./triage.md) uses it to keep [tickets](../references/ticket.md) in the project's own words, and [improve-codebase-architecture](../quality/improve-codebase-architecture.md) calls it as decisions settle. Its closest sibling is [codebase-design](../thinking/codebase-design.md). Together they are the vocabulary layer under everything else, this one for the *domain*, that one for the module's *shape*. It is also reachable directly, when you want the discipline without committing to the steps of whatever skill would normally load it. When you are unsure which skill fits, **ask-joao** routes you.
