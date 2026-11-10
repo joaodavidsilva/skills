@@ -1,0 +1,5 @@
+interface:
+  display_name: "Improve Environment"
+  short_description: "Review a coding session and suggest improvements to the coding agent's environment."
+policy:
+  allow_implicit_invocation: false
