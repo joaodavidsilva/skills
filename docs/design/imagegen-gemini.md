@@ -49,6 +49,6 @@ Not unless you ask it to. `scripts/image_gen.py` refuses to overwrite an existin
 
 ## Where it fits
 
-A reach-for-it-anytime standalone in `productivity/`, and the raster-generation helper behind [beautify-readme](./beautify-readme.md)'s hybrid SVG workflow.
+A reach-for-it-anytime standalone in `design/`, and the raster-generation helper behind [beautify-readme](./beautify-readme.md)'s hybrid SVG workflow.
 
 **ask-joao** routes across the whole set when you are unsure which skill the situation wants.
