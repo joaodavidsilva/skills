@@ -16,8 +16,8 @@ Reach for it when the learning is the project: a language, a framework, a codeba
 | One idea explained inside the session you are already in | Just ask, in that session |
 | The agent's last message re-pitched because it didn't land | [wait-what](./wait-what.md) |
 | To sharpen thinking you already have, rather than acquire new material | [grill-me](./grill-me.md) |
-| A background agent to read [primary sources](../references/primary-source.md) and leave you a cited document | [research](../engineering/research.md) |
-| To learn something that came up mid-grilling, without derailing the [grilling](../references/grilling.md) | [handoff](./handoff.md) out to a teaching workspace, then `teach` there |
+| A background agent to read [primary sources](../references/primary-source.md) and leave you a cited document | [research](research.md) |
+| To learn something that came up mid-grilling, without derailing the [grilling](../references/grilling.md) | [handoff](../planning/handoff.md) out to a teaching workspace, then `teach` there |
 
 ## Prerequisites
 
@@ -94,4 +94,4 @@ There is no canonical answer, and the reported differences are large. Users repo
 
 `teach` is a **reach-for-it-anytime standalone**. It is not a step in a build chain and shares no artifacts with the engineering flow; it works in its own directory for as long as you study the topic.
 
-Its one real neighbour is [handoff](./handoff.md). Together they answer "what do I do if I'm being grilled about something I don't understand?" Don't stop the grilling to learn. `/handoff` to a teaching workspace, learn the topic there with `/teach`, then go back and continue where you left off. The nearby alternative is [research](../engineering/research.md), for when what you want is a cited document rather than lessons and retention. When you are not sure which skill or flow fits, **ask-joao** routes you over the whole set.
+Its one real neighbour is [handoff](../planning/handoff.md). Together they answer "what do I do if I'm being grilled about something I don't understand?" Don't stop the grilling to learn. `/handoff` to a teaching workspace, learn the topic there with `/teach`, then go back and continue where you left off. The nearby alternative is [research](research.md), for when what you want is a cited document rather than lessons and retention. When you are not sure which skill or flow fits, **ask-joao** routes you over the whole set.
