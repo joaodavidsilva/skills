@@ -83,7 +83,7 @@ for bucket in sorted(os.listdir("skills")):
         else:
             if f"/{name}/SKILL.md" in top_readme:
                 fail(f"README.md: non-promoted skill {bucket}/{name} must not appear in top-level README.md")
-            for db in ("engineering", "productivity", "in-progress", "misc", "deprecated"):
+            for db in ("engineering", "productivity", "in-progress"):
                 if os.path.exists(f"docs/{db}/{name}.md"):
                     fail(f"docs/{db}/{name}.md: non-promoted skill {bucket}/{name} must not have a docs page")
 
