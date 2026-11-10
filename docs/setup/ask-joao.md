@@ -11,8 +11,8 @@ You invoke this by typing `/ask-joao`; the agent won't reach for it on its own.
 | Your situation | What the router gives back |
 | --- | --- |
 | An idea, and no idea where to start | The head of the main flow, and whether the build is small enough to skip the spec |
-| Bugs and requests arriving from other people | The [triage](./triage.md) on-ramp, and why [tickets](../references/ticket.md) you generated yourself don't belong on it |
-| Two skills that look interchangeable | The line between them, and it is usually one concrete test rather than a matter of taste. [grill-me](../productivity/grill-me.md) or [grill-with-docs](./grill-with-docs.md) turns on whether you are in a working directory; [grill-with-docs](./grill-with-docs.md) or [wayfinder](./wayfinder.md) turns on whether the effort fits one session |
+| Bugs and requests arriving from other people | The [triage](../planning/triage.md) on-ramp, and why [tickets](../references/ticket.md) you generated yourself don't belong on it |
+| Two skills that look interchangeable | The line between them, and it is usually one concrete test rather than a matter of taste. [grill-me](../thinking/grill-me.md) or [grill-with-docs](../thinking/grill-with-docs.md) turns on whether you are in a working directory; [grill-with-docs](../thinking/grill-with-docs.md) or [wayfinder](../planning/wayfinder.md) turns on whether the effort fits one session |
 | A long session and a decision about the [context](../references/context.md) | The ordered tree over the five options at a phase boundary |
 | A skill you have already picked | Nothing useful. Invoke that skill directly. |
 
@@ -26,9 +26,9 @@ The tracker-dependent routes (triage, `to-spec`, `to-tickets`, `implement`) assu
 
 The skill's leading word is **flow**, a path *through* the skills rather than a single skill. When you name your situation, the router places you at a step on a flow. That is a different answer from "here is the skill that matches your keywords". There are five kinds of route, and the skill itself describes them in full:
 
-- **The main flow**, idea to ship. Grill, spec, tickets, implement (one ticket at a time, or the whole task graph in parallel with [implement-spec](./implement-spec.md)), review, then [retro](./retro.md), which feeds what the build taught back into the agent's environment. It has two branches. One is a prototype detour, for when a question needs runnable code to settle it. The other is the spec-and-tickets split, which is only worth its cost when the build spans more than one session.
+- **The main flow**, idea to ship. Grill, spec, tickets, implement (one ticket at a time, or the whole task graph in parallel with [implement-spec](../planning/implement-spec.md)), review, then [improve-environment](./improve-environment.md), which feeds what the build taught back into the agent's environment. It has two branches. One is a prototype detour, for when a question needs runnable code to settle it. The other is the spec-and-tickets split, which is only worth its cost when the build spans more than one session.
 - **On-ramps**, for a situation that generates work and then merges onto the main flow: incoming bug reports, something broken, or an effort too foggy and too large to hold in one session.
-- **Codebase health**, upkeep rather than feature work. [improve-codebase-architecture](./improve-codebase-architecture.md) surveys the code for deepening opportunities, and each one it finds re-enters the main flow as an idea.
+- **Codebase health**, upkeep rather than feature work. [improve-codebase-architecture](../quality/improve-codebase-architecture.md) surveys the code for deepening opportunities, and each one it finds re-enters the main flow as an idea.
 - **Standalones**, which sit off every flow and which you use on their own: the prototype, the questionnaire, the research run.
 - **A vocabulary layer underneath**, the two references the other skills pull in when the words rather than the process are the problem.
 
@@ -40,7 +40,7 @@ The skill's other key idea is the **phase boundary**. A phase is a chunk of work
 | --- | --- |
 | **Continue** | The next phase wants this one verbatim, or you have [smart zone](../references/smart-zone.md) left. It is the only move that keeps the session as a [primary source](../references/primary-source.md), so rule it out first |
 | **`/clear`** | Everything behind you is disposable. The cheapest option, and you cannot undo it if you were wrong |
-| **[handoff](../productivity/handoff.md)** | Something has to travel: a new [harness](../references/harness.md), a new directory, a colleague, a side task forked mid-phase |
+| **[handoff](../planning/handoff.md)** | Something has to travel: a new [harness](../references/harness.md), a new directory, a colleague, a side task forked mid-phase |
 | **Subagent** | The task is scoped tightly enough to run with you [away from the keyboard](../references/afk.md) |
 | **`/compact`** | None of the above. It is the default, and the tree often ends here |
 
@@ -50,7 +50,7 @@ People often get two of these wrong, which is why the router gives the order and
 
 **Isn't there just a list of the skills in the right order?**
 
-People keep asking for one in the README. This skill is that list. A static table would say `wayfinder → to-spec → to-tickets → implement → code-review → retro` and be wrong for most situations. The important parts are the branches: is there a codebase, does the build span sessions, can talking settle this question. The cost is that the router is maintained by hand, so it lags behind the repo. `/grilling` shipped long before the router named it.
+People keep asking for one in the README. This skill is that list. A static table would say `wayfinder → to-spec → to-tickets → implement → code-review → improve-environment` and be wrong for most situations. The important parts are the branches: is there a codebase, does the build span sessions, can talking settle this question. The cost is that the router is maintained by hand, so it lags behind the repo. `/grilling` shipped long before the router named it.
 
 **It told me half the skills aren't installed.**
 
@@ -58,7 +58,7 @@ This is a known bug, and it is not fixed. Most of the skills the router routes y
 
 **It described a skill's behaviour, and the skill doesn't do that.**
 
-This is also a real bug, and also not fixed. The router answers from its own one-line summary of each skill rather than from the skill. One detailed report tracked three instances in a single session, including a recommendation to skip [to-spec](./to-spec.md) based only on the summary "turn the thread into a spec". The router never opened `to-spec/SKILL.md`. In every case it verified only after the user pushed back, and never on its own initiative. Skipping `to-spec` there cost a real seam check, and the tickets that came out undercounted the work. When the router states something about another skill that you will act on, ask it to open that `SKILL.md` first. The same applies to questions the map does not cover at all, such as whether to use [plan mode](../references/agent-mode.md): that answer is the [model](../references/model.md)'s inference, not something written down here.
+This is also a real bug, and also not fixed. The router answers from its own one-line summary of each skill rather than from the skill. One detailed report tracked three instances in a single session, including a recommendation to skip [to-spec](../planning/to-spec.md) based only on the summary "turn the thread into a spec". The router never opened `to-spec/SKILL.md`. In every case it verified only after the user pushed back, and never on its own initiative. Skipping `to-spec` there cost a real seam check, and the tickets that came out undercounted the work. When the router states something about another skill that you will act on, ask it to open that `SKILL.md` first. The same applies to questions the map does not cover at all, such as whether to use [plan mode](../references/agent-mode.md): that answer is the [model](../references/model.md)'s inference, not something written down here.
 
 **Why is it prose instead of a numbered checklist?**
 
@@ -70,11 +70,11 @@ No. Three separate proposals have asked for a router that reads your local `skil
 
 **It told me to edit a SKILL.md.**
 
-That advice is often correct, but the edit rarely lasts. Someone asked it how to make [implement](./implement.md) close tickets, was told to add a line to the skill, and saw the problem at once. `npx skills update` overwrites the file, and the plugin install is read-only. Put standing behaviour in your own `CLAUDE.md` or `AGENTS.md`, or say it in the invocation. Changes you make in the prompt survive updates. People point the flow at Linear instead of GitHub this way, or ask it which open tickets could run in parallel.
+That advice is often correct, but the edit rarely lasts. Someone asked it how to make [implement](../planning/implement.md) close tickets, was told to add a line to the skill, and saw the problem at once. `npx skills update` overwrites the file, and the plugin install is read-only. Put standing behaviour in your own `CLAUDE.md` or `AGENTS.md`, or say it in the invocation. Changes you make in the prompt survive updates. People point the flow at Linear instead of GitHub this way, or ask it which open tickets could run in parallel.
 
 **It named a skill I don't have, or missed one I do.**
 
-Check the changelog for a rename before assuming it is gone. `writing-great-skills` became [writing-for-agents](../productivity/writing-for-agents.md) with no alias, `to-prd` became [to-spec](./to-spec.md), and `pathfinder` became [wayfinder](./wayfinder.md). Four skills were retired outright into the skills that absorbed them: `ubiquitous-language`, `design-an-interface`, `qa` and `request-refactor-plan`. If it misses a skill you have, that is the router's own lag, described above.
+Check the changelog for a rename before assuming it is gone. `writing-great-skills` became [writing-for-agents](writing-for-agents.md) with no alias, `to-prd` became [to-spec](../planning/to-spec.md), and `pathfinder` became [wayfinder](../planning/wayfinder.md). Four skills were retired outright into the skills that absorbed them: `ubiquitous-language`, `design-an-interface`, `qa` and `request-refactor-plan`. If it misses a skill you have, that is the router's own lag, described above.
 
 ## It's working if
 
@@ -86,6 +86,6 @@ Check the changelog for a rename before assuming it is gone. `writing-great-skil
 
 ## Where it fits
 
-`ask-joao` is a **standalone router** that sits over the whole set. It is never a step in a chain. It points into every chain, and the other docs pages link back to it so none of them has to redraw the graph. From here you most often land on [grill-with-docs](./grill-with-docs.md), the head of the main flow, or [triage](./triage.md), the on-ramp for work that arrived rather than work you started.
+`ask-joao` is a **standalone router** that sits over the whole set. It is never a step in a chain. It points into every chain, and the other docs pages link back to it so none of them has to redraw the graph. From here you most often land on [grill-with-docs](../thinking/grill-with-docs.md), the head of the main flow, or [triage](../planning/triage.md), the on-ramp for work that arrived rather than work you started.
 
 It is a [secondary source](../references/secondary-source.md) over the skills it describes. Where the router and a `SKILL.md` disagree, the `SKILL.md` is right.
