@@ -59,6 +59,6 @@ GitHub sanitizes scripts and blocks or inconsistently renders many CSS/SMIL anim
 
 ## Where it fits
 
-A reach-for-it-anytime standalone in the `productivity/` bucket for repository documentation and visual storytelling. When you choose hybrid SVG composition, it calls [imagegen-gemini](./imagegen-gemini.md) via the [tool](../references/tool.md) call to generate and key out the raster subject. For agent-facing files (`SKILL.md`, `AGENTS.md`, `CLAUDE.md`) rather than human-facing READMEs, use [writing-for-agents](./writing-for-agents.md).
+A reach-for-it-anytime standalone in the `design/` bucket for repository documentation and visual storytelling. When you choose hybrid SVG composition, it calls [imagegen-gemini](./imagegen-gemini.md) via the [tool](../references/tool.md) call to generate and key out the raster subject. For agent-facing files (`SKILL.md`, `AGENTS.md`, `CLAUDE.md`) rather than human-facing READMEs, use [writing-for-agents](../setup/writing-for-agents.md).
 
 **ask-joao** routes across the whole set when you are unsure which skill the situation wants.
