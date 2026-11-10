@@ -1,0 +1,3 @@
+interface:
+  display_name: "Gestures"
+  short_description: "Drag, swipe, and sheet interactions that track the finger 1:1 and stay interruptible"
