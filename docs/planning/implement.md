@@ -1,6 +1,6 @@
 ## What it does
 
-`implement` builds work that has already been decided. You point it at a [ticket](../references/ticket.md), a [spec](../references/spec.md), or the plan you just agreed in the conversation, and it writes the code, drives [tdd](./tdd.md) at the seams, typechecks as it goes, runs [code-review](./code-review.md) at the end, and commits to the current branch, with the message written by [commit](./commit.md).
+`implement` builds work that has already been decided. You point it at a [ticket](../references/ticket.md), a [spec](../references/spec.md), or the plan you just agreed in the conversation, and it writes the code, drives [tdd](../quality/tdd.md) at the seams, typechecks as it goes, runs [code-review](../quality/code-review.md) at the end, and commits to the current branch, with the message written by [commit](../quality/commit.md).
 
 It never reopens the plan. There is no interview, no clarifying round, no proposal of a different approach. Whatever was settled upstream is the input, and the skill's whole job is to turn that into a commit. That is what separates it from typing "build this" at a fresh [agent](../references/agent.md), which often redesigns the work while it builds it.
 
@@ -16,9 +16,9 @@ Where the work currently lives decides whether this is the right skill:
 | A spec, not yet split up, and the build spans sessions | [to-tickets](./to-tickets.md) first, then `/implement` per ticket |
 | A spec, and the build is small | `/implement` directly against the spec |
 | Only in the conversation you just had, and it's still small | `/implement` right there, in the same window |
-| Not written down anywhere yet | [grill-with-docs](./grill-with-docs.md), or [grill-me](../productivity/grill-me.md) if there's no codebase |
-| One concrete behaviour you want test-first, with no spec | [tdd](./tdd.md) directly |
-| Already built, and you want it checked | [code-review](./code-review.md) directly |
+| Not written down anywhere yet | [grill-with-docs](../thinking/grill-with-docs.md), or [grill-me](../thinking/grill-me.md) if there's no codebase |
+| One concrete behaviour you want test-first, with no spec | [tdd](../quality/tdd.md) directly |
+| Already built, and you want it checked | [code-review](../quality/code-review.md) directly |
 
 The same-session case is worth naming because the skill's own first line doesn't cover it. `SKILL.md` says "the spec or tickets", which pushes the [model](../references/model.md) to look for a file that doesn't exist. If the plan lives only in the thread, say so when you invoke it.
 
@@ -33,10 +33,10 @@ If the tickets came from [to-tickets](./to-tickets.md), **setup-joao-david-silva
 A run has five steps, in order:
 
 1. Read the ticket or spec and work out the seams.
-2. Drive [tdd](./tdd.md) at the pre-agreed seams, one red-green slice at a time.
+2. Drive [tdd](../quality/tdd.md) at the pre-agreed seams, one red-green slice at a time.
 3. Typecheck often, run single test files as it goes.
 4. Run the full test suite once, at the end.
-5. Run [code-review](./code-review.md), then commit to the current branch, calling [commit](./commit.md) for the message.
+5. Run [code-review](../quality/code-review.md), then commit to the current branch, calling [commit](../quality/commit.md) for the message.
 
 One run covers one ticket. The tickets [to-tickets](./to-tickets.md) produces are tracer-bullet vertical slices sized to fit a single fresh [context window](../references/context-window.md), so the intended rhythm is: clear context, implement one ticket, commit, clear again. Each ticket is self-contained, so you can discard the previous ticket's context.
 
@@ -58,13 +58,13 @@ Not with `/implement`: one invocation, one ticket. For a whole spec in one run, 
 
 **Can it open a pull request instead of committing?**
 
-Not built in. It commits straight to the current branch. Several people find this too eager, because the code lands before they can verify it works. There is no configuration flag and no PR mode. People override it in the invocation ("commit to a branch and open a PR") or by editing their local copy of the skill. When the agent does write the PR, [pr](./pr.md) shapes its body.
+Not built in. It commits straight to the current branch. Several people find this too eager, because the code lands before they can verify it works. There is no configuration flag and no PR mode. People override it in the invocation ("commit to a branch and open a PR") or by editing their local copy of the skill. When the agent does write the PR, [pr](../quality/pr.md) shapes its body.
 
 **`code-review` says it cannot see my changes.**
 
 `code-review` reviews `git diff <fixed-point>...HEAD`, which excludes staged and working-tree changes. `implement` runs it before committing, so unless an interim commit already exists there is nothing in that diff to review. Multiple people have reported this and it is unfixed on both sides. Commit first, then review against the point you branched from.
 
-Separately, some people do not want the review inside the run at all, because an agent reviewing the code it just wrote is biased toward its own solution. Running [code-review](./code-review.md) in a fresh session against a fixed point is a valid alternative. The same bias is why that skill runs its two axes in separate sub-agents.
+Separately, some people do not want the review inside the run at all, because an agent reviewing the code it just wrote is biased toward its own solution. Running [code-review](../quality/code-review.md) in a fresh session against a fixed point is a valid alternative. The same bias is why that skill runs its two axes in separate sub-agents.
 
 **One ticket burned 150k tokens. Am I using it wrong?**
 
@@ -87,10 +87,10 @@ The agent resolved `#2` against another numbered list in context, such as a todo
 `implement` is the build step of the main chain:
 
 ```txt
-grill-with-docs → to-spec → to-tickets → implement → code-review → retro
+grill-with-docs → to-spec → to-tickets → implement → code-review → improve-environment
 ```
 
-Its neighbours are [to-tickets](./to-tickets.md), which produces the tickets it consumes and declares the blocking edges that decide their order; [tdd](./tdd.md), which it drives internally at each seam; and [code-review](./code-review.md), which it runs before committing. It sits downstream of the planning skills and trusts them. It does not re-validate the shape of what it was handed, so a badly-structured map or a horizontally-layered ticket gets built as written.
+Its neighbours are [to-tickets](./to-tickets.md), which produces the tickets it consumes and declares the blocking edges that decide their order; [tdd](../quality/tdd.md), which it drives internally at each seam; and [code-review](../quality/code-review.md), which it runs before committing. It sits downstream of the planning skills and trusts them. It does not re-validate the shape of what it was handed, so a badly-structured map or a horizontally-layered ticket gets built as written.
 
 That trust is why [wayfinder](./wayfinder.md) merges onto the chain at [to-spec](./to-spec.md) rather than looping its map straight into `implement`. Go straight to `implement` from a map only when the effort turned out small.
 
