@@ -12,11 +12,11 @@ It is the heaviest flow in the set, so the trigger is narrow. The effort must be
 
 | What you have in front of you | What to run |
 | --- | --- |
-| A well-scoped feature you can settle in one sitting | [grill-me](../productivity/grill-me.md), or [grill-with-docs](./grill-with-docs.md) when there is a codebase |
+| A well-scoped feature you can settle in one sitting | [grill-me](../thinking/grill-me.md), or [grill-with-docs](../thinking/grill-with-docs.md) when there is a codebase |
 | A greenfield project, or a build spanning many sessions, with the route still unclear | `/wayfinder` |
 | A thread where the deciding is already done | [to-spec](./to-spec.md): skip straight past the map |
 | A cleared wayfinder map | [to-spec](./to-spec.md), then [to-tickets](./to-tickets.md) and [implement](./implement.md) |
-| An existing session that has already grown too big | say "hand off to `/wayfinder`" ([handoff](../productivity/handoff.md) bridges into a map as well as out of one) |
+| An existing session that has already grown too big | say "hand off to `/wayfinder`" ([handoff](handoff.md) bridges into a map as well as out of one) |
 
 Greenfield is not a requirement. People use wayfinder routinely on legacy and half-built codebases, and it can be more useful there, because much of the fog is "what is already true here" rather than "what should we do".
 
@@ -45,9 +45,9 @@ Every ticket carries a `wayfinder:<type>` label. Each ticket is either **[HITL](
 
 | Type | Mode | Reach for it when | Resolved by |
 | --- | --- | --- | --- |
-| `grilling` | HITL | The default. The question can be settled by talking it through. | [grilling](../productivity/grilling.md) plus [domain-modeling](./domain-modeling.md), in a fresh session |
-| `prototype` | HITL | "How should this look" or "how should this behave": a question talking cannot settle. | [prototype](./prototype.md), with a link from the ticket to the built artifact |
-| `research` | AFK | A fact outside the working directory is blocking a decision. | A [research](./research.md) [subagent](../references/subagent.md), started when you chart the map and run in parallel on a `research/<name>` branch |
+| `grilling` | HITL | The default. The question can be settled by talking it through. | [grilling](../thinking/grilling.md) plus [domain-modeling](./domain-modeling.md), in a fresh session |
+| `prototype` | HITL | "How should this look" or "how should this behave": a question talking cannot settle. | [prototype](../thinking/prototype.md), with a link from the ticket to the built artifact |
+| `research` | AFK | A fact outside the working directory is blocking a decision. | A [research](../thinking/research.md) [subagent](../references/subagent.md), started when you chart the map and run in parallel on a `research/<name>` branch |
 | `task` | Either | Nothing to decide, but manual work blocks a decision, such as provisioning access, signing up for a service, or moving data so you can see its shape. | The agent alone where it can, otherwise a precise checklist for the human |
 
 `task` is the only type that *does* rather than decides. It belongs on the map only because it unblocks a decision, never because it delivers part of the destination. This type goes wrong most often in practice. Agents read it as an implementation step and start to write product code inside the map.
@@ -100,4 +100,4 @@ It is this skill. v1.1 renamed it to `wayfinder`, and you invoke it as `/wayfind
 
 `wayfinder` is a **situational on-ramp**, not the default starting point. Most work still starts on the grill-led idea → ship chain. You use wayfinder when the idea is too big to hold in one session. It rejoins that chain at [to-spec](./to-spec.md), because a cleared map hands off and does not build.
 
-Most of the work happens in other skills that wayfinder schedules. [grilling](../productivity/grilling.md) and [domain-modeling](./domain-modeling.md) resolve the default ticket type, [prototype](./prototype.md) resolves the tickets that talk cannot settle, and [research](./research.md) runs as a subagent so its reading stays out of your session. [handoff](../productivity/handoff.md) moves work in and out: into a map from a conversation that grew too big, and out of a map when a side quest appears mid-session. For anything else, **ask-joao** routes over the whole set.
+Most of the work happens in other skills that wayfinder schedules. [grilling](../thinking/grilling.md) and [domain-modeling](./domain-modeling.md) resolve the default ticket type, [prototype](../thinking/prototype.md) resolves the tickets that talk cannot settle, and [research](../thinking/research.md) runs as a subagent so its reading stays out of your session. [handoff](handoff.md) moves work in and out: into a map from a conversation that grew too big, and out of a map when a side quest appears mid-session. For anything else, **ask-joao** routes over the whole set.
