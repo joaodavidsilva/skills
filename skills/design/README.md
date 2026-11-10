@@ -15,6 +15,7 @@ Model- or user-reachable (rich trigger phrasing so the model can reach for them)
 
 - **[interface-polish](./interface-polish/SKILL.md)**: Tune the small details that make an interface feel better: animation, typography, surfaces, hover states, hit areas, icons, and optical alignment.
 - **[animate-expo](./animate-expo/SKILL.md)**: Build React Native and Expo animations, gestures, sheets, screen transitions, and haptics on the UI thread with Reanimated 4, Gesture Handler, Expo Router, and `expo-haptics`.
+- **[gestures](./gestures/SKILL.md)**: Build web drag, swipe, and sheet interactions that track the finger 1:1, release on a velocity-seeded spring, and stay interruptible.
 - **[animation-vocabulary](./animation-vocabulary/SKILL.md)**: Reverse-lookup a motion effect's exact term from a visual or feel description when you ask "what's it called when...".
 - **[swiftui](./swiftui/SKILL.md)**: SwiftUI correctness and performance (state, composition, lists, navigation, animation, Liquid Glass, SDK 27 APIs), Swift concurrency safety and Swift 6+ migration, Swift Testing and XCTest migration, Xcode build-time optimization, plus Instruments trace recording and analysis.
 - **[beautify-readme](./beautify-readme/SKILL.md)**: Redesign READMEs or create standalone README visual assets (pure SVG heroes, diagrams, section headers, hybrid cutouts, opt-in GIF motion).
