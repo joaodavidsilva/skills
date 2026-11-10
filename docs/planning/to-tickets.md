@@ -13,7 +13,7 @@ You invoke this by typing `/to-tickets`. The [agent](../references/agent.md) won
 | You have a spec issue and the build spans several sessions | `/to-tickets`, or `/to-tickets #<spec_issue>` |
 | The plan is only in the conversation, never written up | `/to-tickets` reads the thread directly, no spec needed |
 | The whole change fits in one context window | [implement](./implement.md), skip the tickets |
-| Nothing is decided yet | [grill-with-docs](./grill-with-docs.md), then [to-spec](./to-spec.md) |
+| Nothing is decided yet | [grill-with-docs](../thinking/grill-with-docs.md), then [to-spec](./to-spec.md) |
 | A [wayfinder](./wayfinder.md) map has cleared | [to-spec](./to-spec.md) first, to collapse the map, then `/to-tickets` |
 
 Tickets that `to-tickets` produced are agent-ready by construction. Don't run [triage](./triage.md) over them. Triage is for work that arrived from someone else.
@@ -93,7 +93,7 @@ The skill stops at the artifact, and there is no auto-dispatch mode. Dispatch is
 `to-tickets` is a step in the main build chain:
 
 ```txt
-grill-with-docs → to-spec → to-tickets → implement → code-review → retro
+grill-with-docs → to-spec → to-tickets → implement → code-review → improve-environment
 ```
 
-Upstream is [to-spec](./to-spec.md), which hands it a settled spec to slice against. Keep both in one context window, with no clear between them. Downstream is [implement](./implement.md), which builds one ticket per fresh session, driving [tdd](./tdd.md) for the tests and closing with [code-review](./code-review.md). [implement-spec](./implement-spec.md) is the other way down. It reads the same blocking edges as a task graph and builds every ready ticket in parallel on one integration branch. When you're unsure which skill or flow fits, **ask-joao** routes you.
+Upstream is [to-spec](./to-spec.md), which hands it a settled spec to slice against. Keep both in one context window, with no clear between them. Downstream is [implement](./implement.md), which builds one ticket per fresh session, driving [tdd](../quality/tdd.md) for the tests and closing with [code-review](../quality/code-review.md). [implement-spec](./implement-spec.md) is the other way down. It reads the same blocking edges as a task graph and builds every ready ticket in parallel on one integration branch. When you're unsure which skill or flow fits, **ask-joao** routes you.
