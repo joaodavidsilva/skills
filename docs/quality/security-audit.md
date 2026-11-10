@@ -2,7 +2,7 @@
 
 `security-audit` hunts a codebase for vulnerabilities that cross a real trust boundary, has every candidate independently re-checked, and writes a report with a source trace, a safe reproduction, a priority and the smallest source fix for each one that survives.
 
-It never fixes anything and never plans the fixes. A candidate only becomes a finding when a fresh [subagent](../references/subagent.md) that did not hunt it tries to disprove it and fails, and a fact that lives outside the source (a proxy setting, an identity policy) stays an unresolved lead instead of a guess. The audit ends with a brief that [to-tickets](./to-tickets.md) and [to-spec](./to-spec.md) can take, and you start them yourself.
+It never fixes anything and never plans the fixes. A candidate only becomes a finding when a fresh [subagent](../references/subagent.md) that did not hunt it tries to disprove it and fails, and a fact that lives outside the source (a proxy setting, an identity policy) stays an unresolved lead instead of a guess. The audit ends with a brief that [to-tickets](../planning/to-tickets.md) and [to-spec](../planning/to-spec.md) can take, and you start them yourself.
 
 ## When to reach for it
 
@@ -22,7 +22,7 @@ When a request could be either, it asks one question before creating anything. F
 - **Node on your `PATH`.** The two validators that check the findings and the coverage claim are Node scripts. The skill checks `node --version` and stops if it is missing; it never installs anything.
 - **A sandbox for target code.** It only builds or runs target code inside an OS-enforced sandbox (no network, empty environment, read-only target, resource limits). Where it cannot enforce every control, it reads source and reports what needed running as a lead.
 - **A workspace outside your repo.** Output goes to `~/security-audit-skill/<repo>/run-<N>`, never into the target, unless you pick a directory inside it that version control ignores.
-- **Fix planning needs the tracker set up.** The later [to-tickets](./to-tickets.md) step reads the tracker that [setup-joao-david-silva-skills](./setup-joao-david-silva-skills.md) configured.
+- **Fix planning needs the tracker set up.** The later [to-tickets](../planning/to-tickets.md) step reads the tracker that [setup-joao-david-silva-skills](../setup/setup-joao-david-silva-skills.md) configured.
 
 ## Three verdicts, never blurred
 
@@ -54,8 +54,8 @@ Profiles change breadth, never the evidence bar.
 
 ## Where it fits
 
-A security **on-ramp** that merges onto the main flow: `security-audit → to-spec → to-tickets → implement → code-review`. The audit finds and verifies. You then choose the next step: run [to-tickets](./to-tickets.md) with `REMEDIATION.md` as its argument, or [to-spec](./to-spec.md) first when the fixes need design decisions. `REMEDIATION.md` names findings by fingerprint and carries no payloads or paths, so a [ticket](../references/ticket.md) never copies exploit detail. Check the tracker is private before publishing, because the brief describes unfixed vulnerabilities.
+A security **on-ramp** that merges onto the main flow: `security-audit → to-spec → to-tickets → implement → code-review`. The audit finds and verifies. You then choose the next step: run [to-tickets](../planning/to-tickets.md) with `REMEDIATION.md` as its argument, or [to-spec](../planning/to-spec.md) first when the fixes need design decisions. `REMEDIATION.md` names findings by fingerprint and carries no payloads or paths, so a [ticket](../references/ticket.md) never copies exploit detail. Check the tracker is private before publishing, because the brief describes unfixed vulnerabilities.
 
-After the fixes land, a scoped re-run over the diff revalidates them through the fingerprints the tickets carry. Build the fixes with [implement](./implement.md).
+After the fixes land, a scoped re-run over the diff revalidates them through the fingerprints the tickets carry. Build the fixes with [implement](../planning/implement.md).
 
-When you are unsure which skill fits your situation across the whole set, **[ask-joao](./ask-joao.md)** routes you.
+When you are unsure which skill fits your situation across the whole set, **[ask-joao](../setup/ask-joao.md)** routes you.
