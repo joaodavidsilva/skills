@@ -30,10 +30,18 @@ Break the work into **tracer bullet** tickets.
 
 - Each slice cuts a narrow but COMPLETE path through every layer (schema, API, UI, tests): vertical, NOT a horizontal slice of one layer
 - A completed slice is demoable or verifiable on its own
-- Each slice is sized to fit in a single fresh context window
+- Each slice fits one **smart zone**: an agent starting fresh finishes it under ~150k tokens, with no compaction
 - Any prefactoring should be done first
 
 </vertical-slice-rules>
+
+**Size by the budget.** A fresh session spends its smart zone on reading and verification output, and the code it writes is a small slice. A ticket stays light when it has:
+
+- ≤~400 net lines, tests included
+- one test seam, verified with output filtered to errors and failures
+- a self-contained brief (behaviour, interfaces touched), so the agent never reads the whole spec
+
+Full-suite runs, smoke walks and device runs belong in a separate integration ticket. A ticket over budget gets split. The measured baseline, the per-ticket budget and the token estimate for the whole batch live in [reference/CONTEXT-BUDGET.md](reference/CONTEXT-BUDGET.md); read it when the user asks what the batch will cost.
 
 Give each ticket its **blocking edges**: the other tickets that must complete before it can start. A ticket with no blockers can start immediately.
 
@@ -46,6 +54,7 @@ Present the proposed breakdown as a numbered list. For each ticket, show:
 - **Title**: short descriptive name
 - **Blocked by**: which other tickets (if any) must complete first
 - **What it delivers**: the end-to-end behaviour this ticket makes work
+- **Size**: rough net lines and the one test seam
 
 Ask the user:
 

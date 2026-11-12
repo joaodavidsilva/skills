@@ -2,7 +2,7 @@
 
 `to-tickets` takes a plan, a [spec](../references/spec.md), or the conversation you are in, and breaks it into a set of **[tickets](../references/ticket.md)** on your issue tracker. Each ticket declares its **blocking edges**: the other tickets that have to finish before it can start.
 
-Every ticket is a **tracer bullet**: a narrow but complete path through every layer of the change (schema, API, UI, tests) that you can demo on its own as soon as it lands. This is what makes the skill different from the obvious way to split work, which is to cut one layer at a time and integrate at the end. It also sizes each ticket to fit in a single fresh [context window](../references/context-window.md), because a [session](../references/session.md) that has never seen your spec will pick the ticket up.
+Every ticket is a **tracer bullet**: a narrow but complete path through every layer of the change (schema, API, UI, tests) that you can demo on its own as soon as it lands. This is what makes the skill different from the obvious way to split work, which is to cut one layer at a time and integrate at the end. It also sizes each ticket to fit one [smart zone](../references/smart-zone.md): a [session](../references/session.md) that has never seen your spec picks the ticket up fresh, so the ticket has to finish under ~150k tokens with no compaction. In practice that means roughly 400 net lines and one test seam, because a [context window](../references/context-window.md) fills with reading and test output far faster than with code.
 
 ## When to reach for it
 
@@ -86,6 +86,7 @@ The skill stops at the artifact, and there is no auto-dispatch mode. Dispatch is
 - The ticket at the top has no blockers and can be started immediately.
 - Nothing in a ticket body is a file path or a line number, except a snippet a prototype produced.
 - Each ticket reads like something a fresh session could finish without you in the room.
+- Each ticket shows a rough size (around 400 net lines at most) and the one test seam that verifies it, and a ticket over that is split rather than squeezed.
 - Prefactoring, where it found any, is at the front of the order rather than mixed into feature tickets.
 
 ## Where it fits
